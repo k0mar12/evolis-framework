@@ -1,9 +1,10 @@
 import { Context } from './Context';
 import { World } from './World';
+import { Filter } from '../data/Filter';
 
 import type { SystemOrder } from '../types/SystemOrder';
 import type { Tick } from '../types/Tick';
-import type { ComponentConstructor } from '../types/ComponentConstructor';
+import type { Collection } from '../data/Collection';
 
 export abstract class System
 {
@@ -15,7 +16,7 @@ export abstract class System
     /**
      *
      */
-    public abstract readonly components: ComponentConstructor[];
+    public abstract readonly filter: Filter;
 
     /**
      * 
@@ -27,6 +28,14 @@ export abstract class System
         protected readonly world: World
     )
     {
+    }
+
+    /**
+     *
+     */
+    protected get collection(): Collection
+    {
+        return this.world.query.find(this.filter);
     }
 
     /**

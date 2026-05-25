@@ -179,10 +179,7 @@ export class Application
         const dt = this.getDeltaTime();
 
         for (const system of this.world.getSystems()) {
-            system.update({
-                deltaTime: dt,
-                collection: this.world.query.find(...system.components)
-            });
+            system.update({ deltaTime: dt });
         }
 
         this.context.makeTick();

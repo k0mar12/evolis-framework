@@ -10,7 +10,7 @@ await evolis.load();
 
 evolis.loop();
 
-evolis.world.spawn(
+evolis.world.insert(
     new DebugPrefab(),
     new BoxPrefab()
 );

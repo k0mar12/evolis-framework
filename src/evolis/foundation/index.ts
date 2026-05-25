@@ -1,9 +1,14 @@
 export { Application } from './core/Application';
-export { Collection } from './core/Collection';
+export { Collection } from './data/Collection';
 export { World } from './core/World';
 export { System } from './core/System';
 export { Component } from './core/Component';
+
 export { SystemPhase } from './enums/SystemPhase';
+
+export { Any } from './data/conditions/Any';
+export { With } from './data/conditions/With';
+export { Without } from './data/conditions/Without';
 
 export * from './utils/helpers';
 export * from './utils/defining';

@@ -1,10 +1,9 @@
 import { System } from '../../foundation/core/System';
+import { Filter } from '../../foundation/data/Filter';
 import { MeshComponent } from '../components/MeshComponent';
+import { InSceneComponent } from '../components/tags/InSceneComponent';
 
-import type { Tick } from '../../foundation/types/Tick';
 import type { SystemOrder } from '../../foundation/types/SystemOrder';
-import type { EntityId } from '../../foundation/types/EntityId';
-import type { ComponentConstructor } from '../../foundation/types/ComponentConstructor';
 
 export class SceneSystem extends System
 {
@@ -15,33 +14,23 @@ export class SceneSystem extends System
 
     /**
      *
-     * @returns typeof Component[]
      */
-    public readonly components: ComponentConstructor[] = [
-        MeshComponent
-    ];
-
-    // public readonly build: Builder[] = [
-    //     with(MeshComponent),
-    //     without(SceneAddedComponent)
-    // ];
+    public readonly filter: Filter = new Filter()
+        .with(MeshComponent)
+        .without(InSceneComponent);
 
     /**
      * 
      * @param Tick
      */
-    public update({ collection }: Tick): void
+    public update(): void
     {
-        collection.each((id: EntityId): void => {
+        this.collection.forEach((id) => {
             const mesh = this.world.getComponent<MeshComponent>(id, MeshComponent);
 
-            if (! mesh) {
-                return;
-            }
+            this.world.addComponent(id, new InSceneComponent());
 
-            if (! this.context.scene.getObjectById(mesh.object.id)) {
-                this.context.scene.add(mesh.object);
-            }
+            this.context.scene.add(mesh.object);
         });
     }
 }

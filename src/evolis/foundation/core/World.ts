@@ -1,6 +1,6 @@
 import { Component } from './Component';
-import { Query } from './Query';
-import { ComponentRegistry } from './ComponentRegister';
+import { Query } from '../data/Query';
+import { ComponentRegistry } from '../data/ComponentRegister';
 
 import type { System } from './System';
 import type { EntityId } from '../types/EntityId';
@@ -12,12 +12,12 @@ export class World
     /**
      *
      */
-    public readonly query: Query;
+    public readonly query: Query = new Query();
 
     /**
      *
      */
-    protected readonly components: Map<string, Map<number, Component>> = new Map();
+    protected readonly components: Map<string, Map<EntityId, Component>> = new Map();
 
 
     /**
@@ -29,14 +29,6 @@ export class World
      *
      */
     protected nextEntityId: EntityId = 0;
-
-    /**
-     *
-     */
-    constructor()
-    {
-        this.query = new Query(this.components);
-    }
 
     /**
      * 
@@ -84,9 +76,9 @@ export class World
         const type = component.constructor.name;
 
         let storage = this.components.get(type);
-
+        
         if (! storage) {
-            storage = new Map();
+            storage = new Map<EntityId, Component>();
             this.components.set(type, storage);
         }
 
@@ -103,12 +95,12 @@ export class World
      * @param id
      * @param type 
      */
-    public removeComponent(id: EntityId, type: string): void
+    public removeComponent(id: EntityId, type: ComponentConstructor): void
     {
-        this.components.get(type)?.delete(id);
+        this.components.get(type.name)?.delete(id);
 
         const oldMask = this.query.getMask(id);
-        const newMask = oldMask & ~ComponentRegistry.getBit(type);
+        const newMask = oldMask & ~ComponentRegistry.getBit(type.name);
 
         this.query.invalidate(id, oldMask, newMask);
     }
@@ -119,16 +111,28 @@ export class World
      * @param type 
      * @returns 
      */
-    public getComponent<T extends Component>(id: EntityId, type: ComponentConstructor): T | null
+    public getComponent<T extends Component>(id: EntityId, type: ComponentConstructor): T
     {
-        return (this.components.get(type.name)?.get(id) as T) ?? null;
+        const storage = this.components.get(type.name)
+
+        if (! storage) {
+            throw new Error(`Component ${type.name} is not registered.`);
+        }
+
+        const component = storage.get(id);
+
+        if (! component) {
+            throw new Error(`Component ${type.name} not found for entity ${id}.`);
+        }
+
+        return component as T;
     }
 
     /**
      * 
      * @param prefabs
      */
-    public spawn(...prefabs: Prefab[])
+    public insert(...prefabs: Prefab[])
     {
         for (const prefab of prefabs) {
             const entityId = this.createEntity()
