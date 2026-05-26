@@ -1,8 +1,22 @@
+import {
+    MeshComponent,
+    TransformComponent,
+    VelocityComponent,
+    PlayerControlledComponent,
+    Component,
+    type Prefab
+} from '@/evolis';
 import { BoxGeometry, MeshNormalMaterial, Mesh, type Object3D } from 'three';
-import { MeshComponent, TransformComponent, Component, type Prefab } from '@/evolis';
+import { InputComponent } from '@/components/controller/InputComponent';
+import { SettingsComponent } from '@/components/controller/SettingsComponent';
+import { GravityComponent } from '@/components/physics/GravityComponent';
 
 export class BoxPrefab implements Prefab
 {
+    /**
+     * 
+     * @returns
+     */
     private asset(): Object3D
     {
         return new Mesh(
@@ -19,7 +33,12 @@ export class BoxPrefab implements Prefab
     {
         return [
             new MeshComponent(this.asset()),
-            new TransformComponent()
+            new TransformComponent(),
+            new VelocityComponent(),
+            new GravityComponent(),
+            new InputComponent(),
+            new PlayerControlledComponent(),
+            new SettingsComponent()
         ];
     }
 }

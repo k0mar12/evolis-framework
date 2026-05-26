@@ -1,7 +1,9 @@
+import Stats from 'stats.js';
 import { World } from './World';
 import { Context } from './Context';
 import { Loader } from '../../filesystem/main/Loader';
 import { defaultRenderer, defaultScene, defaultCamera } from '../utils/context';
+import { Container } from './Container';
 
 import type { Config } from '../types/Config';
 
@@ -21,6 +23,16 @@ export class Application
      *
      */
     public readonly loader: Loader = new Loader();
+
+    /**
+     *
+     */
+    public readonly container: Container = new Container();
+
+    /**
+     *
+     */
+    public readonly stats: Stats = new Stats();
 
     /**
      *
@@ -51,6 +63,9 @@ export class Application
         protected config: Config
     )
     {
+        this.stats.showPanel(0);
+        document.body.appendChild(this.stats.dom);
+
         this.canvas = this.getCanvas();
 
         this.context = new Context(
@@ -84,6 +99,12 @@ export class Application
                 new system(this.context, this.world)
             );
         }
+
+        for (const system of this.world.getSystems()) {
+            system.boot();
+        }
+
+        console.log(this.world.getSystems());
     }
 
     /**
@@ -176,6 +197,8 @@ export class Application
      */
     public loop = (): void =>
     {
+        this.stats.begin();
+
         const dt = this.getDeltaTime();
 
         for (const system of this.world.getSystems()) {
@@ -183,6 +206,8 @@ export class Application
         }
 
         this.context.makeTick();
+
+        this.stats.end();
 
         requestAnimationFrame(this.loop);
     }

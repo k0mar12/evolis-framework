@@ -39,6 +39,14 @@ export abstract class System
     }
 
     /**
+     *
+     */
+    public boot(): void
+    {
+
+    }
+
+    /**
      * 
      * @param Tick
      */

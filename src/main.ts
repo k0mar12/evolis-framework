@@ -1,10 +1,13 @@
 import './style.css';
 
-import { Application } from '@/evolis';
+import { Application, Keyboard, type InputDevice } from '@/evolis';
 import { BoxPrefab } from '@/prefabs/BoxPrefab';
 import { DebugPrefab } from './prefabs/DebugPrefab';
+import { InputDeviceSymbol } from './symbols';
 
 const evolis = Application.create();
+
+evolis.container.set<InputDevice>(InputDeviceSymbol, new Keyboard());
 
 await evolis.load();
 

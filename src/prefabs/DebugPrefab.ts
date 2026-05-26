@@ -10,7 +10,7 @@ export class DebugPrefab implements Prefab
     public components(): Component[]
     {
         return [
-            new MeshComponent(new AxesHelper(5)),
+            new MeshComponent(new AxesHelper(15))
         ];
     }
 }

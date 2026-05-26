@@ -6,14 +6,18 @@ export { Component } from './core/Component';
 
 export { SystemPhase } from './enums/SystemPhase';
 
+export { Keyboard } from './devices/Keyboard';
+
 export { Any } from './data/conditions/Any';
 export { With } from './data/conditions/With';
 export { Without } from './data/conditions/Without';
+export { Filter } from './data/Filter';
 
 export * from './utils/helpers';
 export * from './utils/defining';
 
 export type { Prefab } from './contracts/Prefab';
+export type { InputDevice } from './contracts/InputDevice';
 export type { Config } from './types/Config';
 export type { EntityId } from './types/EntityId';
 export type { SystemOrder } from './types/SystemOrder';

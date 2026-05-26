@@ -10,14 +10,12 @@ export class SceneSystem extends System
     /**
      *
      */
-    public readonly order: SystemOrder = 0;
+    public readonly order: SystemOrder = 600;
 
     /**
      *
      */
-    public readonly filter: Filter = new Filter()
-        .with(MeshComponent)
-        .without(InSceneComponent);
+    public readonly filter: Filter = new Filter().with(MeshComponent).without(InSceneComponent);
 
     /**
      * 

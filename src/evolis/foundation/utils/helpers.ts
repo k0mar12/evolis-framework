@@ -1,4 +1,5 @@
 import { Application } from '../core/Application';
+import { Container } from '../core/Container';
 import { With } from '../data/conditions/With';
 import { Without } from '../data/conditions/Without';
 import { Any } from '../data/conditions/Any';
@@ -23,6 +24,12 @@ export const context = (): Context => Application.get().context;
  * 
  * @returns
  */
+export const container = (): Container => Application.get().container;
+
+/**
+ * 
+ * @returns
+ */
 export const world = (): World => Application.get().world;
 
 /**
@@ -38,7 +45,6 @@ export const and = (...types: cc[]): With => new With(types);
  * @returns 
  */
 export const or = (...types: cc[]): Without => new Without(types);
-
 
 /**
  * 
