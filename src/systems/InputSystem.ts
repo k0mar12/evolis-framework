@@ -2,13 +2,13 @@ import {
     System,
     Filter,
     PlayerControlledComponent,
+    InputControllerComponent,
     SystemPhase,
     container,
     type Tick,
     type InputDevice 
 } from '@/evolis';
 import { InputDeviceSymbol } from '@/symbols';
-import { InputComponent } from '@/components/controller/InputComponent';
 
 export default class InputSystem extends System
 {
@@ -21,7 +21,7 @@ export default class InputSystem extends System
      *
      */
     public override readonly filter: Filter = new Filter().with(
-        InputComponent,
+        InputControllerComponent,
         PlayerControlledComponent
     );
 
@@ -42,7 +42,7 @@ export default class InputSystem extends System
      * 
      * @param input
      */
-    private handleMoving(input: InputComponent): void
+    private handleMoving(input: InputControllerComponent): void
     {
         input.moveX = (+this.inputDevice.isPressed('KeyD')) - (+this.inputDevice.isPressed('KeyA'));
         input.moveZ = (+this.inputDevice.isPressed('KeyS')) - (+this.inputDevice.isPressed('KeyW'));
@@ -54,7 +54,7 @@ export default class InputSystem extends System
      * @param input
      * @param deltaTime 
      */
-    private handleJumping(input: InputComponent, deltaTime: number): void
+    private handleJumping(input: InputControllerComponent, deltaTime: number): void
     {
         const isPressedSpace = this.inputDevice.isPressed('Space');
 
@@ -81,7 +81,7 @@ export default class InputSystem extends System
     public update({ deltaTime }: Tick): void
     {
         this.collection.forEach((id) => {
-            const input = this.world.getComponent<InputComponent>(id, InputComponent);
+            const input = this.world.getComponent<InputControllerComponent>(id, InputControllerComponent);
 
             input.clearFrameFrags();
 

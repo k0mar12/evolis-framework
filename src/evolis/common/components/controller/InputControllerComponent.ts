@@ -1,6 +1,6 @@
-import { Component } from '@/evolis';
+import { Component } from '../../../foundation/core/Component';
 
-export class InputComponent extends Component
+export class InputControllerComponent extends Component
 {
     public moveX: number = 0;
     public moveZ: number = 0;

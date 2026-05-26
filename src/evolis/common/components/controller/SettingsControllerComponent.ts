@@ -1,12 +1,7 @@
-import { Component } from '@/evolis';
+import { Component } from '../../../foundation/core/Component';
+import type { Speed } from '../../types/Speed';
 
-type Speed = {
-    walk: number,
-    run: number,
-    jump: number
-};
-
-export class SettingsComponent extends Component
+export class SettingsControllerComponent extends Component
 {
     public jumpBufferTime: number = 0.10;
     public coyoteTime: number = 0.18;

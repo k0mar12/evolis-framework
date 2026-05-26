@@ -1,4 +1,4 @@
-import { Component } from '@/evolis';
+import { Component } from '../../../foundation/core/Component';
 
 export class GravityComponent extends Component
 {

@@ -1,14 +1,14 @@
 import {
     System,
     Filter,
+    InputControllerComponent,
+    SettingsControllerComponent,
     PlayerControlledComponent,
     VelocityComponent,
+    GravityComponent,
     SystemPhase,
     type Tick,
 } from '@/evolis';
-import { InputComponent } from '@/components/controller/InputComponent';
-import { SettingsComponent } from '@/components/controller/SettingsComponent';
-import { GravityComponent } from '@/components/physics/GravityComponent';
 
 export default class CharacterControllerSystem extends System
 {
@@ -22,7 +22,8 @@ export default class CharacterControllerSystem extends System
      */
     public override readonly filter: Filter = new Filter().with(
         PlayerControlledComponent,
-        InputComponent,
+        InputControllerComponent,
+        SettingsControllerComponent,
         VelocityComponent,
         GravityComponent
     );
@@ -50,8 +51,8 @@ export default class CharacterControllerSystem extends System
     public update({ deltaTime}: Tick): void
     {
         this.collection.forEach((id) => {
-            const input = this.world.getComponent<InputComponent>(id, InputComponent);
-            const settings = this.world.getComponent<SettingsComponent>(id, SettingsComponent);
+            const input = this.world.getComponent<InputControllerComponent>(id, InputControllerComponent);
+            const settings = this.world.getComponent<SettingsControllerComponent>(id, SettingsControllerComponent);
             const velocity = this.world.getComponent<VelocityComponent>(id, VelocityComponent);
             const gravity = this.world.getComponent<GravityComponent>(id, GravityComponent);
 

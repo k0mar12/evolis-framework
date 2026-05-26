@@ -3,11 +3,10 @@ import {
     Filter,
     VelocityComponent,
     TransformComponent,
+    GravityComponent,
     SystemPhase,
     type Tick
 } from '@/evolis';
-
-import { GravityComponent } from '@/components/physics/GravityComponent';
 
 export default class GravitySystem extends System
 {
