@@ -3,6 +3,7 @@ import {
     TransformComponent,
     VelocityComponent,
     PlayerControlledComponent,
+    TargetCameraComponent,
     Component,
     type Prefab
 } from '@/evolis';
@@ -38,7 +39,8 @@ export class BoxPrefab implements Prefab
             new GravityComponent(),
             new InputComponent(),
             new PlayerControlledComponent(),
-            new SettingsComponent()
+            new SettingsComponent(),
+            new TargetCameraComponent(),
         ];
     }
 }

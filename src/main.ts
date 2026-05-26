@@ -1,9 +1,10 @@
-import './style.css';
+import '@/style.css';
 
 import { Application, Keyboard, type InputDevice } from '@/evolis';
 import { BoxPrefab } from '@/prefabs/BoxPrefab';
-import { DebugPrefab } from './prefabs/DebugPrefab';
-import { InputDeviceSymbol } from './symbols';
+import { DebugPrefab } from '@/prefabs/DebugPrefab';
+import { InputDeviceSymbol } from '@/symbols';
+import { CameraPrefab } from '@/prefabs/CameraPrefab';
 
 const evolis = Application.create();
 
@@ -15,5 +16,6 @@ evolis.loop();
 
 evolis.world.insert(
     new DebugPrefab(),
-    new BoxPrefab()
+    new CameraPrefab(),
+    new BoxPrefab(),
 );
