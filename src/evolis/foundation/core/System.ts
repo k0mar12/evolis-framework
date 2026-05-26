@@ -1,8 +1,8 @@
 import { Context } from './Context';
 import { World } from './World';
 import { Filter } from '../data/Filter';
+import { SystemPhase } from '../enums/SystemPhase';
 
-import type { SystemOrder } from '../types/SystemOrder';
 import type { Tick } from '../types/Tick';
 import type { Collection } from '../data/Collection';
 
@@ -11,7 +11,7 @@ export abstract class System
     /**
      *
      */
-    public abstract readonly order: SystemOrder;
+    public abstract readonly order: SystemPhase;
 
     /**
      *

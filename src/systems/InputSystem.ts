@@ -2,8 +2,8 @@ import {
     System,
     Filter,
     PlayerControlledComponent,
+    SystemPhase,
     container,
-    type SystemOrder,
     type Tick,
     type InputDevice 
 } from '@/evolis';
@@ -15,12 +15,15 @@ export default class InputSystem extends System
     /**
      *
      */
-    public readonly order: SystemOrder = 0;
+    public override readonly order: SystemPhase = SystemPhase.Input;
 
     /**
      *
      */
-    public readonly filter: Filter = new Filter().with(InputComponent, PlayerControlledComponent);
+    public override readonly filter: Filter = new Filter().with(
+        InputComponent,
+        PlayerControlledComponent
+    );
 
     /**
      *
@@ -30,7 +33,7 @@ export default class InputSystem extends System
     /**
      *
      */
-    public boot(): void
+    public override boot(): void
     {
         this.inputDevice = container().get<InputDevice>(InputDeviceSymbol);
     }

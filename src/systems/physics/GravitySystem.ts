@@ -1,4 +1,11 @@
-import { System, Filter, VelocityComponent, TransformComponent, type SystemOrder, type Tick } from '@/evolis';
+import {
+    System,
+    Filter,
+    VelocityComponent,
+    TransformComponent,
+    SystemPhase,
+    type Tick
+} from '@/evolis';
 
 import { GravityComponent } from '@/components/physics/GravityComponent';
 
@@ -7,12 +14,12 @@ export default class GravitySystem extends System
     /**
      *
      */
-    public readonly order: SystemOrder = 1;
+    public override readonly order: SystemPhase = SystemPhase.Physic;
 
     /**
      *
      */
-    public readonly filter: Filter = new Filter().with(
+    public override readonly filter: Filter = new Filter().with(
         TransformComponent,
         VelocityComponent,
         GravityComponent

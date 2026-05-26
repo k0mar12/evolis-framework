@@ -1,9 +1,9 @@
 import { System } from '../../foundation/core/System';
 import { Filter } from '../../foundation/data/Filter';
+import { SystemPhase } from '../../foundation/enums/SystemPhase';
 import { TransformComponent } from '../components/TransformComponent';
 import { VelocityComponent } from '../components/VelocityComponent';
 
-import type { SystemOrder } from '../../foundation/types/SystemOrder';
 import type { Tick } from '../../foundation/types/Tick';
 
 export class MovementSystem extends System
@@ -11,12 +11,12 @@ export class MovementSystem extends System
     /**
      *
      */
-    public readonly order: SystemOrder = 100;
+    public override readonly order: SystemPhase = SystemPhase.Movement;
 
     /**
      *
      */
-    public readonly filter: Filter = new Filter().with(TransformComponent, VelocityComponent);
+    public override readonly filter: Filter = new Filter().with(TransformComponent, VelocityComponent);
 
     /**
      * 

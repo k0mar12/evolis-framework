@@ -1,21 +1,20 @@
 import { System } from '../../foundation/core/System';
 import { Filter } from '../../foundation/data/Filter';
+import { SystemPhase } from '../../foundation/enums/SystemPhase';
 import { MeshComponent } from '../components/MeshComponent';
 import { InSceneComponent } from '../components/tags/InSceneComponent';
-
-import type { SystemOrder } from '../../foundation/types/SystemOrder';
 
 export class SceneSystem extends System
 {
     /**
      *
      */
-    public readonly order: SystemOrder = 600;
+    public override readonly order: SystemPhase = SystemPhase.Scene;
 
     /**
      *
      */
-    public readonly filter: Filter = new Filter().with(MeshComponent).without(InSceneComponent);
+    public override readonly filter: Filter = new Filter().with(MeshComponent).without(InSceneComponent);
 
     /**
      * 

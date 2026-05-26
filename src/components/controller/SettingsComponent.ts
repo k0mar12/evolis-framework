@@ -13,8 +13,8 @@ export class SettingsComponent extends Component
     public acceleration: number = 25;
 
     public speed: Speed = {
-        walk: 1,
+        walk: 5,
         run: 7,
-        jump: 10
+        jump: 8
     };
 }

@@ -3,7 +3,7 @@ import {
     Filter,
     PlayerControlledComponent,
     VelocityComponent,
-    type SystemOrder,
+    SystemPhase,
     type Tick,
 } from '@/evolis';
 import { InputComponent } from '@/components/controller/InputComponent';
@@ -15,12 +15,12 @@ export default class CharacterControllerSystem extends System
     /**
      *
      */
-    public readonly order: SystemOrder = 1;
+    public override readonly order: SystemPhase = SystemPhase.Movement;
 
     /**
      *
      */
-    public readonly filter: Filter = new Filter().with(
+    public override readonly filter: Filter = new Filter().with(
         PlayerControlledComponent,
         InputComponent,
         VelocityComponent,

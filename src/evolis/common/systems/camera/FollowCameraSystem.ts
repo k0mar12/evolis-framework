@@ -1,11 +1,11 @@
 import { Vector3 } from 'three';
 import { System } from '../../../foundation/core/System';
 import { Filter } from '../../../foundation/data/Filter';
+import { SystemPhase } from '../../../foundation/enums/SystemPhase';
 import { TargetCameraComponent } from '../../components/tags/TargetCameraComponent';
 import { TransformComponent } from '../../components/TransformComponent';
 import { FollowCameraComponent } from '../../components/camera/FollowCameraComponent';
 
-import type { SystemOrder } from '../../../foundation/types/SystemOrder';
 import type { Tick } from '../../../foundation/types/Tick';
 import type { EntityId } from '../../../foundation/types/EntityId';
 
@@ -14,13 +14,12 @@ export class FollowCameraSystem extends System
     /**
      *
      */
-    public readonly order: SystemOrder = 2;
+    public override readonly order: SystemPhase = SystemPhase.Camera;
 
     /**
      *
      */
-    public readonly filter: Filter = new Filter()
-        .with(FollowCameraComponent);
+    public override readonly filter: Filter = new Filter().with(FollowCameraComponent);
 
     /**
      * Smooth position

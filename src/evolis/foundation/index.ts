@@ -20,6 +20,5 @@ export type { Prefab } from './contracts/Prefab';
 export type { InputDevice } from './contracts/InputDevice';
 export type { Config } from './types/Config';
 export type { EntityId } from './types/EntityId';
-export type { SystemOrder } from './types/SystemOrder';
 export type { Tick } from './types/Tick';
 export type { ComponentConstructor } from './types/ComponentConstructor';
