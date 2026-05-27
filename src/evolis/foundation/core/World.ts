@@ -8,8 +8,6 @@ import {
     type ComponentConstructor
 } from '@/evolis/foundation';
 
-import { AxesPrefab, GridPrefab } from '@/evolis/common';
-
 export class World
 {
     /**
