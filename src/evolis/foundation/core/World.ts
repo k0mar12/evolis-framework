@@ -8,6 +8,8 @@ import {
     type ComponentConstructor
 } from '@/evolis/foundation';
 
+import { AxesPrefab, GridPrefab } from '@/evolis/common';
+
 export class World
 {
     /**
@@ -19,7 +21,6 @@ export class World
      *
      */
     protected readonly components: Map<string, Map<EntityId, Component>> = new Map();
-
 
     /**
      * 
@@ -47,6 +48,8 @@ export class World
     public addSystem(system: System): void
     {
         this.systems.push(system);
+        
+        system.boot();
     }
 
     /**

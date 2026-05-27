@@ -22,13 +22,12 @@ export class WallPrefab implements Prefab
     constructor(
         protected x: number = 0,
         protected y: number = 0.5,
-        protected z: number = -5,
+        protected z: number = -1,
         protected width: number = 5,
         protected height: number = 1,
         protected depth: number = 1,
     )
     {
-
     }
 
     /**

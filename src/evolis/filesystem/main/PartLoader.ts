@@ -1,4 +1,4 @@
-import type { OrderedSystem, SystemModuleLoader } from '@/evolis/filesystem';
+import type { SystemModuleLoader } from '@/evolis/filesystem';
 import type { SystemConstructor } from '@/evolis/foundation';
 
 /**
@@ -16,19 +16,13 @@ export class PartLoader
         const modules = import.meta.glob('@/systems/**/*.{js,ts,mjs}') as SystemModuleLoader;
 
         const systems = await Promise.all(
-            Object.entries(modules).map(async ([path, loader]): Promise<OrderedSystem> => {
+            Object.entries(modules).map(async ([path, loader]): Promise<SystemConstructor> => {
                 const mod = await loader();
-                const SystemClass = mod.default;
 
-                return {
-                    order: SystemClass.prototype.order,
-                    constructor: SystemClass
-                };
+                return mod.default;
             })
         );
 
-        systems.sort((a, b): number => a.order - b.order);
-
-        return systems.map((system): SystemConstructor => system.constructor);
+        return systems;
     }
 }

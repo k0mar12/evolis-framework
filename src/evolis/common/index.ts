@@ -17,6 +17,9 @@ export { RemoveSceneComponent } from './components/tags/RemoveSceneComponent';
 export { PlayerControlledComponent } from './components/tags/PlayerControlledComponent';
 export { TargetCameraComponent } from './components/tags/TargetCameraComponent';
 
+export { AxesPrefab } from './prefabs/debug/AxesPrefab';
+export { GridPrefab } from './prefabs/debug/GridPrefab';
+
 export { SpatialGrid } from './services/SpatialGrid';
 
 export { MovementSystem } from './systems/MovementSystem';

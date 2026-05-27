@@ -1,7 +1,15 @@
 import Stats from 'stats.js';
-import { World, Context, Container, defaultRenderer, defaultScene, defaultCamera, type Config } from '@/evolis/foundation';
+import {
+    World,
+    Context,
+    Container,
+    defaultRenderer,
+    defaultScene,
+    defaultCamera,
+    type Config
+} from '@/evolis/foundation';
 import { Loader } from '@/evolis/filesystem';
-
+import { AxesPrefab, GridPrefab } from '@/evolis/common';
 export class Application
 {
     /**
@@ -58,15 +66,41 @@ export class Application
         protected config: Config
     )
     {
-        this.stats.showPanel(0);
-        document.body.appendChild(this.stats.dom);
-
         this.canvas = this.getCanvas();
 
         this.context = new Context(
             this.config.renderer(this.canvas),
             this.config.scene(),
             this.config.camera()
+        );
+
+        this.initStats();
+        this.initDebug();
+    }
+
+    /**
+     *
+     */
+    private initStats(): void
+    {
+        this.stats.showPanel(0);
+
+        document.body.appendChild(this.stats.dom);
+    }
+
+    /**
+     * 
+     * @returns
+     */
+    private initDebug(): void
+    {
+        if (! this.config.debug) {
+            return;
+        }
+
+        this.world.insert(
+            new AxesPrefab(),
+            new GridPrefab()
         );
     }
 
@@ -88,18 +122,13 @@ export class Application
      * 
      */
     private async loadSystems(): Promise<void>
-    {
-        for (const system of await this.loader.parts.loadSystems()) {
-            this.world.addSystem(
-                new system(this.context, this.world)
-            );
-        }
-
-        for (const system of this.world.getSystems()) {
-            system.boot();
-        }
-
-        console.log(this.world.getSystems());
+    {        
+        (await this.loader.parts.loadSystems())
+            .map((system) => new system(this.context, this.world))
+            .sort((a, b): number => a.order - b.order)
+            .forEach((system) => {
+                this.world.addSystem(system);
+            });
     }
 
     /**
