@@ -131,6 +131,17 @@ export class World
 
     /**
      * 
+     * @param id
+     * @param type 
+     * @returns 
+     */
+    public findComponent<T extends Component>(id: EntityId, type: ComponentConstructor): T | null
+    {
+        return (this.components.get(type.name)?.get(id) as T) ?? null;
+    }
+
+    /**
+     * 
      * @param prefabs
      */
     public insert(...prefabs: Prefab[])

@@ -8,12 +8,28 @@ import {
     GravityComponent,
     TargetCameraComponent,
     Component,
-    type Prefab
+    DynamicBodyComponent,
+    ColliderAABBComponent,
+    type Prefab,
 } from '@/evolis';
 import { BoxGeometry, MeshNormalMaterial, Mesh, type Object3D } from 'three';
 
-export class BoxPrefab implements Prefab
+export class PlayerPrefab implements Prefab
 {
+    /**
+     * 
+     * @param x
+     * @param y 
+     * @param z 
+     */
+    constructor(
+        protected x: number = 0,
+        protected y: number = 0,
+        protected z: number = 0
+    )
+    {
+    }
+
     /**
      * 
      * @returns
@@ -34,13 +50,15 @@ export class BoxPrefab implements Prefab
     {
         return [
             new MeshComponent(this.asset()),
-            new TransformComponent(),
+            new TransformComponent(this.x, this.y, this.z),
             new VelocityComponent(),
-            new GravityComponent(),
+            new GravityComponent(2),
             new InputControllerComponent(),
             new PlayerControlledComponent(),
             new SettingsControllerComponent(),
             new TargetCameraComponent(),
+            new DynamicBodyComponent(),
+            new ColliderAABBComponent(0.5, 0.5, 0.5)
         ];
     }
 }

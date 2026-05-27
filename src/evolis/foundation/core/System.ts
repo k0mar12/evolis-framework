@@ -10,7 +10,7 @@ export abstract class System
     /**
      *
      */
-    public abstract readonly filter: Filter;
+    public readonly filter: Filter = new Filter();
 
     /**
      * 

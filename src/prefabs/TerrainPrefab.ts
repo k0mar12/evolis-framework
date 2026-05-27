@@ -30,7 +30,7 @@ export class TerrainPrefab implements Prefab
     {
         return [
             new MeshComponent(this.asset()),
-            new TransformComponent(),
+            new TransformComponent(0, -1, 0),
             new StaticBodyComponent(),
             new ColliderAABBComponent(25, 0.1, 25)
         ];

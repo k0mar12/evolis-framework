@@ -1,11 +1,12 @@
 import '@/style.css';
 
 import { Application, Keyboard, type InputDevice } from '@/evolis';
-import { BoxPrefab } from '@/prefabs/BoxPrefab';
+import { PlayerPrefab } from '@/prefabs/PlayerPrefab';
 import { DebugPrefab } from '@/prefabs/DebugPrefab';
 import { InputDeviceSymbol } from '@/symbols';
 import { CameraPrefab } from '@/prefabs/CameraPrefab';
 import { TerrainPrefab } from '@/prefabs/TerrainPrefab';
+import { WallPrefab } from '@/prefabs/WallPrefab';
 
 const evolis = Application.create();
 
@@ -19,5 +20,6 @@ evolis.world.insert(
     new DebugPrefab(),
     new CameraPrefab(),
     new TerrainPrefab(),
-    new BoxPrefab(),
+    new WallPrefab(),
+    new PlayerPrefab(),
 );

@@ -17,9 +17,15 @@ export { RemoveSceneComponent } from './components/tags/RemoveSceneComponent';
 export { PlayerControlledComponent } from './components/tags/PlayerControlledComponent';
 export { TargetCameraComponent } from './components/tags/TargetCameraComponent';
 
-export { FollowCameraSystem } from './systems/camera/FollowCameraSystem';
+export { SpatialGrid } from './services/SpatialGrid';
+
 export { MovementSystem } from './systems/MovementSystem';
 export { RenderSystem } from './systems/RenderSystem';
 export { SceneSystem } from './systems/SceneSystem';
+
+export { FollowCameraSystem } from './systems/camera/FollowCameraSystem';
+
+export { CollisionAABBSystem } from './systems/physics/CollisionAABBSystem';
+export { GravitySystem } from './systems/physics/GravitySystem';
 
 export type { Speed } from './types/Speed';
