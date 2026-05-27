@@ -1,4 +1,5 @@
-import { Component } from '@/evolis/foundation/core/Component';
+import { Component } from '@/evolis/foundation';
+
 import type { Object3D } from 'three';
 
 export class MeshComponent extends Component

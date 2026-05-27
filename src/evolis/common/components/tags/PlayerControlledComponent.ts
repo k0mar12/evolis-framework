@@ -1,4 +1,4 @@
-import { Component } from '@/evolis/foundation/core/Component';
+import { Component } from '@/evolis/foundation';
 
 export class PlayerControlledComponent extends Component
 {

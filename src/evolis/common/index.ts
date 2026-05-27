@@ -7,7 +7,10 @@ export { FollowCameraComponent } from './components/camera/FollowCameraComponent
 export { InputControllerComponent } from './components/controller/InputControllerComponent';
 export { SettingsControllerComponent } from './components/controller/SettingsControllerComponent';
 
+export { ColliderAABBComponent } from './components/physics/ColliderAABBComponent';
 export { GravityComponent } from './components/physics/GravityComponent';
+export { DynamicBodyComponent } from './components/physics/tags/DynamicBodyComponent';
+export { StaticBodyComponent } from './components/physics/tags/StaticBodyComponent';
 
 export { InSceneComponent } from './components/tags/InSceneComponent';
 export { RemoveSceneComponent } from './components/tags/RemoveSceneComponent';
@@ -18,3 +21,5 @@ export { FollowCameraSystem } from './systems/camera/FollowCameraSystem';
 export { MovementSystem } from './systems/MovementSystem';
 export { RenderSystem } from './systems/RenderSystem';
 export { SceneSystem } from './systems/SceneSystem';
+
+export type { Speed } from './types/Speed';

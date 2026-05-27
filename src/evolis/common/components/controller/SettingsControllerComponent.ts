@@ -1,6 +1,6 @@
-import { Component } from '@/evolis/foundation/core/Component';
+import { Component } from '@/evolis/foundation';
 
-import type { Speed } from '@/evolis/common/types/Speed';
+import type { Speed } from '@/evolis/common';
 
 export class SettingsControllerComponent extends Component
 {

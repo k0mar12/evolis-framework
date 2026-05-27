@@ -1,5 +1,13 @@
 import { Object3D, Mesh, PlaneGeometry, MeshStandardMaterial } from 'three';
-import { MeshComponent, Component, TransformComponent, type Prefab } from '@/evolis';
+import {
+    MeshComponent,
+    Component,
+    TransformComponent,
+    ColliderAABBComponent,
+    StaticBodyComponent,
+    type Prefab
+} from '@/evolis';
+
 
 export class TerrainPrefab implements Prefab
 {
@@ -22,7 +30,9 @@ export class TerrainPrefab implements Prefab
     {
         return [
             new MeshComponent(this.asset()),
-            new TransformComponent()
+            new TransformComponent(),
+            new StaticBodyComponent(),
+            new ColliderAABBComponent(25, 0.1, 25)
         ];
     }
 }
