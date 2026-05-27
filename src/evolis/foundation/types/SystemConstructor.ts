@@ -1,5 +1,3 @@
-import { Context } from '../core/Context';
-import { World } from '../core/World';
-import { System } from '../core/System';
+import { Context, World, System } from '@/evolis/foundation';
 
 export type SystemConstructor = new (context: Context, world: World) => System;

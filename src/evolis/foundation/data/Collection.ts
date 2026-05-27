@@ -1,4 +1,4 @@
-import type { EntityId } from '../types/EntityId';
+import type { EntityId } from '@/evolis/foundation';
 
 export class Collection extends Set<EntityId>
 {

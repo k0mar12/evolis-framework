@@ -1,7 +1,4 @@
-import { Collection } from './Collection';
-import { Filter } from './Filter';
-
-import type { EntityId } from '../types/EntityId';
+import { Collection, Filter, type EntityId } from '@/evolis/foundation';
 
 export class Query {
     /**

@@ -1,6 +1,5 @@
-import type { OrderedSystem } from '../types/OrderedSystem';
-import type { SystemConstructor } from '../../foundation/types/SystemConstructor';
-import type { SystemModuleLoader } from '../types/SystemModuleLoader';
+import type { OrderedSystem, SystemModuleLoader } from '@/evolis/filesystem';
+import type { SystemConstructor } from '@/evolis/foundation';
 
 /**
  * Loading part of framework, like systems, entities

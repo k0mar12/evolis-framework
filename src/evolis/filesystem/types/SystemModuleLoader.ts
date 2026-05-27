@@ -1,4 +1,4 @@
-import type { SystemConstructor } from '../../foundation/types/SystemConstructor'
+import type { SystemConstructor } from '@/evolis/foundation';
 
 type SystemModule = { default: SystemConstructor };
 

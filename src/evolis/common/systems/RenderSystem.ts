@@ -1,8 +1,5 @@
-import { System } from '../../foundation/core/System';
-import { Filter } from '../../foundation/data/Filter';
-import { SystemPhase } from '../../foundation/enums/SystemPhase';
-import { MeshComponent } from '../components/MeshComponent';
-import { TransformComponent } from '../components/TransformComponent';
+import { System, Filter, SystemPhase } from '@/evolis/foundation';
+import { MeshComponent, TransformComponent } from '@/evolis/common';
 
 export class RenderSystem extends System
 {

@@ -1,11 +1,12 @@
-import { Component } from './Component';
-import { Query } from '../data/Query';
-import { ComponentRegistry } from '../data/ComponentRegister';
-
-import type { System } from './System';
-import type { EntityId } from '../types/EntityId';
-import type { Prefab } from '../contracts/Prefab';
-import type { ComponentConstructor } from '../types/ComponentConstructor';
+import {
+    Component,
+    ComponentRegistry,
+    Query,
+    type System,
+    type EntityId,
+    type Prefab,
+    type ComponentConstructor
+} from '@/evolis/foundation';
 
 export class World
 {

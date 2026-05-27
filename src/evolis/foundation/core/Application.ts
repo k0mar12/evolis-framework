@@ -1,11 +1,6 @@
 import Stats from 'stats.js';
-import { World } from './World';
-import { Context } from './Context';
-import { Loader } from '../../filesystem/main/Loader';
-import { defaultRenderer, defaultScene, defaultCamera } from '../utils/context';
-import { Container } from './Container';
-
-import type { Config } from '../types/Config';
+import { World, Context, Container, defaultRenderer, defaultScene, defaultCamera, type Config } from '@/evolis/foundation';
+import { Loader } from '@/evolis/filesystem';
 
 export class Application
 {

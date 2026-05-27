@@ -1,4 +1,4 @@
-import { Condition } from '../Condition';
+import { Condition } from '@/evolis/foundation';
 
 export class Without extends Condition
 {

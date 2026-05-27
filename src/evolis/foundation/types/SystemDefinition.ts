@@ -1,4 +1,5 @@
-import type { System } from '../core/System';
+import type { System } from '@/evolis/foundation';
+
 
 /**
  * 

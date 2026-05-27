@@ -1,6 +1,4 @@
-import { ComponentRegistry } from './ComponentRegister';
-
-import type { ComponentConstructor } from '../types/ComponentConstructor';
+import { ComponentRegistry, type ComponentConstructor } from '@/evolis/foundation';
 
 export abstract class Condition
 {

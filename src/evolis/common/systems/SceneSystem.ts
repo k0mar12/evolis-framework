@@ -1,8 +1,5 @@
-import { System } from '../../foundation/core/System';
-import { Filter } from '../../foundation/data/Filter';
-import { SystemPhase } from '../../foundation/enums/SystemPhase';
-import { MeshComponent } from '../components/MeshComponent';
-import { InSceneComponent } from '../components/tags/InSceneComponent';
+import { System, Filter, SystemPhase } from '@/evolis/foundation';
+import { MeshComponent, InSceneComponent } from '@/evolis/common';
 
 export class SceneSystem extends System
 {

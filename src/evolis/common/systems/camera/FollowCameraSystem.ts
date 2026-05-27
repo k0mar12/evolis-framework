@@ -1,13 +1,6 @@
 import { Vector3 } from 'three';
-import { System } from '../../../foundation/core/System';
-import { Filter } from '../../../foundation/data/Filter';
-import { SystemPhase } from '../../../foundation/enums/SystemPhase';
-import { TargetCameraComponent } from '../../components/tags/TargetCameraComponent';
-import { TransformComponent } from '../../components/TransformComponent';
-import { FollowCameraComponent } from '../../components/camera/FollowCameraComponent';
-
-import type { Tick } from '../../../foundation/types/Tick';
-import type { EntityId } from '../../../foundation/types/EntityId';
+import { System, Filter, SystemPhase, type Tick, type EntityId } from '@/evolis/foundation';
+import { TargetCameraComponent, TransformComponent, FollowCameraComponent} from '@/evolis/common';
 
 export class FollowCameraSystem extends System
 {

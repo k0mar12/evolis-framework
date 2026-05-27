@@ -1,9 +1,4 @@
-import { Condition } from './Condition';
-import { With } from './conditions/With';
-import { Without } from './conditions/Without';
-import { Any } from './conditions/Any';
-
-import type { ComponentConstructor } from '../types/ComponentConstructor';
+import { Condition, With, Without, Any, type ComponentConstructor} from '@/evolis/foundation';
 
 export class Filter
 {

@@ -1,10 +1,5 @@
-import { System } from '../../foundation/core/System';
-import { Filter } from '../../foundation/data/Filter';
-import { SystemPhase } from '../../foundation/enums/SystemPhase';
-import { TransformComponent } from '../components/TransformComponent';
-import { VelocityComponent } from '../components/VelocityComponent';
-
-import type { Tick } from '../../foundation/types/Tick';
+import { System, Filter, SystemPhase, type Tick } from '@/evolis/foundation';
+import { TransformComponent, VelocityComponent } from '@/evolis/common';
 
 export class MovementSystem extends System
 {

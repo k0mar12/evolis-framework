@@ -1,4 +1,4 @@
-import type { InputDevice } from '../contracts/InputDevice'
+import type { InputDevice } from '@/evolis/foundation';
 
 export class Keyboard implements InputDevice
 {

@@ -1,10 +1,4 @@
-import { Context } from './Context';
-import { World } from './World';
-import { Filter } from '../data/Filter';
-import { SystemPhase } from '../enums/SystemPhase';
-
-import type { Tick } from '../types/Tick';
-import type { Collection } from '../data/Collection';
+import { World, Context, Filter, SystemPhase, type Tick, type Collection } from '@/evolis/foundation';
 
 export abstract class System
 {

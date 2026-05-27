@@ -1,12 +1,13 @@
-import { Application } from '../core/Application';
-import { Container } from '../core/Container';
-import { With } from '../data/conditions/With';
-import { Without } from '../data/conditions/Without';
-import { Any } from '../data/conditions/Any';
-
-import type { Context } from '../core/Context';
-import type { World } from '../core/World';
-import type { ComponentConstructor as cc } from '../types/ComponentConstructor';
+import {
+    Application,
+    Container,
+    With,
+    Without,
+    Any,
+    type Context,
+    type World,
+    type ComponentConstructor
+} from '@/evolis/foundation';
 
 /**
  * 
@@ -37,18 +38,18 @@ export const world = (): World => Application.get().world;
  * @param types
  * @returns 
  */
-export const and = (...types: cc[]): With => new With(types);
+export const and = (...types: ComponentConstructor[]): With => new With(types);
 
 /**
  * 
  * @param types
  * @returns 
  */
-export const or = (...types: cc[]): Without => new Without(types);
+export const or = (...types: ComponentConstructor[]): Without => new Without(types);
 
 /**
  * 
  * @param types
  * @returns 
  */
-export const optinal = (...types: cc[]): Any => new Any(types);
+export const optinal = (...types: ComponentConstructor[]): Any => new Any(types);

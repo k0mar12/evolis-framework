@@ -1,5 +1,5 @@
 
-import { Component } from '../../foundation/core/Component';
+import { Component } from '@/evolis/foundation/core/Component';
 
 export class TransformComponent extends Component
 {

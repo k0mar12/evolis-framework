@@ -1,6 +1,6 @@
 import { Component } from '@/evolis/foundation/core/Component';
 
-export class PlayerControlledComponent extends Component
+export class DynamicBodyComponent extends Component
 {
 
 }
