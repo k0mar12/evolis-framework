@@ -1,6 +1,6 @@
 import { Object3D, Mesh, PlaneGeometry, MeshStandardMaterial } from 'three';
 import {
-    MeshComponent,
+    SceneNodeComponent,
     Component,
     TransformComponent,
     ColliderAABBComponent,
@@ -29,8 +29,8 @@ export class TerrainPrefab implements Prefab
     public components(): Component[]
     {
         return [
-            new MeshComponent(this.asset()),
-            new TransformComponent(0, -1, 0),
+            new SceneNodeComponent(this.asset()),
+            new TransformComponent(0, -0.0001, 0),
             new StaticBodyComponent(),
             new ColliderAABBComponent(25, 0.1, 25)
         ];

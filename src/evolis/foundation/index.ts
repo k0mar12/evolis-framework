@@ -19,7 +19,6 @@ export { With } from './data/conditions/With';
 export { Without } from './data/conditions/Without';
 
 export * from './utils/helpers';
-export * from './utils/defining';
 export * from './utils/context';
 
 export type { Prefab } from './contracts/Prefab';

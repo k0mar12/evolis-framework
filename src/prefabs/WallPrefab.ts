@@ -1,6 +1,6 @@
 import { Object3D, Mesh, BoxGeometry, MeshStandardMaterial } from 'three';
 import {
-    MeshComponent,
+    SceneNodeComponent,
     Component,
     TransformComponent,
     ColliderAABBComponent,
@@ -21,8 +21,8 @@ export class WallPrefab implements Prefab
      */
     constructor(
         protected x: number = 0,
-        protected y: number = 0.5,
-        protected z: number = -1,
+        protected y: number = 0,
+        protected z: number = 10,
         protected width: number = 5,
         protected height: number = 1,
         protected depth: number = 1,
@@ -39,9 +39,7 @@ export class WallPrefab implements Prefab
         const geometry = new BoxGeometry(this.width, this.height, this.depth);
         const material = new MeshStandardMaterial({ metalness: 0, roughness: 0.9 });
 
-        return new Mesh(
-            geometry, material
-        );
+        return new Mesh(geometry, material);
     }
 
     /**
@@ -51,7 +49,7 @@ export class WallPrefab implements Prefab
     public components(): Component[]
     {
         return [
-            new MeshComponent(this.asset()),
+            new SceneNodeComponent(this.asset()),
             new TransformComponent(this.x, this.y, this.z),
             new StaticBodyComponent(),
             new ColliderAABBComponent(this.width / 2, this.height / 2, this.depth / 2)

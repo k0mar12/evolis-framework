@@ -6,7 +6,9 @@ import {
     defaultRenderer,
     defaultScene,
     defaultCamera,
-    type Config
+    defaultSystems,
+    type Config,
+    type SystemConstructor
 } from '@/evolis/foundation';
 import { Loader } from '@/evolis/filesystem';
 import { AxesPrefab, GridPrefab } from '@/evolis/common';
@@ -121,14 +123,54 @@ export class Application
     /**
      * 
      */
-    private async loadSystems(): Promise<void>
-    {        
-        (await this.loader.parts.loadSystems())
+    private loadSystems(systems: SystemConstructor[]): void
+    {
+        systems
             .map((system) => new system(this.context, this.world))
             .sort((a, b): number => a.order - b.order)
             .forEach((system) => {
                 this.world.addSystem(system);
             });
+    }
+
+    /**
+     * 
+     */
+    private async importDefaultSystems(): Promise<SystemConstructor[]>
+    {
+        return defaultSystems();
+    }
+
+    /**
+     * 
+     * @returns
+     */
+    private async importUserSystems(): Promise<SystemConstructor[]>
+    {
+        return await this.loader.parts.loadSystems();
+    }
+
+    /**
+     *
+     */
+    private async importSystems(): Promise<void>
+    {
+        const groups = await Promise.all([
+            this.importDefaultSystems(),
+            this.importUserSystems()
+        ]);
+
+        const map = new Map<string, any>();
+
+        for (const group of groups) {
+            for (const system of group) {
+                map.set(system.name, system);
+            }
+        }
+
+        this.loadSystems(
+            Array.from(map.values())
+        );
     }
 
     /**
@@ -146,7 +188,7 @@ export class Application
     public async load(): Promise<void>
     {
         await Promise.all([
-            this.loadSystems(),
+            this.importSystems(),
             this.setLoaded()
         ]);
     }

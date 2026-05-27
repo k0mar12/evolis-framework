@@ -1,4 +1,5 @@
-export { MeshComponent } from './components/MeshComponent';
+export { LightComponent } from './components/LightComponent';
+export { SceneNodeComponent } from './components/SceneNodeComponent';
 export { TransformComponent } from './components/TransformComponent';
 export { VelocityComponent } from './components/VelocityComponent';
 
@@ -6,6 +7,8 @@ export { FollowCameraComponent } from './components/camera/FollowCameraComponent
 
 export { InputControllerComponent } from './components/controller/InputControllerComponent';
 export { SettingsControllerComponent } from './components/controller/SettingsControllerComponent';
+
+export { DirectionalLightComponent } from './components/illumination/DirectionalLightComponent';
 
 export { ColliderAABBComponent } from './components/physics/ColliderAABBComponent';
 export { GravityComponent } from './components/physics/GravityComponent';
@@ -31,4 +34,7 @@ export { FollowCameraSystem } from './systems/camera/FollowCameraSystem';
 export { CollisionAABBSystem } from './systems/physics/CollisionAABBSystem';
 export { GravitySystem } from './systems/physics/GravitySystem';
 
+export { LightSyncSystem } from './systems/illumination/LightSyncSystem';
+
+export type { LightOptions } from './types/LightOptions';
 export type { Speed } from './types/Speed';

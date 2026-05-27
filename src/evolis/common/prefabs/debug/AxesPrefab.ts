@@ -1,6 +1,6 @@
 import { AxesHelper } from 'three';
 import { Component, type Prefab } from '@/evolis/foundation';
-import { MeshComponent } from '@/evolis/common';
+import { SceneNodeComponent } from '@/evolis/common';
 
 export class AxesPrefab implements Prefab
 {
@@ -20,7 +20,7 @@ export class AxesPrefab implements Prefab
     public components(): Component[]
     {
         return [
-            new MeshComponent(
+            new SceneNodeComponent(
                 new AxesHelper(this.size)
             )
         ];

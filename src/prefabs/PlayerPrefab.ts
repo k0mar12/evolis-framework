@@ -1,5 +1,5 @@
 import {
-    MeshComponent,
+    SceneNodeComponent,
     TransformComponent,
     VelocityComponent,
     PlayerControlledComponent,
@@ -49,7 +49,7 @@ export class PlayerPrefab implements Prefab
     public components(): Component[]
     {
         return [
-            new MeshComponent(this.asset()),
+            new SceneNodeComponent(this.asset()),
             new TransformComponent(this.x, this.y, this.z),
             new VelocityComponent(),
             new GravityComponent(2),

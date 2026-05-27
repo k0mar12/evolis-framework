@@ -1,12 +1,24 @@
 import { Scene, WebGLRenderer, Camera, PerspectiveCamera } from 'three';
 
+import {
+    FollowCameraSystem,
+    LightSyncSystem,
+    CollisionAABBSystem,
+    GravitySystem,
+    MovementSystem,
+    RenderSystem,
+    SceneSystem
+} from '@/evolis/common';
+
+import type { SystemConstructor } from '@/evolis/foundation';
+
 /**
  * 
  * @returns
  */
 export const defaultScene = (): Scene => {
     return new Scene();
-}
+};
 
 /**
  * 
@@ -20,7 +32,7 @@ export const defaultRenderer = (canvas: HTMLElement): WebGLRenderer => {
     renderer.setPixelRatio(window.devicePixelRatio);
 
     return renderer;
-}
+};
 
 /**
  * 
@@ -32,4 +44,18 @@ export const defaultCamera = (): Camera => {
     camera.position.z = 5;
 
     return camera;
-}
+};
+
+/**
+ * 
+ * @returns 
+ */
+export const defaultSystems = (): SystemConstructor[] => ([
+    FollowCameraSystem,
+    LightSyncSystem,
+    CollisionAABBSystem,
+    GravitySystem,
+    MovementSystem,
+    RenderSystem,
+    SceneSystem
+]);

@@ -1,5 +1,5 @@
 import { System, Filter, SystemPhase } from '@/evolis/foundation';
-import { MeshComponent, InSceneComponent } from '@/evolis/common';
+import { SceneNodeComponent, InSceneComponent } from '@/evolis/common';
 
 export class SceneSystem extends System
 {
@@ -11,7 +11,7 @@ export class SceneSystem extends System
     /**
      *
      */
-    public override readonly filter: Filter = new Filter().with(MeshComponent).without(InSceneComponent);
+    public override readonly filter: Filter = new Filter().with(SceneNodeComponent).without(InSceneComponent);
 
     /**
      * 
@@ -20,7 +20,7 @@ export class SceneSystem extends System
     public update(): void
     {
         this.collection.forEach((id) => {
-            const mesh = this.world.getComponent<MeshComponent>(id, MeshComponent);
+            const mesh = this.world.getComponent<SceneNodeComponent>(id, SceneNodeComponent);
 
             this.world.addComponent(id, new InSceneComponent());
 

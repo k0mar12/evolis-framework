@@ -10,7 +10,7 @@ import {
     ColliderAABBComponent,
     DynamicBodyComponent,
     GravityComponent,
-    MeshComponent,
+    SceneNodeComponent,
     SpatialGrid,
     StaticBodyComponent,
     TransformComponent,
@@ -39,7 +39,7 @@ export class CollisionAABBSystem extends System
      */
     protected readonly collidable: Array<ComponentConstructor> = [
         TransformComponent,
-        MeshComponent,
+        SceneNodeComponent,
         ColliderAABBComponent
     ];
 

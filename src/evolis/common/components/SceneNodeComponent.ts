@@ -2,7 +2,7 @@ import { Component } from '@/evolis/foundation';
 
 import type { Object3D } from 'three';
 
-export class MeshComponent extends Component
+export class SceneNodeComponent extends Component
 {
     /**
      * 

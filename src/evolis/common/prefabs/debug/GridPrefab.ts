@@ -1,5 +1,5 @@
 import { GridHelper } from 'three';
-import { MeshComponent } from '@/evolis/common';
+import { SceneNodeComponent } from '@/evolis/common';
 
 import type { Component, Prefab } from '@/evolis/foundation';
 
@@ -21,7 +21,7 @@ export class GridPrefab implements Prefab
     public components(): Component[]
     {
         return [
-            new MeshComponent(new GridHelper(this.size, this.size))
+            new SceneNodeComponent(new GridHelper(this.size, this.size))
         ];
     }
 }
