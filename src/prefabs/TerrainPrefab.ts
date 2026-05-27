@@ -11,6 +11,10 @@ import {
 
 export class TerrainPrefab implements Prefab
 {
+    /**
+     * 
+     * @returns
+     */
     private asset(): Object3D
     {
         const geometry = new PlaneGeometry(50, 50);
@@ -18,6 +22,7 @@ export class TerrainPrefab implements Prefab
         const plane = new Mesh(geometry, material);
 
         plane.rotation.x = -Math.PI / 2;
+        plane.receiveShadow = true;
 
         return plane;
     }

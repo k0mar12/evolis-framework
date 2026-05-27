@@ -35,11 +35,15 @@ export class PlayerPrefab implements Prefab
      * @returns
      */
     private asset(): Object3D
-    {
-        return new Mesh(
+    { 
+        const mesh = new Mesh(
             new BoxGeometry(),
             new MeshNormalMaterial()
         );
+
+        mesh.castShadow = true;
+
+        return mesh;
     }
 
     /**

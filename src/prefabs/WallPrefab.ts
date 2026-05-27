@@ -38,8 +38,12 @@ export class WallPrefab implements Prefab
     {
         const geometry = new BoxGeometry(this.width, this.height, this.depth);
         const material = new MeshStandardMaterial({ metalness: 0, roughness: 0.9 });
+        const mesh = new Mesh(geometry, material);
 
-        return new Mesh(geometry, material);
+        mesh.castShadow = true;
+        mesh.receiveShadow = true;
+
+        return mesh;
     }
 
     /**

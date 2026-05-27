@@ -1,4 +1,11 @@
-import { Scene, WebGLRenderer, Camera, PerspectiveCamera } from 'three';
+import {
+    Scene,
+    WebGLRenderer,
+    Camera,
+    PerspectiveCamera,
+    PCFSoftShadowMap,
+    Fog
+} from 'three';
 
 import {
     FollowCameraSystem,
@@ -17,7 +24,11 @@ import type { SystemConstructor } from '@/evolis/foundation';
  * @returns
  */
 export const defaultScene = (): Scene => {
-    return new Scene();
+    const scene = new Scene();
+
+    scene.fog = new Fog(0x202020, 10, 35);
+
+    return scene;
 };
 
 /**
@@ -26,10 +37,13 @@ export const defaultScene = (): Scene => {
  * @returns 
  */
 export const defaultRenderer = (canvas: HTMLElement): WebGLRenderer => {
-    const renderer =  new WebGLRenderer({ canvas, antialias: true });
+    const renderer = new WebGLRenderer({ canvas, antialias: true });
 
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
+
+    renderer.shadowMap.enabled = true;
+    renderer.shadowMap.type = PCFSoftShadowMap;
 
     return renderer;
 };
@@ -39,11 +53,7 @@ export const defaultRenderer = (canvas: HTMLElement): WebGLRenderer => {
  * @returns
  */
 export const defaultCamera = (): Camera => {
-    const camera = new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-
-    camera.position.z = 5;
-
-    return camera;
+    return new PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
 };
 
 /**
