@@ -18,6 +18,7 @@ export { SettingsControllerComponent } from './components/controller/SettingsCon
 //-- Light components
 export { AmbientLightComponent } from './components/illumination/AmbientLightComponent';
 export { DirectionalLightComponent } from './components/illumination/DirectionalLightComponent';
+export { ShadowComponent } from './components/illumination/ShadowComponent';
 
 //-- Collider components
 export { ColliderAABBComponent } from './components/physics/ColliderAABBComponent';
@@ -53,6 +54,7 @@ export { FollowCameraSystem } from './systems/camera/FollowCameraSystem';
 export { BaseLightSyncSystem } from './systems/illumination/BaseLightSyncSystem';
 export { AmbientLightSyncSystem } from './systems/illumination/AmbientLightSyncSystem';
 export { DirectionalLightSyncSystem } from './systems/illumination/DirectionalLightSyncSystem';
+export { ShadowSyncSystem } from './systems/illumination/ShadowSyncSystem';
 
 //-- Collision systems
 export { CollisionAABBSystem } from './systems/physics/CollisionAABBSystem';
@@ -60,5 +62,6 @@ export { GravitySystem } from './systems/physics/GravitySystem';
 
 //-- Basic types
 export type { LightOptions } from './types/LightOptions';
+export type { ShadowOptions } from './types/ShadowOptions';
 export type { Speed } from './types/Speed';
 export type { Vec3 } from './types/Vec3';

@@ -1,6 +1,7 @@
 import {
     SceneNodeComponent,
     TransformComponent,
+    ShadowComponent,
     VelocityComponent,
     PlayerControlledComponent,
     InputControllerComponent,
@@ -36,14 +37,10 @@ export class PlayerPrefab implements Prefab
      */
     private asset(): Mesh
     { 
-        const mesh = new Mesh(
+        return new Mesh(
             new BoxGeometry(),
             new MeshNormalMaterial()
         );
-
-        mesh.castShadow = true;
-
-        return mesh;
     }
 
     /**
@@ -55,6 +52,7 @@ export class PlayerPrefab implements Prefab
         return [
             new SceneNodeComponent<Mesh>(this.asset()),
             new TransformComponent(this.position),
+            new ShadowComponent({ cast: true }),
             new VelocityComponent(),
             new GravityComponent(2),
             new InputControllerComponent(),

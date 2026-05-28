@@ -5,8 +5,9 @@ import {
     TransformComponent,
     ColliderAABBComponent,
     StaticBodyComponent,
+    ShadowComponent,
     type Vec3,
-    type Prefab
+    type Prefab,
 } from '@/evolis';
 
 export class WallPrefab implements Prefab
@@ -37,12 +38,8 @@ export class WallPrefab implements Prefab
     {
         const geometry = new BoxGeometry(this.width, this.height, this.depth);
         const material = new MeshStandardMaterial({ metalness: 0, roughness: 0.9 });
-        const mesh = new Mesh(geometry, material);
 
-        mesh.castShadow = true;
-        mesh.receiveShadow = true;
-
-        return mesh;
+        return new Mesh(geometry, material);
     }
 
     /**
@@ -54,6 +51,7 @@ export class WallPrefab implements Prefab
         return [
             new SceneNodeComponent<Mesh>(this.asset()),
             new TransformComponent(this.position),
+            new ShadowComponent({ cast: true, receive: true }),
             new StaticBodyComponent(),
             new ColliderAABBComponent({
                 x: this.width / 2,

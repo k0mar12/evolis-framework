@@ -4,8 +4,9 @@ import {
     DirectionalLightComponent,
     SceneNodeComponent,
     TransformComponent,
+    ShadowComponent,
     type Vec3,
-    type Prefab
+    type Prefab,
 } from '@/evolis';
 
 export class SunPrefab implements Prefab
@@ -31,6 +32,7 @@ export class SunPrefab implements Prefab
                 new DirectionalLight()
             ),
             new DirectionalLightComponent({ intensity: 0.9, color: 0xffffff }),
+            new ShadowComponent({ cast: true }),
             new TransformComponent(this.position)
         ];
     }
