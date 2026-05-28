@@ -1,71 +1,125 @@
 import type { EntityId } from '@/evolis/foundation';
 
+type CellKey = string;
+
 export class SpatialGrid
 {
     /**
-     *
+     * 
      */
-    protected cells: Map<string, EntityId[]> = new Map();
+    private cells: Map<CellKey, Set<EntityId>> = new Map();
 
     /**
      * 
      * @param cellSize
      */
     constructor(
-        protected cellSize: number = 10
-    )
-    {
-    }
+        private readonly cellSize: number = 10
+    ) {}
 
     /**
+     * Convert world coords → cell coords
      * 
      * @param x
      * @param z 
      * @returns 
      */
-    private key(x: number, z: number): string
+    private toCell(x: number, z: number)
     {
-        const cx = Math.floor(x / this.cellSize);
-        const cz = Math.floor(z / this.cellSize);
-
-        return `${cx}:${cz}`
+        return {
+            cx: Math.floor(x / this.cellSize),
+            cz: Math.floor(z / this.cellSize)
+        };
     }
 
     /**
+     * 
+     * @param cx
+     * @param cz
+     * @returns
+     */
+    private key(cx: number, cz: number): CellKey
+    {
+        return `${cx}:${cz}`;
+    }
+
+    /**
+     * Insert entity as POINT (fast mode)
      * 
      * @param id
-     * @param x 
+     * @param x
      * @param z 
      */
-    public insert(id: EntityId, x: number, z: number): void
+    public insertPoint(id: EntityId, x: number, z: number): void
     {
-        const key = this.key(x, z);
+        const { cx, cz } = this.toCell(x, z);
+
+        const key = this.key(cx, cz);
+
         if (! this.cells.has(key)) {
-            this.cells.set(key, []);
+            this.cells.set(key, new Set());
         }
 
-        this.cells.get(key)!.push(id);
+        this.cells.get(key)!.add(id);
     }
 
     /**
+     * Insert entity as AABB (correct physics mode)
+     * 
+     * @param id
+     * @param minX
+     * @param minZ 
+     * @param maxX 
+     * @param maxZ 
+     */
+    public insertAABB(
+        id: EntityId,
+        minX: number,
+        minZ: number,
+        maxX: number,
+        maxZ: number
+    ): void
+    {
+        const { cx: x0, cz: z0 } = this.toCell(minX, minZ);
+        const { cx: x1, cz: z1 } = this.toCell(maxX, maxZ);
+
+        for (let cx = x0; cx <= x1; cx++) {
+            for (let cz = z0; cz <= z1; cz++) {
+
+                const key = this.key(cx, cz);
+
+                if (! this.cells.has(key)) {
+                    this.cells.set(key, new Set());
+                }
+
+                this.cells.get(key)!.add(id);
+            }
+        }
+    }
+
+    /**
+     * Query nearby entities (9 cells around)
      * 
      * @param x
-     * @param z 
+     * @param z
      * @returns 
      */
     public getNearby(x: number, z: number): EntityId[]
     {
         const result: EntityId[] = [];
-        const cx = Math.floor(x / this.cellSize);
-        const cz = Math.floor(z / this.cellSize);
+
+        const { cx, cz } = this.toCell(x, z);
 
         for (let dx = -1; dx <= 1; dx++) {
             for (let dz = -1; dz <= 1; dz++) {
-                const key = `${cx + dx}:${cz + dz}`;
+
+                const key = this.key(cx + dx, cz + dz);
                 const cell = this.cells.get(key);
 
                 if (cell) {
-                    result.push(...cell);
+                    for (const id of cell) {
+                        result.push(id);
+                    }
                 }
             }
         }
@@ -74,7 +128,44 @@ export class SpatialGrid
     }
 
     /**
-     *
+     * Query extended area (for AABB / capsule)
+     * 
+     * @param minX 
+     * @param minZ 
+     * @param maxX 
+     * @param maxZ 
+     * @returns 
+     */
+    public queryAABB(
+        minX: number,
+        minZ: number,
+        maxX: number,
+        maxZ: number
+    ): EntityId[]
+    {
+        const result = new Set<EntityId>();
+
+        const { cx: x0, cz: z0 } = this.toCell(minX, minZ);
+        const { cx: x1, cz: z1 } = this.toCell(maxX, maxZ);
+
+        for (let cx = x0; cx <= x1; cx++) {
+            for (let cz = z0; cz <= z1; cz++) {
+
+                const cell = this.cells.get(this.key(cx, cz));
+
+                if (cell) {
+                    for (const id of cell) {
+                        result.add(id);
+                    }
+                }
+            }
+        }
+
+        return [...result];
+    }
+
+    /**
+     * 
      */
     public clear(): void
     {

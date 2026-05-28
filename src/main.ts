@@ -9,13 +9,10 @@ import { WallPrefab } from '@/prefabs/WallPrefab';
 import { AmbientPrefab } from './prefabs/illumination/AmbientPrefab';
 import { SunPrefab } from './prefabs/illumination/SunPrefab';
 
-const evolis = Application.create({ debug: true });
+const evolis = Application
+    .create({ debug: true });
 
 evolis.container.set<InputDevice>(InputDeviceSymbol, new Keyboard());
-
-await evolis.load();
-
-evolis.loop();
 
 evolis.world.insert(
     new CameraPrefab(),
@@ -25,3 +22,7 @@ evolis.world.insert(
     new AmbientPrefab(),
     new SunPrefab()
 );
+
+await evolis.load();
+
+evolis.loop();
