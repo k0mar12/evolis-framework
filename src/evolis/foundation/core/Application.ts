@@ -83,7 +83,7 @@ export class Application
     }
 
     /**
-     *
+     * 
      */
     private initStats(): void
     {
@@ -109,7 +109,8 @@ export class Application
     }
 
     /**
-     *
+     * 
+     * @returns
      */
     private getCanvas(): HTMLElement
     {
@@ -185,7 +186,8 @@ export class Application
     }
 
     /**
-     *
+     * 
+     * @returns
      */
     private getDeltaTime(): number
     {
@@ -230,18 +232,6 @@ export class Application
             scene: defaultScene,
             camera: defaultCamera
         };
-    }
-
-    /**
-     * 
-     * @returns
-     */
-    public async load(): Promise<void>
-    {
-        await Promise.all([
-            this.importSystems(),
-            this.setLoaded()
-        ]);
     }
 
     /**
