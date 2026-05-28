@@ -9,7 +9,8 @@ import {
 
 import {
     FollowCameraSystem,
-    LightSyncSystem,
+    AmbientLightSyncSystem,
+    DirectionalLightSyncSystem,
     CollisionAABBSystem,
     GravitySystem,
     MovementSystem,
@@ -62,7 +63,8 @@ export const defaultCamera = (): Camera => {
  */
 export const defaultSystems = (): SystemConstructor[] => ([
     FollowCameraSystem,
-    LightSyncSystem,
+    AmbientLightSyncSystem,
+    DirectionalLightSyncSystem,
     CollisionAABBSystem,
     GravitySystem,
     MovementSystem,

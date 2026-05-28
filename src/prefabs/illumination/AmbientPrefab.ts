@@ -1,5 +1,5 @@
 import { AmbientLight } from 'three';
-import { Component, LightComponent, SceneNodeComponent, type Prefab } from '@/evolis';
+import { Component, AmbientLightComponent, SceneNodeComponent, type Prefab } from '@/evolis';
 
 export class AmbientPrefab implements Prefab
 {
@@ -10,10 +10,10 @@ export class AmbientPrefab implements Prefab
     public components(): Component[]
     {
         return [
-            new SceneNodeComponent(
+            new SceneNodeComponent<AmbientLight>(
                 new AmbientLight()
             ),
-            new LightComponent()
+            new AmbientLightComponent()
         ];
     }
 }

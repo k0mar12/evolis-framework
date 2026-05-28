@@ -16,7 +16,7 @@ export class SunPrefab implements Prefab
     public components(): Component[]
     {
         return [
-            new SceneNodeComponent(
+            new SceneNodeComponent<DirectionalLight>(
                 new DirectionalLight()
             ),
             new DirectionalLightComponent({ intensity: 0.9, color: 0xffffff }),

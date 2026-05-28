@@ -12,7 +12,7 @@ import {
     ColliderAABBComponent,
     type Prefab,
 } from '@/evolis';
-import { BoxGeometry, MeshNormalMaterial, Mesh, type Object3D } from 'three';
+import { BoxGeometry, MeshNormalMaterial, Mesh } from 'three';
 
 export class PlayerPrefab implements Prefab
 {
@@ -34,7 +34,7 @@ export class PlayerPrefab implements Prefab
      * 
      * @returns
      */
-    private asset(): Object3D
+    private asset(): Mesh
     { 
         const mesh = new Mesh(
             new BoxGeometry(),
@@ -53,7 +53,7 @@ export class PlayerPrefab implements Prefab
     public components(): Component[]
     {
         return [
-            new SceneNodeComponent(this.asset()),
+            new SceneNodeComponent<Mesh>(this.asset()),
             new TransformComponent(this.x, this.y, this.z),
             new VelocityComponent(),
             new GravityComponent(2),

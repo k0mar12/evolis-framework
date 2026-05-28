@@ -1,4 +1,4 @@
-import { Object3D, Mesh, BoxGeometry, MeshStandardMaterial } from 'three';
+import { Mesh, BoxGeometry, MeshStandardMaterial } from 'three';
 import {
     SceneNodeComponent,
     Component,
@@ -34,7 +34,7 @@ export class WallPrefab implements Prefab
      * 
      * @returns
      */
-    private asset(): Object3D
+    private asset(): Mesh
     {
         const geometry = new BoxGeometry(this.width, this.height, this.depth);
         const material = new MeshStandardMaterial({ metalness: 0, roughness: 0.9 });
@@ -53,7 +53,7 @@ export class WallPrefab implements Prefab
     public components(): Component[]
     {
         return [
-            new SceneNodeComponent(this.asset()),
+            new SceneNodeComponent<Mesh>(this.asset()),
             new TransformComponent(this.x, this.y, this.z),
             new StaticBodyComponent(),
             new ColliderAABBComponent(this.width / 2, this.height / 2, this.depth / 2)

@@ -1,4 +1,4 @@
-import { Object3D, Mesh, PlaneGeometry, MeshStandardMaterial } from 'three';
+import { Mesh, PlaneGeometry, MeshStandardMaterial } from 'three';
 import {
     SceneNodeComponent,
     Component,
@@ -15,7 +15,7 @@ export class TerrainPrefab implements Prefab
      * 
      * @returns
      */
-    private asset(): Object3D
+    private asset(): Mesh
     {
         const geometry = new PlaneGeometry(50, 50);
         const material = new MeshStandardMaterial({ metalness: 0, roughness: 1 });
@@ -34,7 +34,7 @@ export class TerrainPrefab implements Prefab
     public components(): Component[]
     {
         return [
-            new SceneNodeComponent(this.asset()),
+            new SceneNodeComponent<Mesh>(this.asset()),
             new TransformComponent(0, -0.0001, 0),
             new StaticBodyComponent(),
             new ColliderAABBComponent(25, 0.1, 25)

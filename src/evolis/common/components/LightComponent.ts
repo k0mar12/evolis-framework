@@ -2,7 +2,7 @@ import { Component } from '@/evolis/foundation';
 
 import type { LightOptions } from '@/evolis/common';
 
-export class LightComponent extends Component
+export abstract class LightComponent extends Component
 {
     /**
      * 
