@@ -10,11 +10,6 @@ export class FollowCameraSystem extends System
     public override readonly order: SystemPhase = SystemPhase.Camera;
 
     /**
-     *
-     */
-    public override readonly filter: Filter = new Filter().with(FollowCameraComponent);
-
-    /**
      * Smooth position
      */
     public readonly position = new Vector3();
@@ -22,9 +17,19 @@ export class FollowCameraSystem extends System
     /**
      *
      */
-    private get target(): EntityId | null
+    public override readonly filter: Filter = new Filter().with(FollowCameraComponent);
+
+    /**
+     *
+     */
+    public readonly targetFilter: Filter = new Filter().with(TargetCameraComponent);
+
+    /**
+     *
+     */
+    protected get target(): EntityId | null
     {
-        return this.world.query.find(new Filter().with(TargetCameraComponent)).first();
+        return this.world.query.find(this.targetFilter).first();
     }
 
     /**

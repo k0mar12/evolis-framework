@@ -63,9 +63,19 @@ export class CollisionAABBSystem extends System
     /**
      *
      */
+    protected dynamicsFilter: Filter = new Filter().with(...this.dynamicTags); 
+
+    /**
+     *
+     */
+    protected staticsFilter: Filter = new Filter().with(...this.staticTags);
+
+    /**
+     *
+     */
     protected get dynamics(): Collection
     {
-        return this.world.query.find(new Filter().with(...this.dynamicTags));
+        return this.world.query.find(this.dynamicsFilter);
     }
 
     /**
@@ -73,7 +83,7 @@ export class CollisionAABBSystem extends System
      */
     protected get statics(): Collection
     {
-        return this.world.query.find(new Filter().with(...this.staticTags));
+        return this.world.query.find(this.staticsFilter);
     }
 
     /**
@@ -131,9 +141,9 @@ export class CollisionAABBSystem extends System
                 const sTransform = this.world.getComponent<TransformComponent>(s, TransformComponent);
                 const sCollider = this.world.getComponent<ColliderAABBComponent>(s, ColliderAABBComponent);
 
-                const ox = this.overlapOnAxis(dTransform.x, dCollider.halfX, sTransform.x, sCollider.halfX);
-                const oy = this.overlapOnAxis(dTransform.y, dCollider.halfY, sTransform.y, sCollider.halfY);
-                const oz = this.overlapOnAxis(dTransform.z, dCollider.halfZ, sTransform.z, sCollider.halfZ);
+                const ox = this.overlapOnAxis(dTransform.x, dCollider.x, sTransform.x, sCollider.x);
+                const oy = this.overlapOnAxis(dTransform.y, dCollider.y, sTransform.y, sCollider.y);
+                const oz = this.overlapOnAxis(dTransform.z, dCollider.z, sTransform.z, sCollider.z);
 
                 if (ox.overlap <= 0 || oy.overlap <= 0 || oz.overlap <= 0) {
                     continue;

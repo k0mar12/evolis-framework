@@ -5,12 +5,23 @@ import {
     TransformComponent,
     ColliderAABBComponent,
     StaticBodyComponent,
-    type Prefab
+    type Vec3,
+    type Prefab,
+    RotationComponent
 } from '@/evolis';
-
 
 export class TerrainPrefab implements Prefab
 {
+    /**
+     * 
+     * @param position
+     */
+    constructor(
+        protected position: Vec3 = { x: 0, y: -0.0001, z: 0 }
+    )
+    {
+    }
+
     /**
      * 
      * @returns
@@ -21,7 +32,6 @@ export class TerrainPrefab implements Prefab
         const material = new MeshStandardMaterial({ metalness: 0, roughness: 1 });
         const plane = new Mesh(geometry, material);
 
-        plane.rotation.x = -Math.PI / 2;
         plane.receiveShadow = true;
 
         return plane;
@@ -35,9 +45,10 @@ export class TerrainPrefab implements Prefab
     {
         return [
             new SceneNodeComponent<Mesh>(this.asset()),
-            new TransformComponent(0, -0.0001, 0),
+            new TransformComponent(this.position),
+            new RotationComponent({ x: -Math.PI / 2 }),
             new StaticBodyComponent(),
-            new ColliderAABBComponent(25, 0.1, 25)
+            new ColliderAABBComponent({ x: 25, y: 0.1, z: 25 })
         ];
     }
 }

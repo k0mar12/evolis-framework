@@ -1,13 +1,6 @@
-import { Component } from '@/evolis/foundation';
+import { Vec3Component } from '@/evolis/common';
 
-export class ColliderAABBComponent extends Component
+export class ColliderAABBComponent extends Vec3Component
 {
-    constructor(
-        public halfX: number = 0.5,
-        public halfY: number = 0.5,
-        public halfZ: number = 0.5
-    )
-    {
-        super();
-    }
+
 }

@@ -1,8 +1,12 @@
 //-- Basic Components
 export { LightComponent } from './components/LightComponent';
 export { SceneNodeComponent } from './components/SceneNodeComponent';
-export { TransformComponent } from './components/TransformComponent';
-export { VelocityComponent } from './components/VelocityComponent';
+
+//-- Sapce components
+export { Vec3Component } from './components/Vec3Component';
+export { TransformComponent } from './components/space/TransformComponent';
+export { VelocityComponent } from './components/space/VelocityComponent';
+export { RotationComponent } from './components/space/RotationComponent';
 
 //-- Camera components
 export { FollowCameraComponent } from './components/camera/FollowCameraComponent';
@@ -57,3 +61,4 @@ export { GravitySystem } from './systems/physics/GravitySystem';
 //-- Basic types
 export type { LightOptions } from './types/LightOptions';
 export type { Speed } from './types/Speed';
+export type { Vec3 } from './types/Vec3';

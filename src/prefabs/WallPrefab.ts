@@ -5,6 +5,7 @@ import {
     TransformComponent,
     ColliderAABBComponent,
     StaticBodyComponent,
+    type Vec3,
     type Prefab
 } from '@/evolis';
 
@@ -20,9 +21,7 @@ export class WallPrefab implements Prefab
      * @param depthSegments 
      */
     constructor(
-        protected x: number = 0,
-        protected y: number = 0,
-        protected z: number = 10,
+        protected position: Vec3 = { x: 0, y: 0, z: 10 },
         protected width: number = 5,
         protected height: number = 1,
         protected depth: number = 1,
@@ -54,9 +53,13 @@ export class WallPrefab implements Prefab
     {
         return [
             new SceneNodeComponent<Mesh>(this.asset()),
-            new TransformComponent(this.x, this.y, this.z),
+            new TransformComponent(this.position),
             new StaticBodyComponent(),
-            new ColliderAABBComponent(this.width / 2, this.height / 2, this.depth / 2)
+            new ColliderAABBComponent({
+                x: this.width / 2,
+                y: this.height / 2,
+                z: this.depth / 2
+            })
         ];
     }
 }

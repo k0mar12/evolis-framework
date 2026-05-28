@@ -3,7 +3,7 @@ import {
     WebGLRenderer,
     Camera,
     PerspectiveCamera,
-    PCFSoftShadowMap,
+    PCFShadowMap,
     Fog
 } from 'three';
 
@@ -44,7 +44,7 @@ export const defaultRenderer = (canvas: HTMLElement): WebGLRenderer => {
     renderer.setPixelRatio(window.devicePixelRatio);
 
     renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = PCFSoftShadowMap;
+    renderer.shadowMap.type = PCFShadowMap;
 
     return renderer;
 };
