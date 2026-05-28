@@ -31,3 +31,4 @@ export type { EntityId } from './types/EntityId';
 export type { SystemConstructor } from './types/SystemConstructor';
 export type { SystemDefinition } from './types/SystemDefinition';
 export type { Tick } from './types/Tick';
+export type { Token } from './types/Token';

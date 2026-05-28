@@ -46,8 +46,6 @@ export class World
     public addSystem(system: System): void
     {
         this.systems.push(system);
-        
-        system.boot();
     }
 
     /**
@@ -145,7 +143,7 @@ export class World
      * 
      * @param prefabs
      */
-    public insert(...prefabs: Prefab[])
+    public insert(...prefabs: Prefab[]): void
     {
         for (const prefab of prefabs) {
             const entityId = this.createEntity()

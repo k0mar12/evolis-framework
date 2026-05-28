@@ -10,19 +10,15 @@ import { AmbientPrefab } from './prefabs/illumination/AmbientPrefab';
 import { SunPrefab } from './prefabs/illumination/SunPrefab';
 
 const evolis = Application
-    .create({ debug: true });
+    .create({ debug: true })
+    .register<InputDevice>(InputDeviceSymbol, new Keyboard())
+    .insert(
+        new CameraPrefab(),
+        new TerrainPrefab(),
+        new WallPrefab(),
+        new PlayerPrefab(),
+        new AmbientPrefab(),
+        new SunPrefab()
+    );
 
-evolis.container.set<InputDevice>(InputDeviceSymbol, new Keyboard());
-
-evolis.world.insert(
-    new CameraPrefab(),
-    new TerrainPrefab(),
-    new WallPrefab(),
-    new PlayerPrefab(),
-    new AmbientPrefab(),
-    new SunPrefab()
-);
-
-await evolis.load();
-
-evolis.loop();
+await evolis.start();

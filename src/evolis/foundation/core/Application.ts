@@ -8,7 +8,9 @@ import {
     defaultCamera,
     defaultSystems,
     type Config,
-    type SystemConstructor
+    type SystemConstructor,
+    type Token,
+    type Prefab,
 } from '@/evolis/foundation';
 import { Loader } from '@/evolis/filesystem';
 import { AxesPrefab, GridPrefab } from '@/evolis/common';
@@ -135,6 +137,7 @@ export class Application
 
     /**
      * 
+     * @returns
      */
     private async importDefaultSystems(): Promise<SystemConstructor[]>
     {
@@ -176,27 +179,15 @@ export class Application
     /**
      *
      */
-    private async setLoaded(): Promise<void>
+    private setLoaded(): void
     {
         this.isLoaded = true;
     }
 
     /**
-     * 
-     * @returns
-     */
-    public async load(): Promise<void>
-    {
-        await Promise.all([
-            this.importSystems(),
-            this.setLoaded()
-        ]);
-    }
-
-    /**
      *
      */
-    protected getDeltaTime(): number
+    private getDeltaTime(): number
     {
         const currentTick = performance.now();
         const deltaTime = (currentTick - this.lastTick) / 1000;
@@ -204,6 +195,26 @@ export class Application
         this.lastTick = currentTick;
         
         return deltaTime;
+    }
+
+    /**
+     *
+     */
+    private loop = (): void =>
+    {
+        this.stats.begin();
+
+        const dt = this.getDeltaTime();
+
+        for (const system of this.world.getSystems()) {
+            system.update({ deltaTime: dt });
+        }
+
+        this.context.makeTick();
+
+        this.stats.end();
+
+        requestAnimationFrame(this.loop);
     }
 
     /**
@@ -219,6 +230,61 @@ export class Application
             scene: defaultScene,
             camera: defaultCamera
         };
+    }
+
+    /**
+     * 
+     * @returns
+     */
+    public async load(): Promise<void>
+    {
+        await Promise.all([
+            this.importSystems(),
+            this.setLoaded()
+        ]);
+    }
+
+    /**
+     * 
+     * @param token
+     * @param service
+     * @returns
+     */
+    public register<T>(token: Token<T>, service: T): Application
+    {
+        this.container.set<T>(token, service);
+
+        return this;
+    }
+
+    /**
+     * 
+     * @param prefabs
+     * @returns
+     */
+    public insert(...prefabs: Prefab[]): Application
+    {
+        this.world.insert(...prefabs);
+
+        return this;
+    }
+
+    /**
+     * 
+     */
+    public async start(): Promise<void>
+    {
+        await Promise.all([
+            this.importSystems()
+        ])
+
+        this.world.getSystems().forEach((system): void => {
+            system.boot();
+        });
+
+        this.loop();
+
+        this.setLoaded();
     }
 
     /**
@@ -256,25 +322,5 @@ export class Application
     public static reset(): void
     {
         Application.instance = null;
-    }
-
-    /**
-     *
-     */
-    public loop = (): void =>
-    {
-        this.stats.begin();
-
-        const dt = this.getDeltaTime();
-
-        for (const system of this.world.getSystems()) {
-            system.update({ deltaTime: dt });
-        }
-
-        this.context.makeTick();
-
-        this.stats.end();
-
-        requestAnimationFrame(this.loop);
     }
 }

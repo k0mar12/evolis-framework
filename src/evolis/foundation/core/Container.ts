@@ -1,4 +1,4 @@
-type Token<T> = symbol;
+import type { Token } from '@/evolis/foundation';
 
 export class Container
 {
@@ -26,7 +26,7 @@ export class Container
     {
         const service = this.services.get(token);
 
-        if (! service) {
+        if (service === undefined) {
             throw new Error(`Service not found.`);
         }
 
