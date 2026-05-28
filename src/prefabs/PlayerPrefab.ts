@@ -11,6 +11,7 @@ import {
     DynamicBodyComponent,
     ColliderAABBComponent,
     type Prefab,
+    ColliderCapsule,
 } from '@/evolis';
 import { BoxGeometry, MeshNormalMaterial, Mesh } from 'three';
 
@@ -62,6 +63,7 @@ export class PlayerPrefab implements Prefab
             new SettingsControllerComponent(),
             new TargetCameraComponent(),
             new DynamicBodyComponent(),
+            // new ColliderCapsule(0.4, 1.2),
             new ColliderAABBComponent(0.5, 0.5, 0.5)
         ];
     }
