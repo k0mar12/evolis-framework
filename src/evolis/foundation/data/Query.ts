@@ -4,7 +4,7 @@ export class Query {
     /**
      *
      */
-    private cache: Map<bigint, { entities: Collection, filter: Filter }> = new Map();
+    private cache: Map<bigint, { entities: Collection<EntityId>, filter: Filter }> = new Map();
 
     /**
      *
@@ -26,7 +26,7 @@ export class Query {
      * @param filter
      * @returns 
      */
-    public find(filter: Filter): Collection
+    public find(filter: Filter): Collection<EntityId>
     {
         const key = filter.cacheKey;
 
@@ -83,9 +83,9 @@ export class Query {
      * @param filter
      * @returns 
      */
-    private fetch(filter: Filter): Collection
+    private fetch(filter: Filter): Collection<EntityId>
     {
-        const result = new Collection();
+        const result = new Collection<EntityId>();
 
         this.entityMask.forEach((mask, id): void => {
             if (filter.matches(mask)) {

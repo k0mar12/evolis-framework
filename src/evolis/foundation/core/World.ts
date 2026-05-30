@@ -21,32 +21,9 @@ export class World
     protected readonly components: Map<string, Map<EntityId, Component>> = new Map();
 
     /**
-     * 
-     */
-    protected readonly systems: System[] = [];
-
-    /**
      *
      */
     protected nextEntityId: EntityId = 0;
-
-    /**
-     * 
-     * @returns
-     */
-    public getSystems(): System[]
-    {
-        return this.systems;
-    }
-
-    /**
-     * 
-     * @param system
-     */
-    public addSystem(system: System): void
-    {
-        this.systems.push(system);
-    }
 
     /**
      * 

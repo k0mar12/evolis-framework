@@ -11,7 +11,7 @@ import {
     type Prefab,
 } from '@/evolis';
 
-export class TerrainPrefab implements Prefab
+export default class TerrainPrefab implements Prefab
 {
     /**
      * 

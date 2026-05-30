@@ -19,7 +19,7 @@ import {
     SceneSystem
 } from '@/evolis/common';
 
-import type { SystemConstructor } from '@/evolis/foundation';
+import type { PrefabConstructor, SystemConstructor } from '@/evolis/foundation';
 
 /**
  * 
@@ -72,4 +72,12 @@ export const defaultSystems = (): SystemConstructor[] => ([
     MovementSystem,
     RenderSystem,
     SceneSystem
+]);
+
+/**
+ * 
+ * @returns
+ */
+export const defaultPrefabs = (): PrefabConstructor[] => ([
+
 ]);

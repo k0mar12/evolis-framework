@@ -10,7 +10,7 @@ import {
     type Prefab,
 } from '@/evolis';
 
-export class WallPrefab implements Prefab
+export default class WallPrefab implements Prefab
 {
     /**
      * 

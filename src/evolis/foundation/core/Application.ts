@@ -3,23 +3,29 @@ import {
     World,
     Context,
     Container,
+    SystemManager,
     defaultRenderer,
     defaultScene,
     defaultCamera,
-    defaultSystems,
     type Config,
-    type SystemConstructor,
     type Token,
     type Prefab,
 } from '@/evolis/foundation';
 import { Loader } from '@/evolis/filesystem';
 import { AxesPrefab, GridPrefab } from '@/evolis/common';
+import { PrefabManager } from '../managers/PrefabManager';
+
 export class Application
 {
     /**
      *
      */
     private static instance: Application | null = null;
+
+    /**
+     *
+     */
+    public readonly container: Container = new Container();
 
     /**
      * 
@@ -34,12 +40,17 @@ export class Application
     /**
      *
      */
-    public readonly container: Container = new Container();
+    public readonly stats: Stats = new Stats();
 
     /**
      *
      */
-    public readonly stats: Stats = new Stats();
+    public readonly systemManager: SystemManager = new SystemManager();
+
+    /**
+     *
+     */
+    public readonly prefabManager: PrefabManager = new PrefabManager();
 
     /**
      *
@@ -124,60 +135,6 @@ export class Application
     }
 
     /**
-     * 
-     */
-    private loadSystems(systems: SystemConstructor[]): void
-    {
-        systems
-            .map((system) => new system(this.context, this.world))
-            .sort((a, b): number => a.order - b.order)
-            .forEach((system) => {
-                this.world.addSystem(system);
-            });
-    }
-
-    /**
-     * 
-     * @returns
-     */
-    private async importDefaultSystems(): Promise<SystemConstructor[]>
-    {
-        return defaultSystems();
-    }
-
-    /**
-     * 
-     * @returns
-     */
-    private async importUserSystems(): Promise<SystemConstructor[]>
-    {
-        return await this.loader.parts.loadSystems();
-    }
-
-    /**
-     *
-     */
-    private async importSystems(): Promise<void>
-    {
-        const groups = await Promise.all([
-            this.importDefaultSystems(),
-            this.importUserSystems()
-        ]);
-
-        const map = new Map<string, any>();
-
-        for (const group of groups) {
-            for (const system of group) {
-                map.set(system.name, system);
-            }
-        }
-
-        this.loadSystems(
-            Array.from(map.values())
-        );
-    }
-
-    /**
      *
      */
     private setLoaded(): void
@@ -208,7 +165,7 @@ export class Application
 
         const dt = this.getDeltaTime();
 
-        for (const system of this.world.getSystems()) {
+        for (const system of this.systemManager.systems) {
             system.update({ deltaTime: dt });
         }
 
@@ -240,9 +197,9 @@ export class Application
      * @param service
      * @returns
      */
-    public register<T>(token: Token<T>, service: T): Application
+    public inject<T>(token: Token<T>, service: T): Application
     {
-        this.container.set<T>(token, service);
+        this.container.bind<T>(token, service);
 
         return this;
     }
@@ -265,12 +222,13 @@ export class Application
     public async start(): Promise<void>
     {
         await Promise.all([
-            this.importSystems()
-        ])
+            this.systemManager.load(this.context, this.world),
+            this.prefabManager.load()
+        ]);
 
-        this.world.getSystems().forEach((system): void => {
+        for (const system of this.systemManager.systems) {
             system.boot();
-        });
+        }
 
         this.loop();
 

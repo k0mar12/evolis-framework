@@ -17,7 +17,7 @@ import {
 } from '@/evolis';
 import { BoxGeometry, MeshNormalMaterial, Mesh } from 'three';
 
-export class PlayerPrefab implements Prefab
+export default class PlayerPrefab implements Prefab
 {
     /**
      * 

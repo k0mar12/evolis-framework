@@ -1,4 +1,12 @@
-import { World, Context, Filter, SystemPhase, type Tick, type Collection } from '@/evolis/foundation';
+import {
+    World,
+    Context,
+    Filter,
+    SystemPhase,
+    type EntityId,
+    type Tick,
+    type Collection
+} from '@/evolis/foundation';
 
 export abstract class System
 {
@@ -27,7 +35,7 @@ export abstract class System
     /**
      *
      */
-    protected get collection(): Collection
+    protected get collection(): Collection<EntityId>
     {
         return this.world.query.find(this.filter);
     }

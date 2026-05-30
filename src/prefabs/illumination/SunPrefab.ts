@@ -9,7 +9,7 @@ import {
     type Prefab,
 } from '@/evolis';
 
-export class SunPrefab implements Prefab
+export default class SunPrefab implements Prefab
 {
     /**
      * 
@@ -31,7 +31,7 @@ export class SunPrefab implements Prefab
             new SceneNodeComponent<DirectionalLight>(
                 new DirectionalLight()
             ),
-            new DirectionalLightComponent({ intensity: 0.9, color: 0xffffff }),
+            new DirectionalLightComponent({ intensity: 5, color: 0xffffff }),
             new ShadowComponent({ cast: true }),
             new TransformComponent(this.position)
         ];

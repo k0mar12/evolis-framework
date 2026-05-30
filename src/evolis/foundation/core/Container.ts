@@ -12,7 +12,7 @@ export class Container
      * @param token
      * @param service 
      */
-    public set<T>(token: Token<T>, service: T): void
+    public bind<T>(token: Token<T>, service: T): void
     {
         this.services.set(token, service);
     }
@@ -22,7 +22,7 @@ export class Container
      * @param token
      * @returns 
      */
-    public get<T>(token: Token<T>): T
+    public resolve<T>(token: Token<T>): T
     {
         const service = this.services.get(token);
 

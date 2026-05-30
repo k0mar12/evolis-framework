@@ -1,4 +1,4 @@
+export { SkeletonLoader } from './main/SkeletonLoader';
 export { Loader } from './main/Loader';
-export { PartLoader } from './main/PartLoader';
 
-export type { SystemModuleLoader } from './types/SystemModuleLoader';
+export type { ModuleLoader } from './types/ModuleLoader';

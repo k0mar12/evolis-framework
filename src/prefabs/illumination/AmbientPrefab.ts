@@ -1,7 +1,7 @@
 import { AmbientLight } from 'three';
 import { Component, AmbientLightComponent, SceneNodeComponent, type Prefab } from '@/evolis';
 
-export class AmbientPrefab implements Prefab
+export default class AmbientPrefab implements Prefab
 {
     /**
      * 

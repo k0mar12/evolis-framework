@@ -3,7 +3,8 @@ import {
     Filter,
     System,
     SystemPhase,
-    type ComponentConstructor
+    type ComponentConstructor,
+    type EntityId
 } from '@/evolis/foundation';
 
 import {
@@ -70,7 +71,7 @@ export class CollisionAABBSystem extends System
     /**
      *
      */
-    protected get dynamics(): Collection
+    protected get dynamics(): Collection<EntityId>
     {
         return this.world.query.find(this.dynamicsFilter);
     }
@@ -78,7 +79,7 @@ export class CollisionAABBSystem extends System
     /**
      *
      */
-    protected get statics(): Collection
+    protected get statics(): Collection<EntityId>
     {
         return this.world.query.find(this.staticsFilter);
     }

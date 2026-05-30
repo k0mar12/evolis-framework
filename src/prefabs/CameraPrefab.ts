@@ -1,6 +1,6 @@
 import { FollowCameraComponent, Component, type Prefab } from '@/evolis';
 
-export class CameraPrefab implements Prefab
+export default class CameraPrefab implements Prefab
 {
     /**
      * 

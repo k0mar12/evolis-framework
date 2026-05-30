@@ -35,7 +35,7 @@ export default class InputSystem extends System
      */
     public override boot(): void
     {
-        this.inputDevice = container().get<InputDevice>(InputDeviceSymbol);
+        this.inputDevice = container().resolve<InputDevice>(InputDeviceSymbol);
     }
 
     /**

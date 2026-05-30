@@ -1,17 +1,19 @@
 import '@/style.css';
 
+import { GLTFLoader } from 'three/examples/jsm/Addons.js';
 import { Application, Keyboard, type InputDevice } from '@/evolis';
-import { PlayerPrefab } from '@/prefabs/PlayerPrefab';
 import { InputDeviceSymbol } from '@/symbols';
-import { CameraPrefab } from '@/prefabs/CameraPrefab';
-import { TerrainPrefab } from '@/prefabs/TerrainPrefab';
-import { WallPrefab } from '@/prefabs/WallPrefab';
-import { AmbientPrefab } from './prefabs/illumination/AmbientPrefab';
-import { SunPrefab } from './prefabs/illumination/SunPrefab';
+
+import CameraPrefab from '@/prefabs/CameraPrefab';
+import TerrainPrefab from '@/prefabs/TerrainPrefab';
+import WallPrefab from '@/prefabs/WallPrefab';
+import AmbientPrefab from './prefabs/illumination/AmbientPrefab';
+import SunPrefab from './prefabs/illumination/SunPrefab';
+import PlayerPrefab from '@/prefabs/PlayerPrefab';
 
 const evolis = Application
     .create({ debug: true })
-    .register<InputDevice>(InputDeviceSymbol, new Keyboard())
+    .inject<InputDevice>(InputDeviceSymbol, new Keyboard())
     .insert(
         new CameraPrefab(),
         new TerrainPrefab(),
@@ -22,3 +24,20 @@ const evolis = Application
     );
 
 await evolis.start();
+
+
+// const loader = new GLTFLoader();
+
+
+// const terrain = await loader.loadAsync('./with_col.glb');
+
+
+// // console.log(terrain)
+
+// evolis.context.scene.add(terrain.scene);
+
+// terrain.scene.traverse((object) => {
+//     // console.log(object);
+
+//     // evolis.context.scene.add(object);
+// });
