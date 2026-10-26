@@ -5,5 +5,5 @@ export interface Prefab
     /**
      *
      */
-    components(): Component[];
+    components(): Promise<Component[]>;
 }

@@ -6,7 +6,7 @@ export default class CameraPrefab implements Prefab
      * 
      * @returns
      */
-    public components(): Component[]
+    public async components(): Promise<Component[]>
     {
         return [
             new FollowCameraComponent()

@@ -21,7 +21,7 @@ export class PrefabManager
      */
     public async load(): Promise<void>
     {
-        const income =  import.meta.glob('@/prefabs/**/*.{js,ts,mjs}') as ModuleLoader<PrefabConstructor>;
+        const income = import.meta.glob('@/prefabs/**/*.{js,ts,mjs}') as ModuleLoader<PrefabConstructor>;
 
         const prefabs = await SkeletonLoader.load(income);
 

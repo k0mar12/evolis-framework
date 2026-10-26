@@ -2,7 +2,6 @@ import {
     Component,
     ComponentRegistry,
     Query,
-    type System,
     type EntityId,
     type Prefab,
     type ComponentConstructor
@@ -120,14 +119,16 @@ export class World
      * 
      * @param prefabs
      */
-    public insert(...prefabs: Prefab[]): void
+    public async insert(...prefabs: Prefab[]): Promise<void>
     {
-        for (const prefab of prefabs) {
-            const entityId = this.createEntity()
-
-            for (const component of prefab.components()) {
+        const insertTasks = prefabs.map(async (prefab) => {
+            const entityId = this.createEntity();
+            const components = await prefab.components();
+            for (const component of components) {
                 this.addComponent(entityId, component);
             }
-        }
+        });
+
+        await Promise.all(insertTasks);
     }
 }

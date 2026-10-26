@@ -11,9 +11,8 @@ import {
     type Token,
     type Prefab,
 } from '@/evolis/foundation';
-import { Loader } from '@/evolis/filesystem';
+import { ModelLoader } from '@/evolis/filesystem';
 import { AxesPrefab, GridPrefab } from '@/evolis/common';
-import { PrefabManager } from '../managers/PrefabManager';
 
 export class Application
 {
@@ -35,7 +34,7 @@ export class Application
     /**
      *
      */
-    public readonly loader: Loader = new Loader();
+    public readonly modelLoader: ModelLoader = new ModelLoader();
 
     /**
      *
@@ -46,11 +45,6 @@ export class Application
      *
      */
     public readonly systemManager: SystemManager = new SystemManager();
-
-    /**
-     *
-     */
-    public readonly prefabManager: PrefabManager = new PrefabManager();
 
     /**
      *
@@ -209,9 +203,9 @@ export class Application
      * @param prefabs
      * @returns
      */
-    public insert(...prefabs: Prefab[]): Application
+    public async insert(...prefabs: Prefab[]): Promise<Application>
     {
-        this.world.insert(...prefabs);
+        await this.world.insert(...prefabs);
 
         return this;
     }
@@ -223,7 +217,6 @@ export class Application
     {
         await Promise.all([
             this.systemManager.load(this.context, this.world),
-            this.prefabManager.load()
         ]);
 
         for (const system of this.systemManager.systems) {

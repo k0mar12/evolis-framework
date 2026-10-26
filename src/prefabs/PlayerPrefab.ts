@@ -11,7 +11,7 @@ import {
     Component,
     DynamicBodyComponent,
     ColliderAABBComponent,
-    ColliderCapsule,
+    // ColliderCapsule,
     type Prefab,
     type Vec3,
 } from '@/evolis';
@@ -47,7 +47,7 @@ export default class PlayerPrefab implements Prefab
      * 
      * @returns
      */
-    public components(): Component[]
+    public async components(): Promise<Component[]>
     {
         return [
             new SceneNodeComponent<Mesh>(this.asset()),

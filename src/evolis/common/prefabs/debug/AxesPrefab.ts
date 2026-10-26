@@ -17,7 +17,7 @@ export class AxesPrefab implements Prefab
     /**
      * 
      */
-    public components(): Component[]
+    public async components(): Promise<Component[]>
     {
         return [
             new SceneNodeComponent(

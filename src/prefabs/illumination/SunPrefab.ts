@@ -25,7 +25,7 @@ export default class SunPrefab implements Prefab
      * 
      * @returns
      */
-    public components(): Component[]
+    public async components(): Promise<Component[]>
     {
         return [
             new SceneNodeComponent<DirectionalLight>(

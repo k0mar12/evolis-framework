@@ -18,7 +18,7 @@ export class GridPrefab implements Prefab
     /**
      * 
      */
-    public components(): Component[]
+    public async components(): Promise<Component[]>
     {
         return [
             new SceneNodeComponent(new GridHelper(this.size, this.size))

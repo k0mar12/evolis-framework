@@ -7,7 +7,7 @@ export default class AmbientPrefab implements Prefab
      * 
      * @returns
      */
-    public components(): Component[]
+    public async components(): Promise<Component[]>
     {
         return [
             new SceneNodeComponent<AmbientLight>(

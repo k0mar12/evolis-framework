@@ -39,7 +39,7 @@ export default class TerrainPrefab implements Prefab
      * 
      * @returns
      */
-    public components(): Component[]
+    public async components(): Promise<Component[]>
     {
         return [
             new SceneNodeComponent<Mesh>(this.asset()),
