@@ -39,7 +39,7 @@ export { TargetCameraComponent } from './components/tags/TargetCameraComponent';
 export { AxesPrefab } from './prefabs/debug/AxesPrefab';
 export { GridPrefab } from './prefabs/debug/GridPrefab';
 
-export { StaticModelPrefab } from './prefabs/models/StaticModelPrefab';
+export { StaticNodePrefab } from './prefabs/models/StaticNodePrefab.ts';
 
 //-- Services
 export { SpatialGrid } from './services/SpatialGrid';

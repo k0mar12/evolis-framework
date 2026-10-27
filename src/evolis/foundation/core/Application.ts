@@ -4,12 +4,14 @@ import {
     Context,
     Container,
     SystemManager,
+    PrefabManager,
+    LevelManager,
     defaultRenderer,
     defaultScene,
     defaultCamera,
     type Config,
     type Token,
-    type Prefab,
+    type LevelConstructor,
 } from '@/evolis/foundation';
 import { ModelLoader } from '@/evolis/filesystem';
 import { AxesPrefab, GridPrefab } from '@/evolis/common';
@@ -49,6 +51,16 @@ export class Application
     /**
      *
      */
+    public readonly prefabManager: PrefabManager = new PrefabManager();
+
+    /**
+     *
+     */
+    public readonly levelManager: LevelManager = new LevelManager();
+
+    /**
+     *
+     */
     public readonly context: Context;
 
     /**
@@ -59,12 +71,12 @@ export class Application
     /**
      * 
      */
-    public lastTick: DOMHighResTimeStamp = performance.now()
+    public lastTick: DOMHighResTimeStamp = performance.now();
 
     /**
      *
      */
-    protected isLoaded: boolean = false
+    protected isLoaded: boolean = false;
 
 
     /**
@@ -181,7 +193,8 @@ export class Application
             debug: false,
             renderer: defaultRenderer,
             scene: defaultScene,
-            camera: defaultCamera
+            camera: defaultCamera,
+            level: null
         };
     }
 
@@ -199,15 +212,17 @@ export class Application
     }
 
     /**
-     * 
-     * @param prefabs
-     * @returns
+     *
      */
-    public async insert(...prefabs: Prefab[]): Promise<Application>
+    public async loadLevel(link: LevelConstructor): Promise<void>
     {
-        await this.world.insert(...prefabs);
+        if (! this.isLoaded) {
+            throw new Error('Canvas not loaded');
+        }
 
-        return this;
+        const level = new link(this.world, this.modelLoader, this.prefabManager.list);
+
+        await level.load();
     }
 
     /**
@@ -217,6 +232,7 @@ export class Application
     {
         await Promise.all([
             this.systemManager.load(this.context, this.world),
+            this.prefabManager.load()
         ]);
 
         for (const system of this.systemManager.systems) {

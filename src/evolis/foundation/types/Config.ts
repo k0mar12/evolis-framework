@@ -1,4 +1,5 @@
 import { Scene, WebGLRenderer, Camera } from 'three';
+import { type LevelConstructor } from '@/evolis/foundation';
 
 /**
  * 
@@ -8,5 +9,6 @@ export type Config = Readonly<{
     debug: boolean,
     scene: () => Scene,
     renderer: (canvas: HTMLElement) => WebGLRenderer,
-    camera: () => Camera
+    camera: () => Camera,
+    level: LevelConstructor | null
 }>;

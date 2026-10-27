@@ -1,19 +1,19 @@
 import { SkeletonLoader, type ModuleLoader } from '@/evolis/filesystem';
-import { StaticModelPrefab } from '@/evolis/common';
-import { Collection, type PrefabConstructor, type Prefab } from '@/evolis/foundation';
+import { StaticNodePrefab } from '@/evolis/common';
+import { Collection, type PrefabsList, type PrefabConstructor } from '@/evolis/foundation';
 
 export class PrefabManager
 {
     /**
      *
      */
-    protected readonly container: Map<string, PrefabConstructor> = new Map();
+    public list: PrefabsList = new Map();
 
     /**
      *
      */
     protected readonly inbox: Collection<PrefabConstructor> = new Collection([
-        StaticModelPrefab
+        StaticNodePrefab
     ]);
 
     /**
@@ -26,19 +26,7 @@ export class PrefabManager
         const prefabs = await SkeletonLoader.load(income);
 
         this.inbox.merge(prefabs).forEach((prefab) => {
-            this.container.set(prefab.name, prefab)
+            this.list.set(prefab.name, prefab);
         });
-    }
-
-    /**
-     * 
-     * @param type
-     * @param args 
-     */
-    public create(type: string, ...args: any[]): Prefab | null
-    {
-        const entity = this.container.get(type) ?? null;
-
-        return entity ? new entity(args) : null;        
     }
 }

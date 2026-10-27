@@ -58,7 +58,7 @@ export class SystemManager
      */
     public async load(context: Context, world: World): Promise<void>
     {
-        const income =  import.meta.glob('@/systems/**/*.{js,ts,mjs}') as ModuleLoader<SystemConstructor>;
+        const income = import.meta.glob('@/systems/**/*.{js,ts,mjs}') as ModuleLoader<SystemConstructor>;
 
         const systems = await SkeletonLoader.load(income);
 

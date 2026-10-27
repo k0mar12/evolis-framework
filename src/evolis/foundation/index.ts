@@ -4,6 +4,7 @@ export { System } from './core/System';
 export { Component } from './core/Component';
 export { Context } from './core/Context';
 export { Container } from './core/Container';
+export { Level } from './core/Level.ts';
 
 export { SystemPhase } from './enums/SystemPhase';
 
@@ -19,6 +20,7 @@ export { Without } from './data/conditions/Without';
 
 export { PrefabManager } from './managers/PrefabManager';
 export { SystemManager } from './managers/SystemManager';
+export { LevelManager } from './managers/LevelManager';
 
 export { Collection } from './support/Collection';
 
@@ -31,8 +33,11 @@ export type { InputDevice } from './contracts/InputDevice';
 export type { Constructor } from './types/Constructor';
 export type { ComponentConstructor } from './types/ComponentConstructor';
 export type { PrefabConstructor } from './types/PrefabConstructor';
+export type { SystemConstructor } from './types/SystemConstructor';
+export type { LevelConstructor } from './types/LevelConstructor';
+
+export type { PrefabsList } from './types/PrefabsList';
 export type { Config } from './types/Config';
 export type { EntityId } from './types/EntityId';
-export type { SystemConstructor } from './types/SystemConstructor';
 export type { Tick } from './types/Tick';
 export type { Token } from './types/Token';
