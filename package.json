@@ -8,7 +8,9 @@
     "build": "tsc && vite build",
     "preview": "vite preview",
     "fmt": "oxfmt",
-    "fmt:check": "oxfmt --check"
+    "fmt:check": "oxfmt --check",
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix"
   },
   "dependencies": {
     "@dimforge/rapier3d-compat": "^0.21.0",
@@ -19,6 +21,7 @@
   "devDependencies": {
     "@types/three": "^0.184.1",
     "oxfmt": "^0.78.0",
+    "oxlint": "^1.93.0",
     "typescript": "~6.0.2",
     "vite": "^8.0.12"
   }
