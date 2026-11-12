@@ -49,7 +49,8 @@ export { TargetCameraComponent } from "./components/tags/TargetCameraComponent";
 export { AxesPrefab } from "./prefabs/debug/AxesPrefab";
 export { GridPrefab } from "./prefabs/debug/GridPrefab";
 
-export { StaticNodePrefab } from "./prefabs/models/StaticNodePrefab.ts";
+export { StaticNodePrefab } from "./prefabs/models/StaticNodePrefab";
+export { HitboxPrefab } from "./prefabs/models/HitboxPrefab";
 
 //-- Services
 export { SpatialGrid } from "./services/SpatialGrid";

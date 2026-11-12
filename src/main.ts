@@ -24,6 +24,7 @@ await evolis.world.insert(
   new PlayerPrefab({ x: 0, y: 2, z: 0 }),
   new AmbientPrefab(),
   new SunPrefab(),
+  new WallPrefab(),
   // new RockPrefab(),
   // new RockPrefab({ x: 5, y: 0, z: 0 })
 );

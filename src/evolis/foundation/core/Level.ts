@@ -1,8 +1,8 @@
-import { Mesh, type Matrix4, type Object3D } from "three";
+import { type Matrix4, type Object3D } from "three";
 import { World, type PrefabsList, type Prefab, type LoadedModel } from "@/evolis/foundation";
 import { ModelLoader, type FilePath } from "@/evolis/filesystem";
 
-type Nodes = { mesh: Mesh; matrix: Matrix4; prefab: string }[];
+type Nodes = { object: Object3D; matrix: Matrix4; prefab: string }[];
 
 export abstract class Level {
   /**
@@ -45,16 +45,10 @@ export abstract class Level {
     scene.updateWorldMatrix(true, true);
 
     scene.traverse((node) => {
-      if (!(node instanceof Mesh)) {
-        return;
-      }
-
-      console.log(node);
-
       const prefab = this.getPrefabOfNode(node);
 
       if (prefab !== null && this.prefabs.has(prefab)) {
-        nodes.push({ mesh: node, matrix: node.matrixWorld.clone(), prefab });
+        nodes.push({ object: node, matrix: node.matrixWorld.clone(), prefab });
       }
     });
 
@@ -69,13 +63,19 @@ export abstract class Level {
   private async append(model: LoadedModel): Promise<void> {
     const prefabs: Prefab[] = [];
 
-    for (const { mesh, matrix, prefab } of this.collectNodesFromScene(model.scene)) {
-      mesh.matrix.copy(matrix);
-      mesh.matrix.decompose(mesh.position, mesh.quaternion, mesh.scale);
+    const nodes = this.collectNodesFromScene(model.scene);
 
-      mesh.matrixAutoUpdate = false;
+    for (const { object } of nodes) {
+      object.removeFromParent();
+    }
 
-      mesh.updateWorldMatrix(false, true);
+    for (const { object, matrix, prefab } of nodes) {
+      object.matrix.copy(matrix);
+      object.matrix.decompose(object.position, object.quaternion, object.scale);
+
+      object.matrixAutoUpdate = false;
+
+      object.updateWorldMatrix(false, true);
 
       const constructor = this.prefabs.get(prefab);
 
@@ -83,7 +83,7 @@ export abstract class Level {
         throw new Error(`Prefab not found: ${prefab}`);
       }
 
-      prefabs.push(new constructor(mesh));
+      prefabs.push(new constructor(object));
     }
 
     await this.world.insert(...prefabs);

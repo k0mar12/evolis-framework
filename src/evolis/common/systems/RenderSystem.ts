@@ -47,13 +47,21 @@ export class RenderSystem extends System {
       if (interpolated) {
         SampleAction.do(mesh.object.position, interpolated, interpolationAlpha);
       }
+
+      if (!mesh.object.matrixAutoUpdate) {
+        mesh.object.updateMatrix();
+      }
     });
 
     this.world.query.find(this.rotationFilter).forEach((id) => {
       const mesh = this.world.getComponent<SceneNodeComponent>(id, SceneNodeComponent);
-      const rotation = this.world.getComponent<TransformComponent>(id, RotationComponent);
+      const rotation = this.world.getComponent<RotationComponent>(id, RotationComponent);
 
       mesh.object.rotation.set(rotation.x, rotation.y, rotation.z);
+
+      if (!mesh.object.matrixAutoUpdate) {
+        mesh.object.updateMatrix();
+      }
     });
   }
 }

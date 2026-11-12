@@ -1,5 +1,5 @@
 import { Component, type Prefab } from "@/evolis/foundation";
-import { SceneNodeComponent, TransformComponent, type Vec3 } from "@/evolis";
+import { SceneNodeComponent, TransformComponent } from "@/evolis";
 import { type Object3D } from "three";
 
 export class StaticNodePrefab implements Prefab {
@@ -13,6 +13,6 @@ export class StaticNodePrefab implements Prefab {
    *
    */
   public async components(): Promise<Component[]> {
-    return [new SceneNodeComponent(this.object)];
+    return [new SceneNodeComponent(this.object), new TransformComponent(this.object.position)];
   }
 }
