@@ -1,3 +1,3 @@
-import { Component } from '@/evolis/foundation';
+import { Component } from "@/evolis/foundation";
 
-export type ComponentConstructor = abstract new(...args: any[]) => Component;
+export type ComponentConstructor = abstract new (...args: any[]) => Component;

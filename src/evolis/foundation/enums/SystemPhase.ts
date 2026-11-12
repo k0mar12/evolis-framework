@@ -11,4 +11,4 @@ export enum SystemPhase {
   Scene = 1000,
   Render = 1100,
   UI = 1200,
-};
+}

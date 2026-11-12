@@ -1,7 +1,4 @@
-import {
-  SkeletonLoader,
-  type ModuleLoader
-} from '@/evolis/filesystem';
+import { SkeletonLoader, type ModuleLoader } from "@/evolis/filesystem";
 
 import {
   FollowCameraSystem,
@@ -13,8 +10,8 @@ import {
   CharacterGroundingSystem,
   MovementSystem,
   RenderSystem,
-  SceneSystem
-} from '@/evolis/common';
+  SceneSystem,
+} from "@/evolis/common";
 
 import {
   Collection,
@@ -22,31 +19,30 @@ import {
   SystemUpdateMode,
   Context,
   World,
-  type SystemConstructor
-} from '@/evolis/foundation';
+  type SystemConstructor,
+} from "@/evolis/foundation";
 
-export class SystemManager
-{
+export class SystemManager {
   /**
-    *
-    */
+   *
+   */
   protected list: System[] = [];
 
   /**
-    *
-    * @private
-    */
+   *
+   * @private
+   */
   private fixedList: System[] = [];
 
   /**
-    *
-    * @private
-    */
+   *
+   * @private
+   */
   private frameList: System[] = [];
 
   /**
-    *
-    */
+   *
+   */
   protected readonly inbox: Collection<SystemConstructor> = new Collection([
     FollowCameraSystem,
     AmbientLightSyncSystem,
@@ -57,48 +53,47 @@ export class SystemManager
     CharacterGroundingSystem,
     MovementSystem,
     RenderSystem,
-    SceneSystem
+    SceneSystem,
   ]);
 
   /**
-    *
-    */
-  public get simulationSystems(): readonly System[]
-  {
+   *
+   */
+  public get simulationSystems(): readonly System[] {
     return this.fixedList;
   }
 
   /**
-    *
-    */
-  public get frameSystems(): readonly System[]
-  {
+   *
+   */
+  public get frameSystems(): readonly System[] {
     return this.frameList;
   }
 
   /**
-    *
-    */
-  public get systems(): System[]
-  {
+   *
+   */
+  public get systems(): System[] {
     return this.list;
   }
 
   /**
-    *
-    */
-  public async load(context: Context, world: World): Promise<void>
-  {
-    const income = import.meta.glob('@/systems/**/*.{js,ts,mjs}') as ModuleLoader<SystemConstructor>;
+   *
+   */
+  public async load(context: Context, world: World): Promise<void> {
+    const income = import.meta.glob(
+      "@/systems/**/*.{js,ts,mjs}",
+    ) as ModuleLoader<SystemConstructor>;
 
     const systems = await SkeletonLoader.load(income);
 
-    this.list = this.inbox.merge(systems)
-        .toArray()
-        .map((system) => new system(context, world))
-        .sort((a, b): number => a.order - b.order);
+    this.list = this.inbox
+      .merge(systems)
+      .toArray()
+      .map((system) => new system(context, world))
+      .sort((a, b): number => a.order - b.order);
 
-    this.fixedList = this.list.filter(system => system.updateMode === SystemUpdateMode.Fixed);
-    this.frameList = this.list.filter(system => system.updateMode === SystemUpdateMode.Frame);
+    this.fixedList = this.list.filter((system) => system.updateMode === SystemUpdateMode.Fixed);
+    this.frameList = this.list.filter((system) => system.updateMode === SystemUpdateMode.Frame);
   }
 }

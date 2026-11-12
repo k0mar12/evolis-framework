@@ -1,4 +1,4 @@
 export type LightOptions = {
-    color: number,
-    intensity: number
+  color: number;
+  intensity: number;
 };

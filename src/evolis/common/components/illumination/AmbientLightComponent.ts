@@ -1,6 +1,3 @@
-import { LightComponent } from '@/evolis/common';
+import { LightComponent } from "@/evolis/common";
 
-export class AmbientLightComponent extends LightComponent
-{
-    
-}
+export class AmbientLightComponent extends LightComponent {}

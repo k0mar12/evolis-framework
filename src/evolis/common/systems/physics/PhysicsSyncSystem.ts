@@ -1,13 +1,22 @@
-import { type RigidBody } from '@dimforge/rapier3d-compat';
-import { System, SystemPhase, SystemUpdateMode, type EntityId, type Tick } from '@/evolis/foundation';
-import { InterpolatedTransformComponent, TransformComponent, VelocityComponent } from '@/evolis/common';
+import { type RigidBody } from "@dimforge/rapier3d-compat";
+import {
+  System,
+  SystemPhase,
+  SystemUpdateMode,
+  type EntityId,
+  type Tick,
+} from "@/evolis/foundation";
+import {
+  InterpolatedTransformComponent,
+  TransformComponent,
+  VelocityComponent,
+} from "@/evolis/common";
 
 /**
  * Dynamic poses and actual velocities are owned by Rapier.
  *
  */
-export class PhysicsSyncSystem extends System
-{
+export class PhysicsSyncSystem extends System {
   /**
    *
    */
@@ -21,11 +30,14 @@ export class PhysicsSyncSystem extends System
   /**
    *
    */
-  private readonly targets = new Map<EntityId, {
+  private readonly targets = new Map<
+    EntityId,
+    {
       position: TransformComponent | null;
       velocity: VelocityComponent | null;
       interpolation: InterpolatedTransformComponent | null;
-  }>();
+    }
+  >();
 
   /**
    *
@@ -35,12 +47,11 @@ export class PhysicsSyncSystem extends System
   /**
    *
    */
-  public override boot(): void
-  {
-    this.world.onEntityChanged(id => {
+  public override boot(): void {
+    this.world.onEntityChanged((id) => {
       this.targets.delete(id);
 
-      if (! this.world.findComponent(id, TransformComponent)) {
+      if (!this.world.findComponent(id, TransformComponent)) {
         this.observedBodies.delete(id);
       }
     });
@@ -49,17 +60,19 @@ export class PhysicsSyncSystem extends System
   /**
    *
    */
-  public update({ deltaTime }: Tick): void
-  {
+  public update({ deltaTime }: Tick): void {
     this.world.physics.simulation.timestep = deltaTime;
     this.world.physics.simulation.step();
 
     for (const [id, body] of this.world.physics.bodies) {
       let target = this.targets.get(id);
 
-      if (! target) {
+      if (!target) {
         target = {
-          interpolation: this.world.findComponent<InterpolatedTransformComponent>(id, InterpolatedTransformComponent),
+          interpolation: this.world.findComponent<InterpolatedTransformComponent>(
+            id,
+            InterpolatedTransformComponent,
+          ),
           position: this.world.findComponent<TransformComponent>(id, TransformComponent),
           velocity: this.world.findComponent<VelocityComponent>(id, VelocityComponent),
         };

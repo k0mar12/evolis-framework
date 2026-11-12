@@ -1,31 +1,31 @@
-import '@/style.css';
+import "@/style.css";
 
-import { Application, Keyboard, type InputDevice } from '@/evolis';
-import { InputDeviceSymbol } from '@/symbols';
+import { Application, Keyboard, type InputDevice } from "@/evolis";
+import { InputDeviceSymbol } from "@/symbols";
 
-import CameraPrefab from '@/prefabs/CameraPrefab';
-import TerrainPrefab from '@/prefabs/TerrainPrefab';
-import WallPrefab from '@/prefabs/WallPrefab';
-import AmbientPrefab from '@/prefabs/illumination/AmbientPrefab';
-import SunPrefab from '@/prefabs/illumination/SunPrefab';
-import PlayerPrefab from '@/prefabs/PlayerPrefab';
-import RockPrefab from '@/prefabs/RockPrefab.ts';
+import CameraPrefab from "@/prefabs/CameraPrefab";
+import TerrainPrefab from "@/prefabs/TerrainPrefab";
+import WallPrefab from "@/prefabs/WallPrefab";
+import AmbientPrefab from "@/prefabs/illumination/AmbientPrefab";
+import SunPrefab from "@/prefabs/illumination/SunPrefab";
+import PlayerPrefab from "@/prefabs/PlayerPrefab";
+import RockPrefab from "@/prefabs/RockPrefab.ts";
 
-import WorldLevel from '@/levels/WorldLevel';
+import WorldLevel from "@/levels/WorldLevel";
 
 const evolis = await Application.create({ debug: true });
 
 evolis.inject<InputDevice>(InputDeviceSymbol, new Keyboard());
 
 await evolis.world.insert(
-    new CameraPrefab(),
-    // new TerrainPrefab(),
-    // new WallPrefab(),
-    new PlayerPrefab({ x: 0, y: 2, z: 0 }),
-    new AmbientPrefab(),
-    new SunPrefab(),
-    // new RockPrefab(),
-    // new RockPrefab({ x: 5, y: 0, z: 0 })
+  new CameraPrefab(),
+  // new TerrainPrefab(),
+  // new WallPrefab(),
+  new PlayerPrefab({ x: 0, y: 2, z: 0 }),
+  new AmbientPrefab(),
+  new SunPrefab(),
+  // new RockPrefab(),
+  // new RockPrefab({ x: 5, y: 0, z: 0 })
 );
 
 await evolis.start();

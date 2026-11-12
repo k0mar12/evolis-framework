@@ -1,4 +1,4 @@
 export type ShadowOptions = {
-    cast: boolean,
-    receive: boolean
+  cast: boolean;
+  receive: boolean;
 };

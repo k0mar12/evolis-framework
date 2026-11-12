@@ -1,12 +1,11 @@
-import { Component } from '@/evolis/foundation';
-import { type Vec3 } from '@/evolis/common';
+import { Component } from "@/evolis/foundation";
+import { type Vec3 } from "@/evolis/common";
 
 /**
  * Visual position history; never changes the authoritative simulation transform.
  *
  */
-export class InterpolatedTransformComponent extends Component
-{
+export class InterpolatedTransformComponent extends Component {
   /**
    *
    */
@@ -21,8 +20,7 @@ export class InterpolatedTransformComponent extends Component
    *
    * @param position
    */
-  constructor(position: Vec3 = { x: 0, y: 0, z: 0 })
-  {
+  constructor(position: Vec3 = { x: 0, y: 0, z: 0 }) {
     super();
     this.previous = { ...position };
     this.current = { ...position };

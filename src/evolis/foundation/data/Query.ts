@@ -1,98 +1,93 @@
-import { Collection, Filter, type EntityId } from '@/evolis/foundation';
+import { Collection, Filter, type EntityId } from "@/evolis/foundation";
 
 export class Query {
-    /**
-     *
-     */
-    private cache: Map<bigint, { entities: Collection<EntityId>, filter: Filter }> = new Map();
+  /**
+   *
+   */
+  private cache: Map<bigint, { entities: Collection<EntityId>; filter: Filter }> = new Map();
 
-    /**
-     *
-     */
-    private entityMask: Map<EntityId, bigint> = new Map();
+  /**
+   *
+   */
+  private entityMask: Map<EntityId, bigint> = new Map();
 
-    /**
-     * 
-     * @param id
-     * @returns 
-     */
-    public getMask(id: EntityId): bigint
-    {
-        return this.entityMask.get(id) ?? 0n;
+  /**
+   *
+   * @param id
+   * @returns
+   */
+  public getMask(id: EntityId): bigint {
+    return this.entityMask.get(id) ?? 0n;
+  }
+
+  /**
+   *
+   * @param filter
+   * @returns
+   */
+  public find(filter: Filter): Collection<EntityId> {
+    const key = filter.cacheKey;
+
+    if (!this.cache.has(key)) {
+      this.cache.set(key, { entities: this.fetch(filter), filter });
     }
 
-    /**
-     * 
-     * @param filter
-     * @returns 
-     */
-    public find(filter: Filter): Collection<EntityId>
-    {
-        const key = filter.cacheKey;
+    return this.cache.get(key)!.entities;
+  }
 
-        if (! this.cache.has(key)) {
-            this.cache.set(key, { entities: this.fetch(filter), filter });
-        }
+  /**
+   *
+   * @param id
+   * @param oldMask
+   * @param newMask
+   */
+  public invalidate(id: EntityId, oldMask: bigint, newMask: bigint): void {
+    this.entityMask.set(id, newMask);
 
-        return this.cache.get(key)!.entities;
-    }
+    this.cache.forEach(({ entities, filter }): void => {
+      const wasMatch = filter.matches(oldMask);
+      const isMatch = filter.matches(newMask);
 
-    /**
-     * 
-     * @param id
-     * @param oldMask 
-     * @param newMask 
-     */
-    public invalidate(id: EntityId, oldMask: bigint, newMask: bigint): void
-    {
-        this.entityMask.set(id, newMask);
+      if (!wasMatch && isMatch) {
+        entities.add(id);
+      }
 
-        this.cache.forEach(({ entities, filter }): void => {
-            const wasMatch = filter.matches(oldMask);
-            const isMatch  = filter.matches(newMask);
+      if (wasMatch && !isMatch) {
+        entities.delete(id);
+      }
+    });
+  }
 
-            if (! wasMatch && isMatch) {
-                entities.add(id);
-            }
+  /**
+   *
+   * @param id
+   */
+  public remove(id: EntityId): void {
+    const mask = this.entityMask.get(id) ?? 0n;
 
-            if (wasMatch && ! isMatch) {
-                entities.delete(id);
-            }
-        })
-    }
+    this.cache.forEach(({ entities, filter }): void => {
+      if (filter.matches(mask)) {
+        entities.delete(id);
+      }
+    });
 
-    /**
-     * 
-     * @param id
-     */
-    public remove(id: EntityId): void
-    {
-        const mask = this.entityMask.get(id) ?? 0n;
+    this.entityMask.delete(id);
+  }
 
-        this.cache.forEach(({ entities, filter }): void => {
-            if (filter.matches(mask)) {
-                entities.delete(id);
-            }
-        });
+  /**
+   *
+   * @param filter
+   * @returns
+   */
+  private fetch(filter: Filter): Collection<EntityId> {
+    const result = new Collection<EntityId>();
 
-        this.entityMask.delete(id);
-    }
+    this.entityMask.forEach((mask, id): void => {
+      if (filter.matches(mask)) {
+        result.add(id);
+      }
+    });
 
-    /**
-     * 
-     * @param filter
-     * @returns 
-     */
-    private fetch(filter: Filter): Collection<EntityId>
-    {
-        const result = new Collection<EntityId>();
-
-        this.entityMask.forEach((mask, id): void => {
-            if (filter.matches(mask)) {
-                result.add(id);
-            }
-        });
-
-        return result;
-    }
+    return result;
+  }
 }

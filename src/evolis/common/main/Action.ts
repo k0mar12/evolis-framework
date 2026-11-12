@@ -1,5 +1,4 @@
-export abstract class Action<TResult = unknown>
-{
+export abstract class Action<TResult = unknown> {
   /**
    *
    * @returns
@@ -12,14 +11,10 @@ export abstract class Action<TResult = unknown>
    * @param args
    * @returns
    */
-  public static do<
-    TArgs extends unknown[],
-    TResult,
-    T extends Action<TResult>
-  >(
-    this: new (...args: TArgs) => T, ...args: TArgs
-  ): TResult
-  {
+  public static do<TArgs extends unknown[], TResult, T extends Action<TResult>>(
+    this: new (...args: TArgs) => T,
+    ...args: TArgs
+  ): TResult {
     return new this(...args).handle();
   }
 }

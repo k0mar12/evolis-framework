@@ -1,4 +1,4 @@
 export enum SystemUpdateMode {
-    Fixed = 'fixed',
-    Frame = 'frame',
-};
+  Fixed = "fixed",
+  Frame = "frame",
+}

@@ -1,5 +1,5 @@
 export type Speed = {
-    walk: number,
-    run: number,
-    jump: number
+  walk: number;
+  run: number;
+  jump: number;
 };

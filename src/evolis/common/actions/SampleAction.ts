@@ -1,8 +1,7 @@
-import { Action, InterpolatedTransformComponent } from '@/evolis/common';
-import { Vector3 } from 'three';
+import { Action, InterpolatedTransformComponent } from "@/evolis/common";
+import { Vector3 } from "three";
 
-export class SampleAction extends Action<void>
-{
+export class SampleAction extends Action<void> {
   /**
    *
    * @param position
@@ -12,9 +11,8 @@ export class SampleAction extends Action<void>
   constructor(
     protected position: Vector3,
     protected component: InterpolatedTransformComponent,
-    protected alpha: number
-  )
-  {
+    protected alpha: number,
+  ) {
     super();
   }
 
@@ -22,8 +20,7 @@ export class SampleAction extends Action<void>
    *
    * @returns number
    */
-  protected get t(): number
-  {
+  protected get t(): number {
     return Math.max(0, Math.min(1, this.alpha));
   }
 
@@ -31,15 +28,14 @@ export class SampleAction extends Action<void>
    *
    * @returns void
    */
-  public handle(): void
-  {
+  public handle(): void {
     const t = this.t;
     const { previous, current } = this.component;
 
     this.position.set(
       previous.x + (current.x - previous.x) * t,
       previous.y + (current.y - previous.y) * t,
-      previous.z + (current.z - previous.z) * t
+      previous.z + (current.z - previous.z) * t,
     );
   }
 }

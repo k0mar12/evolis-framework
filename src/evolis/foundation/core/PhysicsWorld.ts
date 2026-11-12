@@ -1,11 +1,15 @@
-import { ColliderFactory } from '../physics/ColliderFactory';
-import { type PhysicsDefinition } from '../physics/PhysicsDefinition';
-import { World as RapierWorld, RigidBody, Collider, RigidBodyDesc } from '@dimforge/rapier3d-compat';
-import { type EntityId } from '@/evolis/foundation';
-import { type Vec3 } from '@/evolis/common';
+import { ColliderFactory } from "../physics/ColliderFactory";
+import { type PhysicsDefinition } from "../physics/PhysicsDefinition";
+import {
+  World as RapierWorld,
+  RigidBody,
+  Collider,
+  RigidBodyDesc,
+} from "@dimforge/rapier3d-compat";
+import { type EntityId } from "@/evolis/foundation";
+import { type Vec3 } from "@/evolis/common";
 
-export class PhysicsWorld
-{
+export class PhysicsWorld {
   /**
    *
    */
@@ -30,8 +34,7 @@ export class PhysicsWorld
    *
    * @param gravity
    */
-  constructor(gravity: Vec3 = { x: 0, y: -9.8, z: 0 })
-  {
+  constructor(gravity: Vec3 = { x: 0, y: -9.8, z: 0 }) {
     this.simulation = new RapierWorld(gravity);
   }
 
@@ -40,19 +43,22 @@ export class PhysicsWorld
    * @param id
    * @param next
    */
-  public reconcile(id: EntityId, next: PhysicsDefinition): void
-  {
+  public reconcile(id: EntityId, next: PhysicsDefinition): void {
     const previous = this.definitions.get(id);
 
-    if (! previous || previous.kind !== next.kind) {
+    if (!previous || previous.kind !== next.kind) {
       // Build the descriptor before removing an existing object.
       const shape = ColliderFactory.create(next.collider);
       this.remove(id);
 
-      if (next.kind === 'dynamic') {
-        const body = this.simulation.createRigidBody(RigidBodyDesc.dynamic()
-          .setTranslation(next.position.x, next.position.y, next.position.z)
-          .lockRotations().setGravityScale(next.gravityScale).setCcdEnabled(true));
+      if (next.kind === "dynamic") {
+        const body = this.simulation.createRigidBody(
+          RigidBodyDesc.dynamic()
+            .setTranslation(next.position.x, next.position.y, next.position.z)
+            .lockRotations()
+            .setGravityScale(next.gravityScale)
+            .setCcdEnabled(true),
+        );
 
         if (next.velocity) {
           body.setLinvel(next.velocity, true);
@@ -64,17 +70,15 @@ export class PhysicsWorld
         this.colliders.set(
           id,
           this.simulation.createCollider(
-            shape.setTranslation(
-              next.position.x, next.position.y, next.position.z
-            )
-          )
+            shape.setTranslation(next.position.x, next.position.y, next.position.z),
+          ),
         );
       }
     } else {
       const collider = this.colliders.get(id)!;
       const body = this.bodies.get(id);
 
-      if (! ColliderFactory.equals(previous.collider, next.collider)) {
+      if (!ColliderFactory.equals(previous.collider, next.collider)) {
         collider.setShape(ColliderFactory.create(next.collider).shape);
 
         if (body) {
@@ -83,17 +87,16 @@ export class PhysicsWorld
       }
 
       if (body && previous.gravityScale !== next.gravityScale) {
-          body.setGravityScale(next.gravityScale, true);
+        body.setGravityScale(next.gravityScale, true);
       }
 
       if (
-        next.kind === 'static' && (
-          previous.position.x !== next.position.x
-          || previous.position.y !== next.position.y
-          || previous.position.z !== next.position.z
-        )
+        next.kind === "static" &&
+        (previous.position.x !== next.position.x ||
+          previous.position.y !== next.position.y ||
+          previous.position.z !== next.position.z)
       ) {
-          collider.setTranslation(next.position);
+        collider.setTranslation(next.position);
       }
     }
 
@@ -101,7 +104,7 @@ export class PhysicsWorld
       ...next,
       position: { ...next.position },
       velocity: next.velocity ? { ...next.velocity } : undefined,
-      collider: { ...next.collider }
+      collider: { ...next.collider },
     });
   }
 
@@ -109,8 +112,7 @@ export class PhysicsWorld
    *
    * @param id
    */
-  public remove(id: EntityId): void
-  {
+  public remove(id: EntityId): void {
     const body = this.bodies.get(id);
     const collider = this.colliders.get(id);
 
@@ -126,10 +128,9 @@ export class PhysicsWorld
   }
 
   /**
-    *
-    */
-  public dispose(): void
-  {
+   *
+   */
+  public dispose(): void {
     this.simulation.free();
     this.definitions.clear();
     this.bodies.clear();

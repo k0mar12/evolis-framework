@@ -1,6 +1,3 @@
-import { Vec3Component } from '@/evolis/common';
+import { Vec3Component } from "@/evolis/common";
 
-export class ColliderAABBComponent extends Vec3Component
-{
-
-}
+export class ColliderAABBComponent extends Vec3Component {}

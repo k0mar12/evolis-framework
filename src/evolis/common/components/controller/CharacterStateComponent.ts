@@ -1,14 +1,13 @@
-import { Component } from '@/evolis/foundation';
+import { Component } from "@/evolis/foundation";
 
-export class CharacterStateComponent extends Component
-{
-    /**
-     *
-     */
-    public isGrounded: boolean = false;
+export class CharacterStateComponent extends Component {
+  /**
+   *
+   */
+  public isGrounded: boolean = false;
 
-    /**
-     *
-     */
-    public coyoteTimer: number = Infinity;
+  /**
+   *
+   */
+  public coyoteTimer: number = Infinity;
 }

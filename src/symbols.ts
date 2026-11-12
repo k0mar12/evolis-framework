@@ -1,3 +1,3 @@
-import type { Token, InputDevice } from '@/evolis/foundation';
+import type { Token, InputDevice } from "@/evolis/foundation";
 
-export const InputDeviceSymbol = Symbol('InputDeviceSymbol') as Token<InputDevice>;
+export const InputDeviceSymbol = Symbol("InputDeviceSymbol") as Token<InputDevice>;

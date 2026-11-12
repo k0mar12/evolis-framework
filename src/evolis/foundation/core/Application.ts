@@ -1,307 +1,290 @@
-import Stats from 'stats.js';
-import RAPIER from '@dimforge/rapier3d-compat';
+import Stats from "stats.js";
+import RAPIER from "@dimforge/rapier3d-compat";
 import {
-    World,
-    Context,
-    Container,
-    SystemManager,
-    PrefabManager,
-    LevelManager,
-    defaultRenderer,
-    defaultScene,
-    defaultCamera,
-    type Config,
-    type Token,
-    type LevelConstructor,
-} from '@/evolis/foundation';
-import { ModelLoader } from '@/evolis/filesystem';
-import { AxesPrefab, GridPrefab } from '@/evolis/common';
+  World,
+  Context,
+  Container,
+  SystemManager,
+  PrefabManager,
+  LevelManager,
+  defaultRenderer,
+  defaultScene,
+  defaultCamera,
+  type Config,
+  type Token,
+  type LevelConstructor,
+} from "@/evolis/foundation";
+import { ModelLoader } from "@/evolis/filesystem";
+import { AxesPrefab, GridPrefab } from "@/evolis/common";
 
-export class Application
-{
-    /**
-     *
-     */
-    private static instance: Application | null = null;
+export class Application {
+  /**
+   *
+   */
+  private static instance: Application | null = null;
 
-    /**
-     *
-     */
-    public readonly container: Container = new Container();
+  /**
+   *
+   */
+  public readonly container: Container = new Container();
 
-    /**
-     *
-     */
-    public readonly world: World = new World();
+  /**
+   *
+   */
+  public readonly world: World = new World();
 
-    /**
-     *
-     */
-    public readonly modelLoader: ModelLoader = new ModelLoader();
+  /**
+   *
+   */
+  public readonly modelLoader: ModelLoader = new ModelLoader();
 
-    /**
-     *
-     */
-    public readonly stats: Stats = new Stats();
+  /**
+   *
+   */
+  public readonly stats: Stats = new Stats();
 
-    /**
-     *
-     */
-    public readonly systemManager: SystemManager = new SystemManager();
+  /**
+   *
+   */
+  public readonly systemManager: SystemManager = new SystemManager();
 
-    /**
-     *
-     */
-    public readonly prefabManager: PrefabManager = new PrefabManager();
+  /**
+   *
+   */
+  public readonly prefabManager: PrefabManager = new PrefabManager();
 
-    /**
-     *
-     */
-    public readonly levelManager: LevelManager = new LevelManager();
+  /**
+   *
+   */
+  public readonly levelManager: LevelManager = new LevelManager();
 
-    /**
-     *
-     */
-    public readonly context: Context;
+  /**
+   *
+   */
+  public readonly context: Context;
 
-    /**
-     *
-     */
-    public readonly canvas: HTMLElement;
+  /**
+   *
+   */
+  public readonly canvas: HTMLElement;
 
-    /**
-     *
-     */
-    public lastTick: DOMHighResTimeStamp = performance.now();
+  /**
+   *
+   */
+  public lastTick: DOMHighResTimeStamp = performance.now();
 
-    /**
-     *
-     */
-    protected isLoaded: boolean = false;
+  /**
+   *
+   */
+  protected isLoaded: boolean = false;
 
-    /**
-     *
-     */
-    private readonly fixedDeltaTime: number = 1 / 60;
+  /**
+   *
+   */
+  private readonly fixedDeltaTime: number = 1 / 60;
 
-    /**
-     *
-     * @private
-     */
-    private simulationAccumulator: number = 0;
+  /**
+   *
+   * @private
+   */
+  private simulationAccumulator: number = 0;
 
-    /**
-     *
-     * @param config
-     */
-    constructor(
-        protected config: Config
-    )
-    {
-        this.canvas = this.getCanvas();
+  /**
+   *
+   * @param config
+   */
+  constructor(protected config: Config) {
+    this.canvas = this.getCanvas();
 
-        this.context = new Context(
-            this.config.renderer(this.canvas),
-            this.config.scene(),
-            this.config.camera()
-        );
+    this.context = new Context(
+      this.config.renderer(this.canvas),
+      this.config.scene(),
+      this.config.camera(),
+    );
 
-        this.initStats();
-        this.initDebug();
+    this.initStats();
+    this.initDebug();
+  }
+
+  /**
+   *
+   */
+  private initStats(): void {
+    this.stats.showPanel(0);
+
+    document.body.appendChild(this.stats.dom);
+  }
+
+  /**
+   *
+   * @returns
+   */
+  private initDebug(): void {
+    if (!this.config.debug) {
+      return;
     }
 
-    /**
-     *
-     */
-    private initStats(): void
-    {
-        this.stats.showPanel(0);
+    this.world.insert(new AxesPrefab(), new GridPrefab());
+  }
 
-        document.body.appendChild(this.stats.dom);
+  /**
+   *
+   * @returns
+   */
+  private getCanvas(): HTMLElement {
+    const canvas = document.getElementById(this.config.canvas);
+
+    if (!(canvas instanceof HTMLElement)) {
+      throw new Error("Canvas not found");
     }
 
-    /**
-     *
-     * @returns
-     */
-    private initDebug(): void
-    {
-        if (! this.config.debug) {
-            return;
-        }
+    return canvas;
+  }
 
-        this.world.insert(
-            new AxesPrefab(),
-            new GridPrefab()
-        );
+  /**
+   *
+   */
+  private setLoaded(): void {
+    this.isLoaded = true;
+  }
+
+  /**
+   *
+   * @returns
+   */
+  private getDeltaTime(): number {
+    const currentTick = performance.now();
+    const deltaTime = (currentTick - this.lastTick) / 1000;
+
+    this.lastTick = currentTick;
+
+    return deltaTime;
+  }
+
+  /**
+   *
+   */
+  private loop = (): void => {
+    this.stats.begin();
+
+    const dt = Math.min(this.getDeltaTime(), 0.1);
+
+    this.simulationAccumulator += dt;
+
+    while (this.simulationAccumulator >= this.fixedDeltaTime) {
+      for (const system of this.systemManager.simulationSystems) {
+        system.update({ deltaTime: this.fixedDeltaTime });
+      }
+      this.simulationAccumulator -= this.fixedDeltaTime;
     }
 
-    /**
-     *
-     * @returns
-     */
-    private getCanvas(): HTMLElement
-    {
-        const canvas = document.getElementById(this.config.canvas);
-
-        if (! (canvas instanceof HTMLElement)) {
-            throw new Error('Canvas not found');
-        }
-
-        return canvas;
+    for (const system of this.systemManager.frameSystems) {
+      system.update({
+        deltaTime: dt,
+        interpolationAlpha: this.simulationAccumulator / this.fixedDeltaTime,
+      });
     }
 
-    /**
-     *
-     */
-    private setLoaded(): void
-    {
-        this.isLoaded = true;
+    this.context.makeTick();
+
+    this.stats.end();
+
+    requestAnimationFrame(this.loop);
+  };
+
+  /**
+   *
+   * @returns
+   */
+  public static defaultConfig(): Config {
+    return {
+      canvas: "game",
+      debug: false,
+      renderer: defaultRenderer,
+      scene: defaultScene,
+      camera: defaultCamera,
+      level: null,
+    };
+  }
+
+  /**
+   *
+   * @param token
+   * @param service
+   * @returns
+   */
+  public inject<T>(token: Token<T>, service: T): Application {
+    this.container.bind<T>(token, service);
+
+    return this;
+  }
+
+  /**
+   *
+   */
+  public async loadLevel(link: LevelConstructor): Promise<void> {
+    if (!this.isLoaded) {
+      throw new Error("Canvas not loaded");
     }
 
-    /**
-     *
-     * @returns
-     */
-    private getDeltaTime(): number
-    {
-        const currentTick = performance.now();
-        const deltaTime = (currentTick - this.lastTick) / 1000;
+    const level = new link(this.world, this.modelLoader, this.prefabManager.list);
 
-        this.lastTick = currentTick;
+    await level.load();
+  }
 
-        return deltaTime;
+  /**
+   *
+   */
+  public async start(): Promise<void> {
+    await Promise.all([
+      this.systemManager.load(this.context, this.world),
+      this.prefabManager.load(),
+    ]);
+
+    for (const system of this.systemManager.systems) {
+      system.boot();
     }
 
-    /**
-     *
-     */
-    private loop = (): void =>
-    {
-        this.stats.begin();
+    this.lastTick = performance.now();
+    this.simulationAccumulator = 0;
+    this.loop();
 
-        const dt = Math.min(this.getDeltaTime(), 0.1);
+    this.setLoaded();
+  }
 
-        this.simulationAccumulator += dt;
-
-        while (this.simulationAccumulator >= this.fixedDeltaTime) {
-            for (const system of this.systemManager.simulationSystems) {
-                system.update({ deltaTime: this.fixedDeltaTime });
-            }
-            this.simulationAccumulator -= this.fixedDeltaTime;
-        }
-
-        for (const system of this.systemManager.frameSystems) {
-            system.update({ deltaTime: dt, interpolationAlpha: this.simulationAccumulator / this.fixedDeltaTime });
-        }
-
-        this.context.makeTick();
-
-        this.stats.end();
-
-        requestAnimationFrame(this.loop);
+  /**
+   *
+   * @param config
+   * @returns
+   */
+  public static async create(config: Partial<Config> = {}): Promise<Application> {
+    if (Application.instance) {
+      throw new Error("Engine already created");
     }
 
-    /**
-     *
-     * @returns
-     */
-    public static defaultConfig(): Config
-    {
-        return {
-            canvas: 'game',
-            debug: false,
-            renderer: defaultRenderer,
-            scene: defaultScene,
-            camera: defaultCamera,
-            level: null
-        };
+    await RAPIER.init();
+
+    Application.instance = new Application({ ...Application.defaultConfig(), ...config });
+
+    return Application.instance;
+  }
+
+  /**
+   *
+   * @returns
+   */
+  public static get(): Application {
+    if (!Application.instance) {
+      throw new Error("Engine not created");
     }
 
-    /**
-     *
-     * @param token
-     * @param service
-     * @returns
-     */
-    public inject<T>(token: Token<T>, service: T): Application
-    {
-        this.container.bind<T>(token, service);
+    return Application.instance;
+  }
 
-        return this;
-    }
-
-    /**
-     *
-     */
-    public async loadLevel(link: LevelConstructor): Promise<void>
-    {
-        if (! this.isLoaded) {
-            throw new Error('Canvas not loaded');
-        }
-
-        const level = new link(this.world, this.modelLoader, this.prefabManager.list);
-
-        await level.load();
-    }
-
-    /**
-     *
-     */
-    public async start(): Promise<void>
-    {
-        await Promise.all([
-            this.systemManager.load(this.context, this.world),
-            this.prefabManager.load()
-        ]);
-
-        for (const system of this.systemManager.systems) {
-            system.boot();
-        }
-
-        this.lastTick = performance.now();
-        this.simulationAccumulator = 0;
-        this.loop();
-
-        this.setLoaded();
-    }
-
-    /**
-     *
-     * @param config
-     * @returns
-     */
-    public static async create(config: Partial<Config> = {}): Promise<Application>
-    {
-        if (Application.instance) {
-            throw new Error('Engine already created');
-        }
-
-        await RAPIER.init();
-
-        Application.instance = new Application({ ...Application.defaultConfig(), ...config });
-
-        return Application.instance;
-    }
-
-    /**
-     *
-     * @returns
-     */
-    public static get(): Application
-    {
-        if (! Application.instance) {
-            throw new Error('Engine not created');
-        }
-
-        return Application.instance;
-    }
-
-    /**
-     *
-     */
-    public static reset(): void
-    {
-        Application.instance = null;
-    }
+  /**
+   *
+   */
+  public static reset(): void {
+    Application.instance = null;
+  }
 }

@@ -1,6 +1,3 @@
-import { Component } from '@/evolis/foundation';
+import { Component } from "@/evolis/foundation";
 
-export class InSceneComponent extends Component
-{
-
-}
+export class InSceneComponent extends Component {}

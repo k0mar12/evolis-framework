@@ -1,6 +1,3 @@
-import { Component } from '@/evolis/foundation';
+import { Component } from "@/evolis/foundation";
 
-export class RemoveSceneComponent extends Component
-{
-
-}
+export class RemoveSceneComponent extends Component {}
