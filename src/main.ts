@@ -13,15 +13,15 @@ import RockPrefab from '@/prefabs/RockPrefab.ts';
 
 import WorldLevel from '@/levels/WorldLevel';
 
-const evolis = Application
-    .create({ debug: true })
-    .inject<InputDevice>(InputDeviceSymbol, new Keyboard());
+const evolis = await Application.create({ debug: true });
+
+evolis.inject<InputDevice>(InputDeviceSymbol, new Keyboard());
 
 await evolis.world.insert(
     new CameraPrefab(),
-    new TerrainPrefab(),
+    // new TerrainPrefab(),
     // new WallPrefab(),
-    new PlayerPrefab(),
+    new PlayerPrefab({ x: 0, y: 2, z: 0 }),
     new AmbientPrefab(),
     new SunPrefab(),
     // new RockPrefab(),

@@ -1,3 +1,4 @@
+import { SystemUpdateMode } from '@/evolis/foundation';
 import {
     System,
     Filter,
@@ -12,6 +13,8 @@ import { InputDeviceSymbol } from '@/symbols';
 
 export default class InputSystem extends System
 {
+    public override readonly updateMode = SystemUpdateMode.Fixed;
+
     /**
      *
      */

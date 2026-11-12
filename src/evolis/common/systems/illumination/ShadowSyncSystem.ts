@@ -25,8 +25,10 @@ export class ShadowSyncSystem extends System
             const { object } = this.world.getComponent<SceneNodeComponent>(id, SceneNodeComponent);
             const { cast, receive } = this.world.getComponent<ShadowComponent>(id, ShadowComponent);
 
-            object.castShadow = cast;
-            object.receiveShadow = receive;
+            object.traverse((node) => {
+                node.castShadow = cast;
+                node.receiveShadow = receive;
+            });
         });
     }
 }

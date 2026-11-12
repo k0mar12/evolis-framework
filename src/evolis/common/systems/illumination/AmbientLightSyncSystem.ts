@@ -22,7 +22,7 @@ export class AmbientLightSyncSystem extends BaseLightSyncSystem<AmbientLightComp
      * @param node
      * @param component
      */
-    protected override apply(id: EntityId, node: AmbientLight, component: AmbientLightComponent): void
+    protected override apply(_id: EntityId, _node: AmbientLight, _component: AmbientLightComponent): void
     {
     }
 }

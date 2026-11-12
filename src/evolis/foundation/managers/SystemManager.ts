@@ -1,70 +1,104 @@
 import {
-    SkeletonLoader,
-    type ModuleLoader
+  SkeletonLoader,
+  type ModuleLoader
 } from '@/evolis/filesystem';
 
 import {
-    FollowCameraSystem,
-    AmbientLightSyncSystem,
-    DirectionalLightSyncSystem,
-    ShadowSyncSystem,
-    CollisionAABBSystem,
-    GravitySystem,
-    MovementSystem,
-    RenderSystem,
-    SceneSystem
+  FollowCameraSystem,
+  AmbientLightSyncSystem,
+  DirectionalLightSyncSystem,
+  ShadowSyncSystem,
+  PhysicsRegistrationSystem,
+  PhysicsSyncSystem,
+  CharacterGroundingSystem,
+  MovementSystem,
+  RenderSystem,
+  SceneSystem
 } from '@/evolis/common';
 
 import {
-    Collection,
-    System,
-    Context,
-    World,
-    type SystemConstructor
+  Collection,
+  System,
+  SystemUpdateMode,
+  Context,
+  World,
+  type SystemConstructor
 } from '@/evolis/foundation';
 
 export class SystemManager
 {
-    /**
-     *
-     */
-    protected list: System[] = [];
+  /**
+    *
+    */
+  protected list: System[] = [];
 
-    /**
-     *
-     */
-    protected readonly inbox: Collection<SystemConstructor> = new Collection([
-        FollowCameraSystem,
-        AmbientLightSyncSystem,
-        DirectionalLightSyncSystem,
-        ShadowSyncSystem,
-        CollisionAABBSystem,
-        GravitySystem,
-        MovementSystem,
-        RenderSystem,
-        SceneSystem
-    ]);
+  /**
+    *
+    * @private
+    */
+  private fixedList: System[] = [];
 
-    /**
-     *
-     */
-    public get systems(): System[]
-    {
-        return this.list;
-    }
+  /**
+    *
+    * @private
+    */
+  private frameList: System[] = [];
 
-    /**
-     *
-     */
-    public async load(context: Context, world: World): Promise<void>
-    {
-        const income = import.meta.glob('@/systems/**/*.{js,ts,mjs}') as ModuleLoader<SystemConstructor>;
+  /**
+    *
+    */
+  protected readonly inbox: Collection<SystemConstructor> = new Collection([
+    FollowCameraSystem,
+    AmbientLightSyncSystem,
+    DirectionalLightSyncSystem,
+    ShadowSyncSystem,
+    PhysicsRegistrationSystem,
+    PhysicsSyncSystem,
+    CharacterGroundingSystem,
+    MovementSystem,
+    RenderSystem,
+    SceneSystem
+  ]);
 
-        const systems = await SkeletonLoader.load(income);
+  /**
+    *
+    */
+  public get simulationSystems(): readonly System[]
+  {
+    return this.fixedList;
+  }
 
-        this.list = this.inbox.merge(systems)
-            .toArray()
-            .map((system) => new system(context, world))
-            .sort((a, b): number => a.order - b.order);
-    }
+  /**
+    *
+    */
+  public get frameSystems(): readonly System[]
+  {
+    return this.frameList;
+  }
+
+  /**
+    *
+    */
+  public get systems(): System[]
+  {
+    return this.list;
+  }
+
+  /**
+    *
+    */
+  public async load(context: Context, world: World): Promise<void>
+  {
+    const income = import.meta.glob('@/systems/**/*.{js,ts,mjs}') as ModuleLoader<SystemConstructor>;
+
+    const systems = await SkeletonLoader.load(income);
+
+    this.list = this.inbox.merge(systems)
+        .toArray()
+        .map((system) => new system(context, world))
+        .sort((a, b): number => a.order - b.order);
+
+    this.fixedList = this.list.filter(system => system.updateMode === SystemUpdateMode.Fixed);
+    this.frameList = this.list.filter(system => system.updateMode === SystemUpdateMode.Frame);
+  }
 }

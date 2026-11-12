@@ -1,53 +1,33 @@
-import { Mesh, PlaneGeometry, MeshStandardMaterial } from 'three';
+import { type Object3D } from 'three';
 import {
-    SceneNodeComponent,
     Component,
+    SceneNodeComponent,
     TransformComponent,
-    ColliderAABBComponent,
+    ColliderTrimeshComponent,
     StaticBodyComponent,
-    RotationComponent,
     ShadowComponent,
-    type Vec3,
+    MeshBuilder,
     type Prefab,
 } from '@/evolis';
 
 export default class TerrainPrefab implements Prefab
 {
-    /**
-     * 
-     * @param position
-     */
     constructor(
-        protected position: Vec3 = { x: 0, y: -0.0001, z: 0 }
+        protected source: Object3D,
     )
     {
     }
 
-    /**
-     * 
-     * @returns
-     */
-    private asset(): Mesh
-    {
-        const geometry = new PlaneGeometry(50, 50);
-        const material = new MeshStandardMaterial({ metalness: 0, roughness: 1 });
-        
-        return new Mesh(geometry, material);
-    }
-
-    /**
-     * 
-     * @returns
-     */
     public async components(): Promise<Component[]>
     {
+        const meshBuilder = new MeshBuilder(this.source);
+
         return [
-            new SceneNodeComponent<Mesh>(this.asset()),
-            new TransformComponent(this.position),
-            new RotationComponent({ x: -Math.PI / 2 }),
+            new SceneNodeComponent(this.source),
+            new TransformComponent(),
             new ShadowComponent({ receive: true }),
             new StaticBodyComponent(),
-            new ColliderAABBComponent({ x: 25, y: 0.1, z: 25 })
+            new ColliderTrimeshComponent(meshBuilder.float32Verticies, meshBuilder.uint32Indices),
         ];
     }
 }

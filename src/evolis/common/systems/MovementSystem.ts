@@ -1,8 +1,13 @@
-import { System, Filter, SystemPhase, type Tick } from '@/evolis/foundation';
-import { TransformComponent, VelocityComponent } from '@/evolis/common';
+import { System, Filter, SystemPhase, SystemUpdateMode, type Tick } from '@/evolis/foundation';
+import { DynamicBodyComponent, TransformComponent, VelocityComponent } from '@/evolis/common';
 
 export class MovementSystem extends System
 {
+    /**
+     *
+     */
+    public override readonly updateMode = SystemUpdateMode.Fixed;
+
     /**
      *
      */
@@ -11,7 +16,9 @@ export class MovementSystem extends System
     /**
      *
      */
-    public override readonly filter: Filter = new Filter().with(TransformComponent, VelocityComponent);
+    public override readonly filter: Filter = new Filter()
+        .with(TransformComponent, VelocityComponent)
+        .without(DynamicBodyComponent);
 
     /**
      * 

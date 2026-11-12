@@ -1,3 +1,4 @@
+import { SystemUpdateMode } from '@/evolis/foundation';
 import {
     Collection,
     Filter,
@@ -23,6 +24,11 @@ type Deps = {
 }
 export class CollisionAABBSystem extends System
 {
+    /**
+     *
+     */
+    public override readonly updateMode = SystemUpdateMode.Fixed;
+
     /**
      *
      */

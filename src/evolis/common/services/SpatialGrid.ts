@@ -15,7 +15,9 @@ export class SpatialGrid
      */
     constructor(
         private readonly cellSize: number = 10
-    ) {}
+    )
+    {
+    }
 
     /**
      * Convert world coords → cell coords

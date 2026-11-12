@@ -1,3 +1,4 @@
 export type Tick = {
-    deltaTime: number
+    deltaTime: number,
+    interpolationAlpha?: number
 };

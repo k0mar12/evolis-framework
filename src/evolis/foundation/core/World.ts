@@ -1,3 +1,4 @@
+import { PhysicsWorld } from './PhysicsWorld';
 import {
     Component,
     ComponentRegistry,
@@ -11,8 +12,19 @@ export class World
 {
     /**
      *
+     * @private
+     */
+    private readonly entityChangeListeners = new Set<(id: EntityId) => void>();
+
+    /**
+     *
      */
     public readonly query: Query = new Query();
+
+    /**
+     *
+     */
+    public readonly physics = new PhysicsWorld();
 
     /**
      *
@@ -23,6 +35,32 @@ export class World
      *
      */
     protected nextEntityId: EntityId = 0;
+
+    /**
+     * Subscribe to component additions, replacements, removals and entity destruction.
+     *
+     * @param listener
+     */
+    public onEntityChanged(listener: (id: EntityId) => void): () => void
+    {
+        this.entityChangeListeners.add(listener);
+
+        return () => {
+            this.entityChangeListeners.delete(listener);
+        };
+    }
+
+    /**
+     * Call after editing static physics geometry or transforms in place.
+     *
+     * @param id
+     */
+    public markEntityChanged(id: EntityId): void
+    {
+        for (const listener of this.entityChangeListeners) {
+            listener(id);
+        }
+    }
 
     /**
      * 
@@ -41,6 +79,7 @@ export class World
     {
         this.components.forEach(storage => storage.delete(id));
         this.query.remove(id);
+        this.markEntityChanged(id);
     }
 
     /**
@@ -64,6 +103,7 @@ export class World
         const newMask = oldMask | ComponentRegistry.getBit(type);
 
         this.query.invalidate(id, oldMask, newMask);
+        this.markEntityChanged(id);
     }
 
     /**
@@ -79,6 +119,7 @@ export class World
         const newMask = oldMask & ~ComponentRegistry.getBit(type.name);
 
         this.query.invalidate(id, oldMask, newMask);
+        this.markEntityChanged(id);
     }
 
     /**

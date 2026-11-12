@@ -1,12 +1,18 @@
+//-- Main
+export { Action } from './main/Action';
+
+export { SampleAction } from './actions/SampleAction';
+
 //-- Basic Components
 export { LightComponent } from './components/LightComponent';
 export { SceneNodeComponent } from './components/SceneNodeComponent';
 
-//-- Sapce components
+//-- Space components
 export { Vec3Component } from './components/Vec3Component';
 export { TransformComponent } from './components/space/TransformComponent';
 export { VelocityComponent } from './components/space/VelocityComponent';
 export { RotationComponent } from './components/space/RotationComponent';
+export { InterpolatedTransformComponent } from './components/space/InterpolatedTransformComponent';
 
 //-- Camera components
 export { FollowCameraComponent } from './components/camera/FollowCameraComponent';
@@ -14,6 +20,7 @@ export { FollowCameraComponent } from './components/camera/FollowCameraComponent
 //-- Controller components
 export { InputControllerComponent } from './components/controller/InputControllerComponent';
 export { SettingsControllerComponent } from './components/controller/SettingsControllerComponent';
+export { CharacterStateComponent } from './components/controller/CharacterStateComponent';
 
 //-- Light components
 export { AmbientLightComponent } from './components/illumination/AmbientLightComponent';
@@ -22,12 +29,15 @@ export { ShadowComponent } from './components/illumination/ShadowComponent';
 
 //-- Collider components
 export { ColliderAABBComponent } from './components/physics/ColliderAABBComponent';
-export { ColliderCapsule } from './components/physics/ColliderCapsule';
+export { ColliderCapsuleComponent } from './components/physics/ColliderCapsuleComponent';
 export { GravityComponent } from './components/physics/GravityComponent';
+export { ColliderTrimeshComponent } from './components/physics/ColliderTrimeshComponent';
 
 //-- Physics tag components
 export { DynamicBodyComponent } from './components/physics/tags/DynamicBodyComponent';
 export { StaticBodyComponent } from './components/physics/tags/StaticBodyComponent';
+export { PhysicsSyncSystem } from './systems/physics/PhysicsSyncSystem';
+export { CharacterGroundingSystem } from './systems/physics/CharacterGroundingSystem';
 
 //-- Basic tag components
 export { InSceneComponent } from './components/tags/InSceneComponent';
@@ -60,10 +70,11 @@ export { ShadowSyncSystem } from './systems/illumination/ShadowSyncSystem';
 
 //-- Collision systems
 export { CollisionAABBSystem } from './systems/physics/CollisionAABBSystem';
-export { GravitySystem } from './systems/physics/GravitySystem';
 
 //-- Basic types
 export type { LightOptions } from './types/LightOptions';
 export type { ShadowOptions } from './types/ShadowOptions';
 export type { Speed } from './types/Speed';
 export type { Vec3 } from './types/Vec3';
+
+export { PhysicsRegistrationSystem } from './systems/physics/PhysicsRegistrationSystem';

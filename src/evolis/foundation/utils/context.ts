@@ -13,7 +13,6 @@ import {
     DirectionalLightSyncSystem,
     ShadowSyncSystem,
     CollisionAABBSystem,
-    GravitySystem,
     MovementSystem,
     RenderSystem,
     SceneSystem
@@ -68,7 +67,6 @@ export const defaultSystems = (): SystemConstructor[] => ([
     DirectionalLightSyncSystem,
     ShadowSyncSystem,
     CollisionAABBSystem,
-    GravitySystem,
     MovementSystem,
     RenderSystem,
     SceneSystem

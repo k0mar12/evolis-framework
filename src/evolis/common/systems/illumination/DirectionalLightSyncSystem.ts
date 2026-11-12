@@ -22,7 +22,7 @@ export class DirectionalLightSyncSystem extends BaseLightSyncSystem<DirectionalL
      * @param node
      * @param component
      */
-    protected override apply(id: EntityId, node: DirectionalLight, component: DirectionalLightComponent): void
+    protected override apply(_id: EntityId, node: DirectionalLight, component: DirectionalLightComponent): void
     {
         // node.castShadow = component.castShadow;
         node.shadow.mapSize.width = component.shadowMapSize;

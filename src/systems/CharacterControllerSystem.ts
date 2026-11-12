@@ -1,3 +1,4 @@
+import { SystemUpdateMode } from '@/evolis/foundation';
 import {
     System,
     Filter,
@@ -5,13 +6,18 @@ import {
     SettingsControllerComponent,
     PlayerControlledComponent,
     VelocityComponent,
-    GravityComponent,
+    CharacterStateComponent,
     SystemPhase,
     type Tick,
 } from '@/evolis';
 
 export default class CharacterControllerSystem extends System
 {
+    /**
+     *
+     */
+    public override readonly updateMode = SystemUpdateMode.Fixed;
+
     /**
      *
      */
@@ -25,15 +31,15 @@ export default class CharacterControllerSystem extends System
         InputControllerComponent,
         SettingsControllerComponent,
         VelocityComponent,
-        GravityComponent
+        CharacterStateComponent
     );
 
     /**
-     * 
+     *
      * @param current
-     * @param target 
-     * @param maxDelta 
-     * @returns 
+     * @param target
+     * @param maxDelta
+     * @returns
      */
     public moveTowards(current: number, target: number, maxDelta: number): number
     {
@@ -45,7 +51,7 @@ export default class CharacterControllerSystem extends System
     }
 
     /**
-     * 
+     *
      * @param param0
      */
     public update({ deltaTime}: Tick): void
@@ -54,15 +60,23 @@ export default class CharacterControllerSystem extends System
             const input = this.world.getComponent<InputControllerComponent>(id, InputControllerComponent);
             const settings = this.world.getComponent<SettingsControllerComponent>(id, SettingsControllerComponent);
             const velocity = this.world.getComponent<VelocityComponent>(id, VelocityComponent);
-            const gravity = this.world.getComponent<GravityComponent>(id, GravityComponent);
+            const gravity = this.world.getComponent<CharacterStateComponent>(id, CharacterStateComponent);
 
             const speed = input.runHeld ? settings.speed.run : settings.speed.walk;
 
             const maxDelta = settings.acceleration * deltaTime;
 
-            velocity.x = this.moveTowards(velocity.x, input.moveX * speed, maxDelta);
-            velocity.z = this.moveTowards(velocity.z, input.moveZ * speed, maxDelta);
+            const body = this.world.physics.bodies.get(id);
 
+            if (! body) {
+              return;
+            }
+
+            const motion = body.linvel();
+            velocity.x = this.moveTowards(motion.x, input.moveX * speed, maxDelta);
+            velocity.z = this.moveTowards(motion.z, input.moveZ * speed, maxDelta);
+
+            velocity.y = motion.y;
             gravity.coyoteTimer = gravity.isGrounded ? 0 : gravity.coyoteTimer + deltaTime;
 
             const canCoyoteJump = gravity.coyoteTimer <= settings.coyoteTime;
@@ -73,6 +87,8 @@ export default class CharacterControllerSystem extends System
                 gravity.isGrounded = false;
                 input.jumpBufferTimer = Infinity;
             }
+
+            body.setLinvel(velocity, true);
         })
     }
 }

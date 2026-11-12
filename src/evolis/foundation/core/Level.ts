@@ -1,6 +1,8 @@
-import {World, type PrefabsList, type Prefab} from '@/evolis/foundation';
+import { Mesh, type Matrix4, type Object3D } from 'three';
+import { World, type PrefabsList, type Prefab, type LoadedModel } from '@/evolis/foundation';
 import { ModelLoader, type FilePath } from '@/evolis/filesystem';
-import { type Group, type Object3D } from 'three';
+
+type Nodes = { mesh: Mesh; matrix: Matrix4; prefab: string }[];
 
 export abstract class Level
 {
@@ -28,7 +30,7 @@ export abstract class Level
      * @param node
      * @private
      */
-    private getPrefabOfNode(node: Object3D): string | null
+    protected getPrefabOfNode(node: Object3D): string | null
     {
         const str: string = node?.userData?.name ?? '';
         const match = str.match(/\[(.*?)]/);
@@ -36,31 +38,59 @@ export abstract class Level
         return match ? match[1] : null;
     }
 
+    /**
+     *
+     * @param scene
+     * @private
+     */
+    protected collectNodesFromScene(scene: Object3D): Nodes
+    {
+        const nodes: Nodes = [];
+
+        scene.updateWorldMatrix(true, true);
+
+        scene.traverse((node) => {
+            if (! (node instanceof Mesh)) {
+                return;
+            }
+
+            console.log(node)
+
+            const prefab = this.getPrefabOfNode(node);
+
+            if (prefab !== null && this.prefabs.has(prefab)) {
+                nodes.push({ mesh: node, matrix: node.matrixWorld.clone(), prefab });
+            }
+        });
+
+        return nodes;
+    }
 
     /**
      *
-     * @param group
+     * @param model
      * @private
      */
-    private async parseScene(group: Group): Promise<void>
+    private async append(model: LoadedModel): Promise<void>
     {
         const prefabs: Prefab[] = [];
 
-        group.traverse((node) => {
-            if (node.isMesh) {
-                const prefab = this.getPrefabOfNode(node);
+        for (const { mesh, matrix, prefab } of this.collectNodesFromScene(model.scene)) {
+            mesh.matrix.copy(matrix);
+            mesh.matrix.decompose(mesh.position, mesh.quaternion, mesh.scale);
 
-                if (prefab !== null && this.prefabs.has(prefab)) {
-                    const link = this.prefabs.get(prefab);
+            mesh.matrixAutoUpdate = false;
 
-                    if (link === undefined) {
-                        throw new Error('Prefab not found.');
-                    }
+            mesh.updateWorldMatrix(false, true);
 
-                    prefabs.push(new link(node));
-                }
+            const constructor = this.prefabs.get(prefab);
+
+            if (! constructor) {
+                throw new Error(`Prefab not found: ${prefab}`);
             }
-        });
+
+            prefabs.push(new constructor(mesh));
+        }
 
         await this.world.insert(...prefabs);
     }
@@ -76,6 +106,6 @@ export abstract class Level
             throw new Error(`Could not load model loader: ${this.file}`);
         }
 
-        await this.parseScene(result.scene);
+        await this.append(result);
     }
 }

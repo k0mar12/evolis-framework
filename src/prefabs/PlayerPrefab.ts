@@ -1,17 +1,17 @@
 import {
     SceneNodeComponent,
     TransformComponent,
+    InterpolatedTransformComponent,
     ShadowComponent,
     VelocityComponent,
     PlayerControlledComponent,
     InputControllerComponent,
     SettingsControllerComponent,
-    GravityComponent,
+    CharacterStateComponent,
     TargetCameraComponent,
     Component,
     DynamicBodyComponent,
-    ColliderAABBComponent,
-    // ColliderCapsule,
+    ColliderCapsuleComponent,
     type Prefab,
     type Vec3,
 } from '@/evolis';
@@ -20,10 +20,8 @@ import { BoxGeometry, MeshNormalMaterial, Mesh } from 'three';
 export default class PlayerPrefab implements Prefab
 {
     /**
-     * 
-     * @param x
-     * @param y 
-     * @param z 
+     *
+     * @param position
      */
     constructor(
         protected position: Vec3 = { x: 0, y: 0, z: 0 }
@@ -52,16 +50,16 @@ export default class PlayerPrefab implements Prefab
         return [
             new SceneNodeComponent<Mesh>(this.asset()),
             new TransformComponent(this.position),
+            new InterpolatedTransformComponent(this.position),
             new ShadowComponent({ cast: true }),
             new VelocityComponent(),
-            new GravityComponent(2),
+            new CharacterStateComponent(),
             new InputControllerComponent(),
             new PlayerControlledComponent(),
             new SettingsControllerComponent(),
             new TargetCameraComponent(),
-            new DynamicBodyComponent(),
-            // new ColliderCapsule(0.4, 1.2),
-            new ColliderAABBComponent({ x: 0.5, y: 0.5, z: 0.5 })
+            new DynamicBodyComponent(2),
+            new ColliderCapsuleComponent(0.4, 1.2),
         ];
     }
 }

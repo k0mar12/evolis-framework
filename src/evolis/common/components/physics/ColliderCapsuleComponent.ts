@@ -1,6 +1,6 @@
 import { Component } from "@/evolis/foundation";
 
-export class ColliderCapsule extends Component
+export class ColliderCapsuleComponent extends Component
 {
     constructor(
         public radius: number,

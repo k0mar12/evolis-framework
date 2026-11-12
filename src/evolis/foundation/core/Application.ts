@@ -1,4 +1,5 @@
 import Stats from 'stats.js';
+import RAPIER from '@dimforge/rapier3d-compat';
 import {
     World,
     Context,
@@ -29,7 +30,7 @@ export class Application
     public readonly container: Container = new Container();
 
     /**
-     * 
+     *
      */
     public readonly world: World = new World();
 
@@ -64,12 +65,12 @@ export class Application
     public readonly context: Context;
 
     /**
-     * 
+     *
      */
     public readonly canvas: HTMLElement;
 
     /**
-     * 
+     *
      */
     public lastTick: DOMHighResTimeStamp = performance.now();
 
@@ -78,9 +79,19 @@ export class Application
      */
     protected isLoaded: boolean = false;
 
+    /**
+     *
+     */
+    private readonly fixedDeltaTime: number = 1 / 60;
 
     /**
-     * 
+     *
+     * @private
+     */
+    private simulationAccumulator: number = 0;
+
+    /**
+     *
      * @param config
      */
     constructor(
@@ -100,7 +111,7 @@ export class Application
     }
 
     /**
-     * 
+     *
      */
     private initStats(): void
     {
@@ -110,7 +121,7 @@ export class Application
     }
 
     /**
-     * 
+     *
      * @returns
      */
     private initDebug(): void
@@ -126,7 +137,7 @@ export class Application
     }
 
     /**
-     * 
+     *
      * @returns
      */
     private getCanvas(): HTMLElement
@@ -149,7 +160,7 @@ export class Application
     }
 
     /**
-     * 
+     *
      * @returns
      */
     private getDeltaTime(): number
@@ -158,7 +169,7 @@ export class Application
         const deltaTime = (currentTick - this.lastTick) / 1000;
 
         this.lastTick = currentTick;
-        
+
         return deltaTime;
     }
 
@@ -169,10 +180,19 @@ export class Application
     {
         this.stats.begin();
 
-        const dt = this.getDeltaTime();
+        const dt = Math.min(this.getDeltaTime(), 0.1);
 
-        for (const system of this.systemManager.systems) {
-            system.update({ deltaTime: dt });
+        this.simulationAccumulator += dt;
+
+        while (this.simulationAccumulator >= this.fixedDeltaTime) {
+            for (const system of this.systemManager.simulationSystems) {
+                system.update({ deltaTime: this.fixedDeltaTime });
+            }
+            this.simulationAccumulator -= this.fixedDeltaTime;
+        }
+
+        for (const system of this.systemManager.frameSystems) {
+            system.update({ deltaTime: dt, interpolationAlpha: this.simulationAccumulator / this.fixedDeltaTime });
         }
 
         this.context.makeTick();
@@ -183,7 +203,7 @@ export class Application
     }
 
     /**
-     * 
+     *
      * @returns
      */
     public static defaultConfig(): Config
@@ -199,7 +219,7 @@ export class Application
     }
 
     /**
-     * 
+     *
      * @param token
      * @param service
      * @returns
@@ -226,7 +246,7 @@ export class Application
     }
 
     /**
-     * 
+     *
      */
     public async start(): Promise<void>
     {
@@ -239,21 +259,25 @@ export class Application
             system.boot();
         }
 
+        this.lastTick = performance.now();
+        this.simulationAccumulator = 0;
         this.loop();
 
         this.setLoaded();
     }
 
     /**
-     * 
+     *
      * @param config
-     * @returns 
+     * @returns
      */
-    public static create(config: Partial<Config> = {}): Application
+    public static async create(config: Partial<Config> = {}): Promise<Application>
     {
         if (Application.instance) {
             throw new Error('Engine already created');
         }
+
+        await RAPIER.init();
 
         Application.instance = new Application({ ...Application.defaultConfig(), ...config });
 
@@ -261,7 +285,7 @@ export class Application
     }
 
     /**
-     * 
+     *
      * @returns
      */
     public static get(): Application

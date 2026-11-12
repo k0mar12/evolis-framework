@@ -1,3 +1,5 @@
+export { MeshBuilder } from './builders/MeshBuilder.ts';
+
 export { Application } from './core/Application';
 export { World } from './core/World';
 export { System } from './core/System';
@@ -6,6 +8,7 @@ export { Context } from './core/Context';
 export { Container } from './core/Container';
 export { Level } from './core/Level.ts';
 
+export { SystemUpdateMode } from './enums/SystemUpdateMode';
 export { SystemPhase } from './enums/SystemPhase';
 
 export { Keyboard } from './devices/Keyboard';
@@ -37,6 +40,7 @@ export type { SystemConstructor } from './types/SystemConstructor';
 export type { LevelConstructor } from './types/LevelConstructor';
 
 export type { PrefabsList } from './types/PrefabsList';
+export type { LoadedModel } from './types/LoadedModel';
 export type { Config } from './types/Config';
 export type { EntityId } from './types/EntityId';
 export type { Tick } from './types/Tick';
