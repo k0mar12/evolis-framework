@@ -39,6 +39,8 @@ export { StaticBodyComponent } from "./components/physics/tags/StaticBodyCompone
 export { PhysicsSyncSystem } from "./systems/physics/PhysicsSyncSystem";
 export { CharacterGroundingSystem } from "./systems/physics/CharacterGroundingSystem";
 
+export { AnimationComponent } from "./components/general/AnimationComponent";
+
 //-- Basic tag components
 export { InSceneComponent } from "./components/tags/InSceneComponent";
 export { RemoveSceneComponent } from "./components/tags/RemoveSceneComponent";
@@ -49,7 +51,7 @@ export { TargetCameraComponent } from "./components/tags/TargetCameraComponent";
 export { AxesPrefab } from "./prefabs/debug/AxesPrefab";
 export { GridPrefab } from "./prefabs/debug/GridPrefab";
 
-export { StaticNodePrefab } from "./prefabs/models/StaticNodePrefab";
+export { NodePrefab } from "./prefabs/models/NodePrefab";
 export { HitboxPrefab } from "./prefabs/models/HitboxPrefab";
 
 //-- Services
@@ -71,6 +73,9 @@ export { ShadowSyncSystem } from "./systems/illumination/ShadowSyncSystem";
 
 //-- Collision systems
 export { CollisionAABBSystem } from "./systems/physics/CollisionAABBSystem";
+
+//-- General systems
+export { AnimationSystem } from "./systems/general/AnimationSystem";
 
 //-- Basic types
 export type { LightOptions } from "./types/LightOptions";

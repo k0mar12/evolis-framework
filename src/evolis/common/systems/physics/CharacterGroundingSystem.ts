@@ -1,5 +1,5 @@
 import { System, SystemPhase, SystemUpdateMode } from "@/evolis/foundation";
-import { CharacterStateComponent } from "@/evolis/common";
+import { AnimationComponent, CharacterStateComponent } from "@/evolis/common";
 
 export class CharacterGroundingSystem extends System {
   /**
@@ -20,6 +20,7 @@ export class CharacterGroundingSystem extends System {
 
     for (const [id, body] of physics.bodies) {
       const state = this.world.findComponent<CharacterStateComponent>(id, CharacterStateComponent);
+      const animation = this.world.findComponent<AnimationComponent>(id, AnimationComponent);
 
       if (!state) {
         continue;
@@ -46,6 +47,10 @@ export class CharacterGroundingSystem extends System {
           }
         });
       });
+
+      if (state.isGrounded === false && animation) {
+        animation.current = "Falling";
+      }
     }
   }
 }

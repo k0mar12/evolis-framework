@@ -12,10 +12,13 @@ import {
   Component,
   DynamicBodyComponent,
   ColliderCapsuleComponent,
+  AnimationComponent,
+  app,
   type Prefab,
   type Vec3,
+  type LoadedModel,
 } from "@/evolis";
-import { BoxGeometry, MeshNormalMaterial, Mesh } from "three";
+import { type Object3D } from "three";
 
 export default class PlayerPrefab implements Prefab {
   /**
@@ -28,8 +31,8 @@ export default class PlayerPrefab implements Prefab {
    *
    * @returns
    */
-  private asset(): Mesh {
-    return new Mesh(new BoxGeometry(), new MeshNormalMaterial());
+  private async asset(): Promise<LoadedModel> {
+    return app().modelLoader.load("./bot.glb");
   }
 
   /**
@@ -37,10 +40,13 @@ export default class PlayerPrefab implements Prefab {
    * @returns
    */
   public async components(): Promise<Component[]> {
+    const model = await this.asset();
+
     return [
-      new SceneNodeComponent<Mesh>(this.asset()),
+      new SceneNodeComponent<Object3D>(model.scene),
       new TransformComponent(this.position),
       new InterpolatedTransformComponent(this.position),
+      new AnimationComponent(model.animations, "Idle"),
       new ShadowComponent({ cast: true }),
       new VelocityComponent(),
       new CharacterStateComponent(),

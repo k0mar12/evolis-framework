@@ -12,6 +12,8 @@ export class InputControllerComponent extends Component {
 
   public jumpBufferTimer: number = 0;
 
+  public isJumping: boolean = false;
+
   /**
    *
    */

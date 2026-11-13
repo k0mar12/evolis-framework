@@ -9,6 +9,7 @@ import {
   PhysicsSyncSystem,
   CharacterGroundingSystem,
   MovementSystem,
+  AnimationSystem,
   RenderSystem,
   SceneSystem,
 } from "@/evolis/common";
@@ -52,6 +53,7 @@ export class SystemManager {
     PhysicsSyncSystem,
     CharacterGroundingSystem,
     MovementSystem,
+    AnimationSystem,
     RenderSystem,
     SceneSystem,
   ]);

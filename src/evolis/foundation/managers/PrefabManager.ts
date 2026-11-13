@@ -1,5 +1,5 @@
 import { SkeletonLoader, type ModuleLoader } from "@/evolis/filesystem";
-import { HitboxPrefab, StaticNodePrefab } from "@/evolis/common";
+import { HitboxPrefab, NodePrefab } from "@/evolis/common";
 import { Collection, type PrefabsList, type PrefabConstructor } from "@/evolis/foundation";
 
 export class PrefabManager {
@@ -12,7 +12,7 @@ export class PrefabManager {
    *
    */
   protected readonly inbox: Collection<PrefabConstructor> = new Collection([
-    StaticNodePrefab,
+    NodePrefab,
     HitboxPrefab,
   ]);
 

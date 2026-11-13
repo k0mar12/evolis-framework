@@ -9,6 +9,7 @@ export enum SystemPhase {
   Domain = 800,
   Camera = 900,
   Scene = 1000,
-  Render = 1100,
-  UI = 1200,
+  Animation = 1100,
+  Render = 1200,
+  UI = 1300,
 }

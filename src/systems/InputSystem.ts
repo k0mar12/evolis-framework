@@ -6,12 +6,17 @@ import {
   InputControllerComponent,
   SystemPhase,
   container,
+  type EntityId,
   type Tick,
   type InputDevice,
+  AnimationComponent,
 } from "@/evolis";
 import { InputDeviceSymbol } from "@/symbols";
 
 export default class InputSystem extends System {
+  /**
+   *
+   */
   public override readonly updateMode = SystemUpdateMode.Fixed;
 
   /**
@@ -58,6 +63,7 @@ export default class InputSystem extends System {
     const isPressedSpace = this.inputDevice.isPressed("Space");
 
     if (isPressedSpace && !input.jumpHeld) {
+      input.isJumping = true;
       input.jumpPressed = true;
       input.jumpBufferTimer = 0;
     }
@@ -75,16 +81,41 @@ export default class InputSystem extends System {
 
   /**
    *
+   * @param input
+   */
+  private handleAnimation(input: InputControllerComponent, animation: AnimationComponent): void {
+    animation.current = "Idle";
+
+    if (input.moveX !== 0 || input.moveZ !== 0) {
+      animation.current = "Slow-Run";
+    }
+
+    if (input.runHeld && (input.moveX !== 0 || input.moveZ !== 0)) {
+      animation.current = "Fast-Run";
+    }
+
+    if (input.jumpPressed) {
+      animation.current = "Jumping";
+    }
+  }
+
+  /**
+   *
    * @param param0
    */
   public update({ deltaTime }: Tick): void {
-    this.collection.forEach((id) => {
+    this.collection.forEach((id: EntityId) => {
       const input = this.world.getComponent<InputControllerComponent>(id, InputControllerComponent);
+      const animation = this.world.findComponent<AnimationComponent>(id, AnimationComponent);
 
       input.clearFrameFrags();
 
       this.handleMoving(input);
       this.handleJumping(input, deltaTime);
+
+      if (animation) {
+        this.handleAnimation(input, animation);
+      }
     });
   }
 }

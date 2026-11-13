@@ -44,8 +44,8 @@ export class ModelLoader {
 
         this.cache.set(path, model);
       }
-    } catch (_error) {
-      throw new Error("Error while loading model.");
+    } catch (error) {
+      throw new Error(`Error while loading model. ${error}`);
     }
 
     return this.create(model);

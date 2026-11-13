@@ -1,4 +1,4 @@
-import { Scene, WebGLRenderer, Camera, PerspectiveCamera, PCFShadowMap, Fog } from "three";
+import { Scene, WebGLRenderer, Camera, PerspectiveCamera, PCFShadowMap, Fog, Color } from "three";
 
 import {
   FollowCameraSystem,
@@ -20,7 +20,8 @@ import type { PrefabConstructor, SystemConstructor } from "@/evolis/foundation";
 export const defaultScene = (): Scene => {
   const scene = new Scene();
 
-  scene.fog = new Fog(0x202020, 10, 35);
+  scene.background = new Color(0x87ceeb);
+  scene.fog = new Fog(0x87ceeb, 10, 200);
 
   return scene;
 };
