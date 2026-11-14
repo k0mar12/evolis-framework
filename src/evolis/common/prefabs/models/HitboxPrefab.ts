@@ -5,7 +5,7 @@ import {
   SceneNodeComponent,
   StaticBodyComponent,
 } from "@/evolis/common";
-import { Box3, Group, Vector3, type Object3D } from "three";
+import { Box3, Group, Vector3, BoxGeometry, EdgesGeometry, LineBasicMaterial, LineSegments, type Object3D } from "three";
 
 export class HitboxPrefab implements Prefab {
   /**
@@ -27,6 +27,18 @@ export class HitboxPrefab implements Prefab {
     }
 
     const node = new Group();
+
+    const debugGeometry = new EdgesGeometry(
+      new BoxGeometry(halfSize.x * 2, halfSize.y * 2, halfSize.z * 2),
+    );
+    const debugMesh = new LineSegments(
+      debugGeometry,
+      new LineBasicMaterial({ color: 0x00ff88, depthTest: false, transparent: true, opacity: 0.8 }),
+    );
+
+    debugMesh.name = "HitboxDebug";
+    debugMesh.renderOrder = 999;
+    node.add(debugMesh);
 
     node.position.copy(center);
     node.updateMatrixWorld(true);

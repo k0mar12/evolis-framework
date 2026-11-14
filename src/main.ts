@@ -4,7 +4,6 @@ import { Application, Keyboard, type InputDevice } from "@/evolis";
 import { InputDeviceSymbol } from "@/symbols";
 
 import CameraPrefab from "@/prefabs/CameraPrefab";
-import WallPrefab from "@/prefabs/WallPrefab";
 import AmbientPrefab from "@/prefabs/illumination/AmbientPrefab";
 import SunPrefab from "@/prefabs/illumination/SunPrefab";
 import PlayerPrefab from "@/prefabs/PlayerPrefab";
@@ -19,8 +18,7 @@ await evolis.world.insert(
   new CameraPrefab(),
   new PlayerPrefab({ x: 0, y: 2, z: 0 }),
   new AmbientPrefab(),
-  new SunPrefab(),
-  new WallPrefab(),
+  new SunPrefab()
 );
 
 await evolis.start();

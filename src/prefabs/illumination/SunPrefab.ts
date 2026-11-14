@@ -14,7 +14,7 @@ export default class SunPrefab implements Prefab {
    *
    * @param position
    */
-  constructor(protected position: Vec3 = { x: 10, y: 20, z: 10 }) {}
+  constructor(protected position: Vec3 = { x: 0, y: 100, z: 0 }) {}
 
   /**
    *

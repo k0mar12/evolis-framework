@@ -6,6 +6,7 @@ import {
   SettingsControllerComponent,
   PlayerControlledComponent,
   VelocityComponent,
+  RotationComponent,
   CharacterStateComponent,
   SystemPhase,
   type Tick,
@@ -30,6 +31,7 @@ export default class CharacterControllerSystem extends System {
     InputControllerComponent,
     SettingsControllerComponent,
     VelocityComponent,
+    RotationComponent,
     CharacterStateComponent,
   );
 
@@ -75,6 +77,11 @@ export default class CharacterControllerSystem extends System {
       const motion = body.linvel();
       velocity.x = this.moveTowards(motion.x, input.moveX * speed, maxDelta);
       velocity.z = this.moveTowards(motion.z, input.moveZ * speed, maxDelta);
+
+      if (Math.hypot(velocity.x, velocity.z) > 0.01) {
+        const rotation = this.world.getComponent<RotationComponent>(id, RotationComponent);
+        rotation.y = Math.atan2(velocity.x, velocity.z);
+      }
 
       velocity.y = motion.y;
       gravity.coyoteTimer = gravity.isGrounded ? 0 : gravity.coyoteTimer + deltaTime;
