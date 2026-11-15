@@ -54,9 +54,6 @@ export { GridPrefab } from "./prefabs/debug/GridPrefab";
 export { NodePrefab } from "./prefabs/models/NodePrefab";
 export { HitboxPrefab } from "./prefabs/models/HitboxPrefab";
 
-//-- Services
-export { SpatialGrid } from "./services/SpatialGrid";
-
 //-- Basic systems
 export { MovementSystem } from "./systems/MovementSystem";
 export { RenderSystem } from "./systems/RenderSystem";
@@ -70,9 +67,6 @@ export { BaseLightSyncSystem } from "./systems/illumination/BaseLightSyncSystem"
 export { AmbientLightSyncSystem } from "./systems/illumination/AmbientLightSyncSystem";
 export { DirectionalLightSyncSystem } from "./systems/illumination/DirectionalLightSyncSystem";
 export { ShadowSyncSystem } from "./systems/illumination/ShadowSyncSystem";
-
-//-- Collision systems
-export { CollisionAABBSystem } from "./systems/physics/CollisionAABBSystem";
 
 //-- General systems
 export { AnimationSystem } from "./systems/general/AnimationSystem";
