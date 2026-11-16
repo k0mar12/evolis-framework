@@ -34,7 +34,7 @@ export default class CharacterControllerSystem extends System {
     MotionSettingsComponent,
     JumpStateComponent,
     VelocityComponent,
-    RotationComponent
+    RotationComponent,
   );
 
   /**
@@ -65,7 +65,10 @@ export default class CharacterControllerSystem extends System {
       }
 
       const input = this.world.getComponent<InputControllerComponent>(id, InputControllerComponent);
-      const settings = this.world.getComponent<MotionSettingsComponent>(id, MotionSettingsComponent);
+      const settings = this.world.getComponent<MotionSettingsComponent>(
+        id,
+        MotionSettingsComponent,
+      );
       const velocity = this.world.getComponent<VelocityComponent>(id, VelocityComponent);
       const rotation = this.world.getComponent<RotationComponent>(id, RotationComponent);
       const jump = this.world.getComponent<JumpStateComponent>(id, JumpStateComponent);
@@ -88,7 +91,7 @@ export default class CharacterControllerSystem extends System {
         jump.jumpBufferTimer = ground.hasLanded ? 0 : jump.jumpBufferTimer + deltaTime;
 
         const canCoyote = jump.coyoteBufferTimer <= jump.allowedCoyoteBufferTime;
-        const canJump = input.jumpHeld && (ground.hasLanded === true || canCoyote)
+        const canJump = input.jumpHeld && (ground.hasLanded === true || canCoyote);
 
         if (canJump) {
           velocity.y = settings.speed.jump;

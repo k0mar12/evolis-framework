@@ -69,7 +69,10 @@ export class RegistrationPhysicsSystem extends System {
   private readDefinition(id: EntityId): PhysicsDefinition {
     const position = this.world.getComponent<TransformComponent>(id, TransformComponent);
     const box = this.world.findComponent<ColliderAABBComponent>(id, ColliderAABBComponent);
-    const capsule = this.world.findComponent<ColliderCapsuleComponent>(id, ColliderCapsuleComponent);
+    const capsule = this.world.findComponent<ColliderCapsuleComponent>(
+      id,
+      ColliderCapsuleComponent,
+    );
     const mesh = this.world.findComponent<ColliderTrimeshComponent>(id, ColliderTrimeshComponent);
     const dynamic = this.world.findComponent<DynamicBodyComponent>(id, DynamicBodyComponent);
     const fixed = this.world.findComponent<StaticBodyComponent>(id, StaticBodyComponent);

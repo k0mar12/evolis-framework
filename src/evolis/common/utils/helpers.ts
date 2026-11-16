@@ -12,4 +12,4 @@ export const createMeshDebugMaterials = (): Material => {
     opacity: 0.35,
     depthWrite: false,
   });
-}
+};

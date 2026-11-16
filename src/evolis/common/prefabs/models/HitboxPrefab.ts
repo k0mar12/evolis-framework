@@ -5,7 +5,16 @@ import {
   SceneNodeComponent,
   StaticBodyComponent,
 } from "@/evolis/common";
-import { Box3, Group, Vector3, BoxGeometry, EdgesGeometry, LineBasicMaterial, LineSegments, type Object3D } from "three";
+import {
+  Box3,
+  Group,
+  Vector3,
+  BoxGeometry,
+  EdgesGeometry,
+  LineBasicMaterial,
+  LineSegments,
+  type Object3D,
+} from "three";
 
 export class HitboxPrefab implements Prefab {
   /**

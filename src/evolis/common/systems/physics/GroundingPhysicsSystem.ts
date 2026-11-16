@@ -19,7 +19,10 @@ export class GroundingPhysicsSystem extends System {
     const physics = this.world.physics;
 
     for (const [id, body] of physics.bodies) {
-      const groundContact = this.world.findComponent<GroundContactComponent>(id, GroundContactComponent);
+      const groundContact = this.world.findComponent<GroundContactComponent>(
+        id,
+        GroundContactComponent,
+      );
 
       if (!groundContact) {
         continue;

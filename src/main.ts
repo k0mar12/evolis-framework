@@ -18,7 +18,7 @@ await evolis.world.insert(
   new CameraPrefab(),
   new PlayerPrefab({ x: 0, y: 2, z: 0 }),
   new AmbientPrefab(),
-  new SunPrefab()
+  new SunPrefab(),
 );
 
 await evolis.start();

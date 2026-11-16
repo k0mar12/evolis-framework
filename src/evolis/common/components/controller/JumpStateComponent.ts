@@ -1,7 +1,6 @@
 import { Component } from "@/evolis/foundation";
 
 export class JumpStateComponent extends Component {
-
   /**
    *
    */
@@ -17,9 +16,7 @@ export class JumpStateComponent extends Component {
    * @param allowedJumpBufferTime
    * @param allowedCoyoteBufferTime
    */
-  constructor(
-    public allowedCoyoteBufferTime: number = 0.18
-  ) {
+  constructor(public allowedCoyoteBufferTime: number = 0.18) {
     super();
   }
 }

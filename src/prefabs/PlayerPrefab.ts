@@ -27,7 +27,7 @@ export default class PlayerPrefab implements Prefab {
    *
    * @param position
    */
-  constructor(protected position: Vec3 = { x: 0, y: 0, z: 0 }) { }
+  constructor(protected position: Vec3 = { x: 0, y: 0, z: 0 }) {}
 
   /**
    *
@@ -41,7 +41,7 @@ export default class PlayerPrefab implements Prefab {
 
     const capsuleMesh = new Mesh(
       new CapsuleGeometry(capsule.radius, capsule.height, 8, 16),
-      createMeshDebugMaterials()
+      createMeshDebugMaterials(),
     );
 
     const visual = new Group();
