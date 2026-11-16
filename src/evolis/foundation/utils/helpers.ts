@@ -35,6 +35,12 @@ export const world = (): World => Application.get().world;
 
 /**
  *
+ * @returns
+ */
+export const isDebug = (): boolean => Application.get().isDebug();
+
+/**
+ *
  * @param types
  * @returns
  */

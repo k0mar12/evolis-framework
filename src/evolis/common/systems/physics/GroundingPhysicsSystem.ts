@@ -1,7 +1,7 @@
 import { System, SystemPhase, SystemUpdateMode } from "@/evolis/foundation";
-import { AnimationComponent, CharacterStateComponent } from "@/evolis/common";
+import { GroundContactComponent } from "@/evolis/common";
 
-export class CharacterGroundingSystem extends System {
+export class GroundingPhysicsSystem extends System {
   /**
    *
    */
@@ -19,14 +19,13 @@ export class CharacterGroundingSystem extends System {
     const physics = this.world.physics;
 
     for (const [id, body] of physics.bodies) {
-      const state = this.world.findComponent<CharacterStateComponent>(id, CharacterStateComponent);
-      const animation = this.world.findComponent<AnimationComponent>(id, AnimationComponent);
+      const groundContact = this.world.findComponent<GroundContactComponent>(id, GroundContactComponent);
 
-      if (!state) {
+      if (!groundContact) {
         continue;
       }
 
-      state.isGrounded = false;
+      groundContact.hasLanded = false;
 
       if (body.linvel().y > 0.1) {
         continue;
@@ -42,15 +41,11 @@ export class CharacterGroundingSystem extends System {
 
           for (let i = 0; i < manifold.numContacts(); i++) {
             if (manifold.contactDist(i) <= 0.02) {
-              state.isGrounded = true;
+              groundContact.hasLanded = true;
             }
           }
         });
       });
-
-      if (state.isGrounded === false && animation) {
-        animation.current = "Falling";
-      }
     }
   }
 }

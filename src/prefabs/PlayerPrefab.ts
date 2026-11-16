@@ -5,70 +5,52 @@ import {
   InterpolatedTransformComponent,
   ShadowComponent,
   VelocityComponent,
-  PlayerControlledComponent,
+  UnderControlComponent,
   InputControllerComponent,
-  SettingsControllerComponent,
-  CharacterStateComponent,
+  MotionSettingsComponent,
+  JumpStateComponent,
   TargetCameraComponent,
   Component,
   DynamicBodyComponent,
   ColliderCapsuleComponent,
+  GroundContactComponent,
   AnimationComponent,
   app,
+  createMeshDebugMaterials,
   type Prefab,
   type Vec3,
-  type LoadedModel,
 } from "@/evolis";
-import { Box3, CapsuleGeometry, Group, Mesh, MeshBasicMaterial, type Object3D } from "three";
+import { Box3, CapsuleGeometry, Group, Mesh, type Object3D } from "three";
 
 export default class PlayerPrefab implements Prefab {
   /**
    *
    * @param position
    */
-  constructor(protected position: Vec3 = { x: 0, y: 0, z: 0 }) {}
-
-  /**
-   *
-   * @returns
-   */
-  private async asset(): Promise<LoadedModel> {
-    return app().modelLoader.load("./bot.glb");
-  }
+  constructor(protected position: Vec3 = { x: 0, y: 0, z: 0 }) { }
 
   /**
    *
    * @returns
    */
   public async components(): Promise<Component[]> {
-    const model = await this.asset();
+    const model = await app().modelLoader.load("./bot.glb");
+
     const capsule = new ColliderCapsuleComponent(0.4, 1.2);
-    const visual = new Group();
-    visual.add(model.scene);
-
-    // Keep the entity origin at the physics body's center and the feet at
-    // the bottom of the capsule. Offset a parent so animation tracks cannot
-    // overwrite the alignment of the model.
     const bounds = new Box3().setFromObject(model.scene, true);
-    if (!bounds.isEmpty()) {
-      visual.position.y = -(capsule.halfHeight + capsule.radius) - bounds.min.y;
-    }
-
-    const root = new Group();
-    root.add(visual);
 
     const capsuleMesh = new Mesh(
       new CapsuleGeometry(capsule.radius, capsule.height, 8, 16),
-      new MeshBasicMaterial({
-        color: 0x00ff88,
-        wireframe: true,
-        transparent: true,
-        opacity: 0.35,
-        depthWrite: false,
-      }),
+      createMeshDebugMaterials()
     );
-    capsuleMesh.name = "PlayerColliderDebug";
-    root.add(capsuleMesh);
+
+    const visual = new Group();
+    const root = new Group();
+
+    visual.position.y = -(capsule.halfHeight + capsule.radius) - bounds.min.y;
+
+    visual.add(model.scene);
+    root.add(visual, capsuleMesh);
 
     return [
       new SceneNodeComponent<Object3D>(root),
@@ -78,12 +60,13 @@ export default class PlayerPrefab implements Prefab {
       new AnimationComponent(model.animations, "Idle"),
       new ShadowComponent({ cast: true }),
       new VelocityComponent(),
-      new CharacterStateComponent(),
       new InputControllerComponent(),
-      new PlayerControlledComponent(),
-      new SettingsControllerComponent(),
+      new UnderControlComponent(),
+      new MotionSettingsComponent(),
+      new JumpStateComponent(),
       new TargetCameraComponent(),
       new DynamicBodyComponent(2),
+      new GroundContactComponent(),
       capsule,
     ];
   }

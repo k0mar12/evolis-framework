@@ -2,14 +2,14 @@ import { SystemUpdateMode } from "@/evolis/foundation";
 import {
   System,
   Filter,
-  PlayerControlledComponent,
-  InputControllerComponent,
   SystemPhase,
+  UnderControlComponent,
+  InputControllerComponent,
+  AnimationComponent,
   container,
   type EntityId,
   type Tick,
   type InputDevice,
-  AnimationComponent,
 } from "@/evolis";
 import { InputDeviceSymbol } from "@/symbols";
 
@@ -29,7 +29,7 @@ export default class InputSystem extends System {
    */
   public override readonly filter: Filter = new Filter().with(
     InputControllerComponent,
-    PlayerControlledComponent,
+    UnderControlComponent,
   );
 
   /**
@@ -48,41 +48,6 @@ export default class InputSystem extends System {
    *
    * @param input
    */
-  private handleMoving(input: InputControllerComponent): void {
-    input.moveX = +this.inputDevice.isPressed("KeyD") - +this.inputDevice.isPressed("KeyA");
-    input.moveZ = +this.inputDevice.isPressed("KeyS") - +this.inputDevice.isPressed("KeyW");
-    input.runHeld = this.inputDevice.isPressed("ShiftLeft");
-  }
-
-  /**
-   *
-   * @param input
-   * @param deltaTime
-   */
-  private handleJumping(input: InputControllerComponent, deltaTime: number): void {
-    const isPressedSpace = this.inputDevice.isPressed("Space");
-
-    if (isPressedSpace && !input.jumpHeld) {
-      input.isJumping = true;
-      input.jumpPressed = true;
-      input.jumpBufferTimer = 0;
-    }
-
-    if (!isPressedSpace && input.jumpHeld) {
-      input.jumpReleased = true;
-    }
-
-    input.jumpHeld = isPressedSpace;
-
-    if (input.jumpBufferTimer > 0) {
-      input.jumpBufferTimer += deltaTime;
-    }
-  }
-
-  /**
-   *
-   * @param input
-   */
   private handleAnimation(input: InputControllerComponent, animation: AnimationComponent): void {
     animation.current = "Idle";
 
@@ -92,10 +57,6 @@ export default class InputSystem extends System {
 
     if (input.runHeld && (input.moveX !== 0 || input.moveZ !== 0)) {
       animation.current = "Fast-Run";
-    }
-
-    if (input.jumpPressed) {
-      animation.current = "Jumping";
     }
   }
 
@@ -108,10 +69,10 @@ export default class InputSystem extends System {
       const input = this.world.getComponent<InputControllerComponent>(id, InputControllerComponent);
       const animation = this.world.findComponent<AnimationComponent>(id, AnimationComponent);
 
-      input.clearFrameFrags();
-
-      this.handleMoving(input);
-      this.handleJumping(input, deltaTime);
+      input.moveX = +this.inputDevice.isPressed("KeyD") - +this.inputDevice.isPressed("KeyA");
+      input.moveZ = +this.inputDevice.isPressed("KeyS") - +this.inputDevice.isPressed("KeyW");
+      input.runHeld = this.inputDevice.isPressed("ShiftLeft");
+      input.jumpHeld = this.inputDevice.isPressed("Space");
 
       if (animation) {
         this.handleAnimation(input, animation);

@@ -1,9 +1,15 @@
 import { Component } from "@/evolis/foundation";
 
 export class ColliderTrimeshComponent extends Component {
-  public revision = 0;
+  /**
+   *
+   */
+  public revision: number = 0;
 
-  /** Call after editing vertices or indices, then call world.markEntityChanged(id). */
+  /**
+   * Call after editing vertices or indices, then call world.markEntityChanged(id).
+   *
+   */
   public markGeometryChanged(): void {
     this.revision++;
   }

@@ -1,15 +1,17 @@
-import { SystemUpdateMode } from "@/evolis/foundation";
 import {
   System,
   Filter,
   InputControllerComponent,
-  SettingsControllerComponent,
-  PlayerControlledComponent,
+  MotionSettingsComponent,
+  JumpStateComponent,
+  UnderControlComponent,
   VelocityComponent,
   RotationComponent,
-  CharacterStateComponent,
   SystemPhase,
+  SystemUpdateMode,
+  GroundContactComponent,
   type Tick,
+  type EntityId,
 } from "@/evolis";
 
 export default class CharacterControllerSystem extends System {
@@ -27,12 +29,12 @@ export default class CharacterControllerSystem extends System {
    *
    */
   public override readonly filter: Filter = new Filter().with(
-    PlayerControlledComponent,
+    UnderControlComponent,
     InputControllerComponent,
-    SettingsControllerComponent,
+    MotionSettingsComponent,
+    JumpStateComponent,
     VelocityComponent,
-    RotationComponent,
-    CharacterStateComponent,
+    RotationComponent
   );
 
   /**
@@ -42,7 +44,7 @@ export default class CharacterControllerSystem extends System {
    * @param maxDelta
    * @returns
    */
-  public moveTowards(current: number, target: number, maxDelta: number): number {
+  private moveTowards(current: number, target: number, maxDelta: number): number {
     if (Math.abs(target - current) <= maxDelta) {
       return target;
     }
@@ -55,44 +57,42 @@ export default class CharacterControllerSystem extends System {
    * @param param0
    */
   public update({ deltaTime }: Tick): void {
-    this.collection.forEach((id) => {
-      const input = this.world.getComponent<InputControllerComponent>(id, InputControllerComponent);
-      const settings = this.world.getComponent<SettingsControllerComponent>(
-        id,
-        SettingsControllerComponent,
-      );
-      const velocity = this.world.getComponent<VelocityComponent>(id, VelocityComponent);
-      const gravity = this.world.getComponent<CharacterStateComponent>(id, CharacterStateComponent);
-
-      const speed = input.runHeld ? settings.speed.run : settings.speed.walk;
-
-      const maxDelta = settings.acceleration * deltaTime;
-
+    this.collection.forEach((id: EntityId) => {
       const body = this.world.physics.bodies.get(id);
 
       if (!body) {
         return;
       }
 
+      const input = this.world.getComponent<InputControllerComponent>(id, InputControllerComponent);
+      const settings = this.world.getComponent<MotionSettingsComponent>(id, MotionSettingsComponent);
+      const velocity = this.world.getComponent<VelocityComponent>(id, VelocityComponent);
+      const rotation = this.world.getComponent<RotationComponent>(id, RotationComponent);
+      const jump = this.world.getComponent<JumpStateComponent>(id, JumpStateComponent);
+      const ground = this.world.findComponent<GroundContactComponent>(id, GroundContactComponent);
+
       const motion = body.linvel();
+      const speed = input.runHeld ? settings.speed.run : settings.speed.walk;
+      const maxDelta = settings.acceleration * deltaTime;
+
       velocity.x = this.moveTowards(motion.x, input.moveX * speed, maxDelta);
       velocity.z = this.moveTowards(motion.z, input.moveZ * speed, maxDelta);
+      velocity.y = motion.y;
 
       if (Math.hypot(velocity.x, velocity.z) > 0.01) {
-        const rotation = this.world.getComponent<RotationComponent>(id, RotationComponent);
         rotation.y = Math.atan2(velocity.x, velocity.z);
       }
 
-      velocity.y = motion.y;
-      gravity.coyoteTimer = gravity.isGrounded ? 0 : gravity.coyoteTimer + deltaTime;
+      if (ground) {
+        jump.coyoteBufferTimer = ground.hasLanded ? 0 : jump.coyoteBufferTimer + deltaTime;
+        jump.jumpBufferTimer = ground.hasLanded ? 0 : jump.jumpBufferTimer + deltaTime;
 
-      const canCoyoteJump = gravity.coyoteTimer <= settings.coyoteTime;
-      const jumpBuffered = input.jumpPressed && input.jumpBufferTimer <= settings.jumpBufferTime;
+        const canCoyote = jump.coyoteBufferTimer <= jump.allowedCoyoteBufferTime;
+        const canJump = input.jumpHeld && (ground.hasLanded === true || canCoyote)
 
-      if (jumpBuffered && (gravity.isGrounded || canCoyoteJump)) {
-        velocity.y = settings.speed.jump;
-        gravity.isGrounded = false;
-        input.jumpBufferTimer = Infinity;
+        if (canJump) {
+          velocity.y = settings.speed.jump;
+        }
       }
 
       body.setLinvel(velocity, true);

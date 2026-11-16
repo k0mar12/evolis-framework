@@ -108,6 +108,14 @@ export class Application {
 
   /**
    *
+   * @returns
+   */
+  public isDebug(): boolean {
+    return this.config.debug;
+  }
+
+  /**
+   *
    */
   private initStats(): void {
     this.stats.showPanel(0);

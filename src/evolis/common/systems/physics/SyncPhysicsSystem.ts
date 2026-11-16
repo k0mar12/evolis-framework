@@ -16,7 +16,7 @@ import {
  * Dynamic poses and actual velocities are owned by Rapier.
  *
  */
-export class PhysicsSyncSystem extends System {
+export class SyncPhysicsSystem extends System {
   /**
    *
    */

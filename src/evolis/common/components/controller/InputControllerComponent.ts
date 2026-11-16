@@ -6,19 +6,4 @@ export class InputControllerComponent extends Component {
 
   public runHeld: boolean = false;
   public jumpHeld: boolean = false;
-
-  public jumpPressed: boolean = false;
-  public jumpReleased: boolean = false;
-
-  public jumpBufferTimer: number = 0;
-
-  public isJumping: boolean = false;
-
-  /**
-   *
-   */
-  public clearFrameFrags(): void {
-    this.jumpPressed = false;
-    this.jumpReleased = false;
-  }
 }
